@@ -1,0 +1,137 @@
+﻿.page {
+    width: 210mm;
+    height: 297mm;
+    max-width: 210mm;
+    margin: 0 auto;
+    background: white;
+    outline: 1px #28a745 solid;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+    
+/*@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    html, body
+    {
+        zoom: 146%;
+    }
+
+    .page {
+        margin: 0;
+        outline: 0;
+    }
+}*/
+
+.page p, .page span, .page h1, .page h5 {
+    font-family: 'FiraSans';
+}
+
+.page > .row {
+    height: inherit;
+}
+
+.left-panel {
+    color: white;
+    background-color: #3a3a3c;
+    min-height: 100%;
+    max-height: 100%;
+    padding: 0.5cm;
+}
+
+.right-panel {
+    min-height: 100%;
+    max-height: 100%;
+    padding: 0.5cm;
+}
+
+.left-panel .row, .right-panel .row {
+    padding: 0.4rem;
+}
+
+.left-panel .row.no-gutters, .right-panel .row.no-gutters {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.left-panel img {
+    width: 100px;
+    border: 1px solid lightgray;
+}
+
+.page > .row > .left-panel .title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+}
+
+.page > .row > .left-panel hr {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    border-width: 2px;
+    border-color: white;
+}
+
+.page > .row > .left-panel i {
+    font-size: 1.3rem;
+}
+
+.page > .row > .left-panel span {
+    color: white;
+    font-size: 0.8rem;
+    display: block;
+    overflow-wrap: break-word;
+}
+
+.page > .row > .left-panel .progress {
+    background-color: #6c757d;
+}
+
+.page > .row > .left-panel .progress-bar {
+    background-color: #f8f9fa;
+}
+
+.page > .row > .right-panel .occupation {
+    font-weight: bold;
+    color: #828282;
+}
+
+.page > .row > .right-panel .title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+}
+
+.page > .row > .right-panel hr {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    border-width: 2px;
+    border-color: darkgray;
+}
+
+.page > .row > .right-panel p {
+    font-size: 0.85rem;
+    text-align: justify;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+.page > .row > .right-panel span {
+    color: gray;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: block;
+    overflow-wrap: break-word;
+}
+
+.page .block-title {
+    font-size: 0.9rem !important;
+    color: #424242 !important;
+}
+
+.page .block-subtitle {
+    padding-bottom: 0.3rem;
+}

@@ -1,0 +1,151 @@
+﻿.page {
+    width: 210mm;
+    height: 297mm;
+    max-width: 210mm;
+    margin: 0 auto;
+    background: white;
+    outline: 1px #28a745 solid;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+.page > .row:not(:first-child) {
+    height: calc(100% - 168.78px);
+    height: -o-calc(100% - 168.78px); /* opera */
+    height: -webkit-calc(100% - 168.78px); /* google, safari */
+    height: -moz-calc(100% - 168.78px); /* firefox */
+}
+
+.page:not(:first-of-type) > .row {
+    height: 100%;
+}
+
+.page .left-panel, .page .right-panel {
+    padding: 0.5cm;
+    height: 100%;
+}
+
+.page .left-panel .row, .page .right-panel .row {
+    padding: 0.4rem 0;
+}
+    
+/*@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    html, body
+    {
+        zoom: 146%;
+    }
+
+    .page {
+        margin: 0;
+        outline: 0;
+    }
+}*/
+
+
+.cv-header {
+    background-color: #2b3033;
+    max-height: 168.78px;
+}
+
+.cv-header img {
+    width: 100px;
+    border: 1px solid lightgray;
+}
+
+.cv-header h1 {
+    color: white;
+    font-family: 'Barlow';
+    text-transform: uppercase;
+}
+
+.cv-legend {
+    background-color: #f5f5f5;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    text-overflow: ellipsis;
+}
+
+.cv-legend > h4 {
+    margin-bottom: 0;
+}
+
+.highlight {
+    color: #00b057;
+}
+
+.cv-legend h4 {
+    font-family: 'Barlow';
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.page h5 {
+    font-family: 'Barlow';
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 0.3rem;
+}
+
+.page .left-panel hr {
+    max-width: 100% !important;
+    margin: 0;
+    border-color: black;
+}
+
+.page p {
+    font-size: 0.85rem;
+    text-align: justify;
+    color: #3e3e3e;
+    margin-bottom: 0.4rem;
+}
+
+.page p, .page span {
+    font-family: 'Roboto';
+}
+
+.page .progress {
+    background-color: #e8e8e8;
+}
+
+.page .progress-bar {
+    background-color: #00b057;
+}
+
+.page .left-panel span, .page .right-panel span {
+    display: block;
+    overflow-wrap: break-word;
+    font-size: 0.8rem;
+}
+
+.contact {
+    padding-top: 0.8rem !important;
+}
+
+.page .left-panel > .row > [class^="col-"]:last-child {
+    padding-left: 0;
+}
+
+.page .right-panel hr {
+    max-width: 100% !important;
+    margin: 0;
+    border-color: #b5b2b2;
+}
+
+.page .right-panel .legend {
+    color: #8e8b8b;
+}
+
+.page .right-panel .subtitle {
+    color: black;
+    margin-bottom: 6px;
+}
+
+.page .right-panel .subtitle > label {
+    margin-bottom: 0;
+}

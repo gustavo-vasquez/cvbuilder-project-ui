@@ -1,0 +1,77 @@
+﻿.page {
+    width: 210mm;
+    height: 297mm;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 0.8cm 1cm;
+    background: white;
+    outline: 1px #28a745 solid;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+/*@page {
+    size: A4 !important;
+    margin: 0;
+}
+
+@media print {
+    html, body
+    {   
+        zoom: 146%;
+    }
+}*/
+
+.cv-header {
+    text-align: center;
+}
+
+.cv-header img {
+    width: 100px;
+    border: 1px solid lightgray;
+}
+
+.cv-header .title {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.cv-header .subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.profession-label {
+    font-size: 13px;
+    color: darkslategray;
+    text-transform: uppercase;
+    position: absolute;
+    right: 1cm;
+    max-width: 200px;
+    text-align: right;
+}
+
+.subtitle > i:not(:first-child) {
+    padding-left: 0.2rem;
+}
+
+.page > .row:not(:first-child) {
+    margin-top: 0.5rem;
+}
+
+.page .cv-block .block-title, .page .block-title {
+    font-family: 'Century Gothic', 'Catamaran', 'Arial';
+    font-size: 1.1rem;
+    overflow-wrap: break-word;
+}
+
+.page .cv-block .block-subtitle {
+    font-family: 'Arimo';
+    font-size: 0.8rem;
+}
+
+.page .cv-block p {
+    font-size: 0.8rem;
+    font-family: 'Arimo';
+    margin-bottom: 10px;
+}

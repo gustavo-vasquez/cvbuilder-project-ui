@@ -1,0 +1,121 @@
+﻿@media (max-width: 768px) {
+    #curriculum_finished {
+        overflow-x: scroll;
+    }
+
+    .page {
+        min-width: 210mm;
+        min-height: 297mm;
+    }
+}
+
+.finished-cv {
+    background-image: url('../img/bg-finished-cv.jpg');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.finished-cv:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0.6;
+}
+
+.template-actions-wrapper {
+    font-family: Lato;
+    text-align: center;
+    background-color: white;
+    padding: 1rem;
+    border: 1px solid;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+}
+
+.template-actions-wrapper > h1 > i {
+    color: #04bd68;
+}
+
+.template-legend {
+    font-family: Lato;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.btn-template {
+    color: #62af4c;
+    border: unset;
+    border-radius: 0px;
+    width: 100%;
+}
+
+.btn-template:hover {
+    color: white;
+    background-color: #61bb94;
+    /*background-image: linear-gradient(180deg, #39bd83 0%, #2d9e31 50%, #2b7517 80%);*/
+    background-image: linear-gradient(180deg, #39bd83 0%, #259463 50%, #169461 80%);
+    outline: 1px solid #388821;
+}
+
+#loading_print_pdf {
+    animation-name: slideDown;
+  	animation-duration: 3.5s;
+  	animation-iteration-count: 1;
+  	-webkit-animation-name: slideDown;
+  	-webkit-animation-duration: 3.5s;
+  	-webkit-animation-iteration-count: 1;
+}
+
+.modal {
+    padding-right: 0px !important;
+}
+
+.cv-preview-img {
+    max-height: calc(100vh - 225px);
+    border-radius: 4px;
+    border: 1px #D3D3D3 solid;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-wizard-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+    letter-spacing: unset;
+}
+
+.btn-wizard-arrow:first-of-type {
+    position: absolute;
+    left: 0.4rem;
+    top: 50%;
+}
+
+.btn-wizard-arrow:nth-of-type(2) {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+}
+
+#curriculum_finished > div:not(:first-of-type) {
+    margin-top: 3rem;
+}
+
+.progress-bar-beginner {
+    width: 33%;
+}
+
+.progress-bar-intermediate {
+    width: 66%;
+}
+
+.progress-bar-advanced {
+    width: 100%;
+}
+
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}

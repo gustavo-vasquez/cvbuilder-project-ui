@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import WebApp from './WebApp';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+	// Desactivado StrictMode por tira una advertencia sobre findDOMNode
+  //<React.StrictMode>
+    <WebApp />,
+  //</React.StrictMode>,
   document.getElementById('root')
 );
 

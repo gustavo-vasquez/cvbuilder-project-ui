@@ -1,0 +1,165 @@
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  src: url('../fonts/Catamaran-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Muli';
+  src: url('../fonts/Muli-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FiraSans';
+  src: url('../fonts/FiraSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Arimo';
+  src: url('../fonts/Arimo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/Barlow-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+/*html {
+  scroll-behavior: smooth;
+}*/
+
+#mainNav.navbar-shrink {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.btn-myaccount {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: 2px solid;
+}
+
+.btn-myaccount:hover {
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(97,187,148,.3);
+}
+
+.btn-group > .btn-myaccount:not(:last-child):not(.dropdown-toggle) {
+    border-right: none;
+}
+
+.btn-group > .btn-group:not(:first-child) > .btn-myaccount, .btn-group > .btn-myaccount:not(:first-child) {
+    margin-left: 0;
+    padding-left: 0.75rem;
+}
+
+header.masthead {
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.overlay {
+	position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(19, 64, 15, 0.41);
+}
+
+header.masthead .container-content {
+	position: relative;
+	z-index: 1;
+}
+
+.blur {
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-image:url('../img/bg-cta.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    filter:blur(10px);
+    transition: filter .5s ease;
+    backface-visibility: hidden;
+}
+
+.sign-in-account {
+    background-image:url('../img/bg-cta.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+}
+
+.sign-in-account:before {
+    content: '';
+    display: block;
+    background-color: rgba(140, 152, 138, 0.4);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.vh-100 {
+	min-height: 100vh;
+}
+
+section a {
+	color: #3aab03;
+  border-radius: 4px;
+  padding: 0 0.125rem;
+}
+
+section a:hover {
+	color: white;
+	text-decoration: none;
+	background-color: #3aab03;
+}
+
+::-moz-selection { /* Code for Firefox */
+    color: white;
+    background: #50982d;
+    text-shadow: 1px 1px 2px #000000aa;
+}
+
+::selection {
+    color: white;
+    background: #2bb746;
+    text-shadow: 1px 1px 2px #000000aa;
+}
+
+.connect-with button {
+	padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+}
+
+.connect-with button i {
+    font-size: 2em;
+}
+
+.social-media a {
+	color: rgba(255,255,255,.3);
+	font-size: 2em;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+.social-media a:hover {
+	color: white;
+	background-color: unset;
+}
