@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigationBar, Main, Footer } from './components/home';
+//import SignIn from './components/authentication/SignIn';
 
 // estilos css de librerias
 import './assets/lib/bootstrap/bootstrap.min.css';
