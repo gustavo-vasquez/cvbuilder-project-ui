@@ -1,6 +1,8 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { NavigationBar, Main, Footer } from './components/home';
-//import SignIn from './components/authentication/SignIn';
+import SignIn from './components/authentication/SignIn';
+import NotFound from './components/NotFound';
 
 // estilos css de librerias
 import './assets/lib/bootstrap/bootstrap.min.css';
@@ -15,7 +17,17 @@ class WebApp extends React.Component {
 		return (
 			<React.Fragment>
 				<NavigationBar></NavigationBar>
-				<Main></Main>
+				<Switch>
+					<Route path="/account/login">
+						<SignIn></SignIn>
+					</Route>
+					<Route exact path="/">
+						<Main></Main>
+					</Route>
+					<Route>
+						<NotFound></NotFound>
+					</Route>
+				</Switch>
 				<Footer></Footer>
 			</React.Fragment>
 		);

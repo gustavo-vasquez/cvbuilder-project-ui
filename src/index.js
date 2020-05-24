@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import WebApp from './WebApp';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-	// Desactivado StrictMode por tira una advertencia sobre findDOMNode
+	// Desactivado StrictMode por tira una advertencia sobre findDOMNode usando react-bootstrap
   //<React.StrictMode>
-    <WebApp />,
+	<BrowserRouter>
+		<WebApp />
+	</BrowserRouter>,
   //</React.StrictMode>,
   document.getElementById('root')
 );
