@@ -14,11 +14,6 @@
 }
 
 @font-face {
-  font-family: 'FiraSans';
-  src: url('../fonts/FiraSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
   font-family: 'Arimo';
   src: url('../fonts/Arimo-Regular.ttf') format('truetype');
 }
@@ -31,6 +26,21 @@
 @font-face {
     font-family: 'Roboto';
     src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('../fonts/IBMPlexSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oxygen';
+    src: url('../fonts/Oxygen-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Kalam Light';
+    src: url('../fonts/Kalam-Light.ttf') format('truetype');
 }
 
 /*html {
@@ -185,4 +195,48 @@ section a:hover {
 .social-media a:hover {
 	color: white;
 	background-color: unset;
+}
+
+
+/* spinner svg */
+#svg-spinner {
+  position: absolute;
+  left: 50%;
+  -webkit-transition-property: -webkit-transform;
+  -webkit-transition-duration: 1.2s;
+  -webkit-animation-name: rotate;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  -moz-transition-property: -moz-transform;
+  -moz-animation-name: rotate; 
+  -moz-animation-duration: 1.2s; 
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+
+  transition-property: transform;
+  animation-name: rotate; 
+  animation-duration: 1.2s; 
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.btn > svg {
+  position: unset !important;
+  left: unset !important;
+}
+
+@-webkit-keyframes rotate {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes rotate {
+    from {-moz-transform: rotate(0deg);}
+    to {-moz-transform: rotate(360deg);}
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
 }

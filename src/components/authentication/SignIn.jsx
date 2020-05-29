@@ -1,11 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-class SignIn extends React.Component {
-    componentDidMount() {
-        window.scroll(0,0);
-    }
+// componentes
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
-    render() {
+const SignIn = (props) => {
+    //render() {
+    let location = useLocation();
+    let { from } = location.state || { from: { pathname: "/" } };
+
         return (
             <section className="sign-in-account">
                 <div className="container">
@@ -14,32 +18,7 @@ class SignIn extends React.Component {
                             <div className="card border-success mb-3">
                                 <div className="card-body">
                                     <h4 className="card-title mb-4">Accede a tu cuenta.</h4>
-                                    <form action="Account/Login" method="Post" id = "user_login_form">
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label>Correo electrónico</label>
-                                                <input type="text" className="form-control" placeholder="Correo electrónico" autoFocus/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contraseña</label>
-                                                <input type="password" className="form-control" placeholder="Contraseña"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <div className="custom-control custom-checkbox">
-                                                    <input type="checkbox" id="LoginModel_RememberMe" className="custom-control-input"/>
-                                                    <label className="custom-control-label" htmlFor="LoginModel_RememberMe">Recordarme</label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <div className="form-group row">
-                                            <div className="col-lg-4">
-                                                <button type="submit" className="btn btn-default">Ingresar</button>
-                                            </div>
-                                            <div className="col-lg-8 text-right">
-                                                <a href="/">¿Has olvidado tu contraseña?</a>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <LoginForm returnUrl={from} userLogged={props.userLogged}></LoginForm>
                                 </div>
                             </div>
                             <div className="card border-success mb-3">
@@ -64,34 +43,7 @@ class SignIn extends React.Component {
                             <div className="card border-success mb-3">
                                 <div className="card-body">
                                     <h4 className="card-title mb-4">¿Eres nuevo? Regístrate ahora para guardar los cambios de tu CV permanentemente.</h4>
-                                    <form action="Account/Register" method="Post" id="user_register_form">
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label>Correo electrónico</label>
-                                                <input type="text" className="form-control" placeholder="Correo electrónico"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contraseña</label>
-                                                <input type="password" className="form-control" placeholder="Contraseña"/>
-                                                <small className="form-text text-muted">Sólo números y letras, mínimo 6 caracteres.</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Confirmar contraseña</label>
-                                                <input type="password" className="form-control" placeholder="Confirmar contraseña"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <div className="custom-control custom-checkbox">
-                                                    <input type="checkbox" id="RegisterModel_TermsAndServices" className="custom-control-input"/>
-                                                    <label className="custom-control-label" htmlFor="RegisterModel_TermsAndServices">He leído y estoy de acuerdo con los <a href="/">términos de servicio</a>.</label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <div className="form-group row">
-                                            <div className="col-lg-4">
-                                                <button type="submit" className="btn btn-default">Registrarse</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    <RegisterForm returnUrl={from}></RegisterForm>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +51,7 @@ class SignIn extends React.Component {
                 </div>
             </section>
         );
-    }
+    //}
 }
 
-export default SignIn;
+export { SignIn };

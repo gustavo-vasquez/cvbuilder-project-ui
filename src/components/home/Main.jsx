@@ -12,8 +12,7 @@ import modernTemplateImage from '../../assets/img/templates/modern.png';
 import googlePlayImage from '../../assets/img/google-play-badge.svg';
 import appleStoreImage from '../../assets/img/app-store-badge.svg';
 
-const Main = () => {
-	window.scroll(0,0);
+export const Main = () => {
   return (
   	<div className="body-content">
   		<header id="landing_page" className="masthead">
@@ -199,5 +198,3 @@ const Main = () => {
     </div>
   );
 };
-
-export default Main;

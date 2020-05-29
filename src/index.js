@@ -4,11 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import WebApp from './WebApp';
 import * as serviceWorker from './serviceWorker';
+import ScrollToTop from './components/ScrollToTop';
 
 ReactDOM.render(
 	// Desactivado StrictMode por tira una advertencia sobre findDOMNode usando react-bootstrap
   //<React.StrictMode>
-	<BrowserRouter>
+	<BrowserRouter basename="/">
+		<ScrollToTop></ScrollToTop>
 		<WebApp />
 	</BrowserRouter>,
   //</React.StrictMode>,
