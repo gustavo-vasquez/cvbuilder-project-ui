@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 // componentes
 import LoginForm from './LoginForm';
@@ -12,17 +13,17 @@ const SignIn = (props) => {
 
         return (
             <section className="sign-in-account">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="card border-success mb-3">
-                                <div className="card-body">
-                                    <h4 className="card-title mb-4">Accede a tu cuenta.</h4>
+                <Container>
+                    <Row>
+                        <Col md={6}>
+                            <Card border="success" className="mb-3">
+                                <Card.Body>
+                                    <Card.Title className="mb-4">Accede a tu cuenta.</Card.Title>
                                     <LoginForm returnUrl={from} userLogged={props.userLogged}></LoginForm>
-                                </div>
-                            </div>
-                            <div className="card border-success mb-3">
-                                <div className="card-body">
+                                </Card.Body>
+                            </Card>
+                            <Card border="success" className="mb-3">
+                                <Card.Body>
                                     <form action="Account/ExternalLogin?returnUrl=hola">
                                         <div className="connect-with row">
                                             <div className="col-lg-5">
@@ -36,19 +37,19 @@ const SignIn = (props) => {
                                             </div>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="card border-success mb-3">
-                                <div className="card-body">
-                                    <h4 className="card-title mb-4">¿Eres nuevo? Regístrate ahora para guardar los cambios de tu CV permanentemente.</h4>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col md={6}>
+                            <Card border="success" className="mb-3">
+                                <Card.Body>
+                                    <Card.Title className="mb-4">¿Eres nuevo? Regístrate ahora para guardar los cambios de tu CV permanentemente.</Card.Title>
                                     <RegisterForm returnUrl={from}></RegisterForm>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
             </section>
         );
     //}

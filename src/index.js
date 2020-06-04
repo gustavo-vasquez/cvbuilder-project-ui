@@ -9,7 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 ReactDOM.render(
 	// Desactivado StrictMode por tira una advertencia sobre findDOMNode usando react-bootstrap
   //<React.StrictMode>
-	<BrowserRouter basename="/">
+	<BrowserRouter>
 		<ScrollToTop></ScrollToTop>
 		<WebApp />
 	</BrowserRouter>,

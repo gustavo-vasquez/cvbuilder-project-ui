@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 // componentes
 import { NavigationBar, Main, Footer } from './components/home';
 import { SignIn } from './components/authentication';
+import { Build } from './components/curriculum/build';
 import NotFound from './components/NotFound';
 
 // estilos css de librerias
@@ -36,15 +37,16 @@ class WebApp extends React.Component {
 					<Route path="/account/signin">
 						<SignIn userLogged={this.userLogged}></SignIn>
 					</Route>
+					<Route path="/curriculum/build" render={({match}) =>
+						<Build path={match.path} url={match.url}></Build>
+					}>
+					</Route>
+					<PrivateRoute path="/curriculum/finished">
+						<NotFound></NotFound>
+					</PrivateRoute>
 					<Route exact path="/">
 						<Main></Main>
 					</Route>
-					<PrivateRoute exact path="/curriculum/build">
-						<NotFound></NotFound>
-					</PrivateRoute>
-					<PrivateRoute exact path="/curriculum/finished">
-						<NotFound></NotFound>
-					</PrivateRoute>
 					<Route>
 						<NotFound></NotFound>
 					</Route>
@@ -60,11 +62,9 @@ export default WebApp;
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
-	let fakeAuth = false;
-	
 	return (
 		<Route {...rest} render={({ location }) =>
-	    	fakeAuth ? children : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
+	    	rest.loginData ? children : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
 		}/>
 	);
 }
