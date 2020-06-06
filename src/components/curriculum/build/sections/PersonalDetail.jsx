@@ -102,7 +102,7 @@ class PersonalDetail extends React.Component {
             }, 400);
         	}}>
 			{({ values, isSubmitting }) => (
-				<Form className="personal_detail_section_form">
+				<Form id="personal_detail_section_form">
 					<legend className="mb-4">Detalles personales</legend>
 					<fieldset>
 						{/*<input type="hidden" id="personalDetailId" />

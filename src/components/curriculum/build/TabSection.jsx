@@ -25,6 +25,7 @@ class TabSection extends React.Component {
     }
 
     renderSection(sectionId) {
+    	this.props.navigationButtonsDisplay();
     	switch(sectionId) {
     		case this.props.tabSections[0].id:
     			return <PersonalDetail></PersonalDetail>
@@ -53,7 +54,7 @@ class TabSection extends React.Component {
 		let sectionId = this.props.sectionName;
 
 		return (
-			<div id={sectionId}>
+			<div id={sectionId} className="mb-4">
 	            <Card border="success" className="overflow-hidden">
 	                <Card.Body>{this.renderSection(sectionId)}</Card.Body>
 	            </Card>

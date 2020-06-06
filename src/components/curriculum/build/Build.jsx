@@ -1,11 +1,13 @@
 import React from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route, NavLink, Link } from 'react-router-dom';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
 import TabSection from './TabSection';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 
 import '../../../assets/css/build-cv.css';
+
+var timer = null;
 
 class Build extends React.Component {
     constructor(props) {
@@ -23,18 +25,23 @@ class Build extends React.Component {
 
         this.handleChangeTemplateDialog = this.handleChangeTemplateDialog.bind(this);
         this.toggleChooseTemplateDialogButton = this.toggleChooseTemplateDialogButton.bind(this);
+        this.navigationButtonsDisplay = this.navigationButtonsDisplay.bind(this);
+        this.isElementInView = this.isElementInView.bind(this);
     }
 
     componentDidMount() {
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
+        window.addEventListener("scroll", this.navigationButtonsDisplay, false);
+        this.navigationButtonsDisplay();
     }
 
     componentWillUnmount() {
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.removeEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.removeEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
+        window.removeEventListener("scroll", this.navigationButtonsDisplay, false);
     }
 
     toggleChooseTemplateDialogButton(e) {
@@ -46,15 +53,47 @@ class Build extends React.Component {
         this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog }));
     }
 
+    isElementInView(element) {
+        let pageTop = document.documentElement.offsetTop;
+        let pageBottom = pageTop + document.documentElement.clientHeight;
+        let elementTop = element.getBoundingClientRect().y;
+        let elementBottom = elementTop + element.getBoundingClientRect().height;
+
+        return elementTop <= pageBottom && elementBottom >= pageTop;
+    }
+
+    navigationButtonsDisplay() {
+        if(timer !== null) {
+            clearTimeout(timer);
+        }
+        
+        timer = setTimeout(() => {
+            let element = document.getElementById("navigation_buttons");
+            let navigationButtonsFixed = document.getElementById("navigation_buttons_fixed");
+
+            if(this.isElementInView(document.getElementById("navigation_buttons_wrapper"))) {
+                //element.classList.remove("navigation-buttons-fixed");
+                if(navigationButtonsFixed)
+                    navigationButtonsFixed.remove();
+            }
+            else {
+                //element.classList.add("navigation-buttons-fixed");
+                if(!navigationButtonsFixed) {
+                    let clone = element.cloneNode(true); // true means clone all childNodes and all event handlers
+                    clone.id = "navigation_buttons_fixed";
+                    clone.classList.add("navigation-buttons-fixed");
+                    document.getElementById("navigation_buttons_wrapper").appendChild(clone);
+                }
+            }
+        }, 150);
+    }
+
     render() {
         return (
             <section id="building_cv">
                 <Container>
                     <Row className="btn-group-row">
                         <ButtonGroup className="col tabs-group mb-3">
-                        {/*this.state.tabSections.map(tabSection =>
-                            <Button as={NavLink} to={`build?sectionName=${tabSection.id}`} key={tabSection.id} variant="outline-default">{tabSection.text}</Button>
-                        )*/}
                         {this.state.tabSections.map(tabSection =>
                             <Button as={NavLink} to={`${this.props.url}/${tabSection.id}`} key={tabSection.id} variant="outline-default">{tabSection.text}</Button>
                         )}
@@ -74,13 +113,19 @@ class Build extends React.Component {
                             </Card>
                         </Col>
                         <Col md={9} className="cv-sections">
-                            {/*<Route path="/curriculum/build">
-                                <TabSection tabSections={this.state.tabSections}></TabSection>
-                            </Route>*/}
                             <Switch>
-                                <Route path={`${this.props.path}/:sectionName`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName}></TabSection>}></Route>
-                                <Route path={`${this.props.path}`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName}></TabSection>}></Route>
+                                <Route path={`${this.props.path}/:sectionName`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabSection>}></Route>
+                                <Route path={`${this.props.path}`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabSection>}></Route>
                             </Switch>
+                            <div id="navigation_buttons_wrapper">
+                                <div id="navigation_buttons" className="text-center">
+                                    <ButtonGroup>
+                                        <Button variant="default" className="previous-page" type="button"><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
+                                        <Link to="/curriculum/finished" className="btn btn-default"><i className="fas fa-save"></i> Visualizar CV</Link>
+                                        <Button variant="default" className="next-page" type="button">Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
+                                    </ButtonGroup>
+                                </div>
+                            </div>
                         </Col>
                     </Row>
                 </Container>

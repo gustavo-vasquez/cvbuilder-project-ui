@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
 // componentes
@@ -25,17 +25,17 @@ const SignIn = (props) => {
                             <Card border="success" className="mb-3">
                                 <Card.Body>
                                     <form action="Account/ExternalLogin?returnUrl=hola">
-                                        <div className="connect-with row">
-                                            <div className="col-lg-5">
+                                        <Row className="connect-with">
+                                            <Col md={5}>
                                                 <p className="mt-2">Conéctate con:</p>
-                                            </div>
-                                            <div className="col-lg-7">
-                                                <a href="/" title="Cuenta de Google"><i className="fab fa-google"></i></a>
-                                                <a href="/" title="Cuenta Microsoft"><i className="fab fa-windows"></i></a>
-                                                <a href="/" title="Cuenta de LinkedIn"><i className="fab fa-linkedin"></i></a>
-                                                <a href="/" title="Cuenta de Github"><i className="fab fa-github"></i></a>
-                                            </div>
-                                        </div>
+                                            </Col>
+                                            <Col md={7}>
+                                                <Link to="/" title="Cuenta de Google"><i className="fab fa-google"></i></Link>
+                                                <Link to="/" title="Cuenta Microsoft"><i className="fab fa-windows"></i></Link>
+                                                <Link to="/" title="Cuenta de LinkedIn"><i className="fab fa-linkedin"></i></Link>
+                                                <Link to="/" title="Cuenta de Github"><i className="fab fa-github"></i></Link>
+                                            </Col>
+                                        </Row>
                                     </form>
                                 </Card.Body>
                             </Card>
