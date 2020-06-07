@@ -37,8 +37,8 @@ class WebApp extends React.Component {
 					<Route path="/account/signin">
 						<SignIn userLogged={this.userLogged}></SignIn>
 					</Route>
-					<Route path="/curriculum/build" render={({match}) =>
-						<Build path={match.path} url={match.url}></Build>
+					<Route path="/curriculum/build" render={({match, history}) =>
+						<Build path={match.path} url={match.url} history={history}></Build>
 					}>
 					</Route>
 					<PrivateRoute path="/curriculum/finished">

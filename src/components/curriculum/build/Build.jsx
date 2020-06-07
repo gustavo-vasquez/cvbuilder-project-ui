@@ -34,6 +34,7 @@ class Build extends React.Component {
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
         window.addEventListener("scroll", this.navigationButtonsDisplay, false);
+        document.querySelector("#navigation_buttons_wrapper").addEventListener("click", event => this.switchingTabs(event), false);
         this.navigationButtonsDisplay();
     }
 
@@ -88,6 +89,56 @@ class Build extends React.Component {
         }, 150);
     }
 
+    getCurrentLocation = () => {
+        let { pathname } = this.props.history.location;
+        let lastSlashIndex = pathname.lastIndexOf("/");
+        let parameter = pathname.substring(lastSlashIndex + 1);
+
+        return parameter === "build" ? this.state.tabSections[0].id : parameter;
+    }
+
+    switchingTabs = (event) => {
+        let parameter = this.getCurrentLocation();
+        let { tabSections } = this.state;
+        let pathUrl = "";
+
+        
+        if(event.target.classList.contains("next-page")) {
+            switch(parameter) {
+                case tabSections[1].id:
+                    pathUrl = tabSections[2].id;
+                    break;
+                case tabSections[2].id:
+                    pathUrl = tabSections[3].id;
+                    break;
+                case tabSections[3].id:
+                    break;
+                case tabSections[0].id:
+                default:
+                    pathUrl = tabSections[1].id;
+                    break;
+            }
+        }
+        else if(event.target.classList.contains("previous-page")) {
+            switch(parameter) {
+                case tabSections[1].id:
+                    pathUrl = tabSections[0].id;
+                    break;
+                case tabSections[2].id:
+                    pathUrl = tabSections[1].id;
+                    break;
+                case tabSections[3].id:
+                    pathUrl = tabSections[2].id;
+                    break;
+                case tabSections[0].id:
+                default:
+                    break;
+            }
+        }
+
+        return this.props.history.push(`${this.props.path}/${pathUrl}`);
+    }
+
     render() {
         return (
             <section id="building_cv">
@@ -120,9 +171,9 @@ class Build extends React.Component {
                             <div id="navigation_buttons_wrapper">
                                 <div id="navigation_buttons" className="text-center">
                                     <ButtonGroup>
-                                        <Button variant="default" className="previous-page" type="button"><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
+                                        <Button variant="default" className="previous-page" type="button" disabled={this.getCurrentLocation() === this.state.tabSections[0].id}><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
                                         <Link to="/curriculum/finished" className="btn btn-default"><i className="fas fa-save"></i> Visualizar CV</Link>
-                                        <Button variant="default" className="next-page" type="button">Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
+                                        <Button variant="default" className="next-page" type="button" disabled={this.getCurrentLocation() === this.state.tabSections[3].id}>Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
                                     </ButtonGroup>
                                 </div>
                             </div>
