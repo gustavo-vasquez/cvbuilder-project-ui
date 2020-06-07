@@ -55,8 +55,8 @@ export const Studies = () => {
         }, 400);
     	}}>
 		{({ values, isSubmitting }) => (
-			<Form id="personal_detail_section_form">
-				<legend className="mb-4">Detalles personales</legend>
+			<Form id="study_section_form">
+				<legend className="mb-4">Estudio académico</legend>
 				<fieldset>
 					{/*<input type="hidden" id="studyId" />
 					<input type="hidden" id="type" />*/}
