@@ -22,16 +22,12 @@ class PersonalDetail extends React.Component {
 			'uploadedPhoto': undefined,
 			'photo': 0,
 			'address': '',
-			'city': 0,
-			'postalCode': 0,
-			'areaCodeLP': 0,
-			'linePhone': 0,
-			'areaCodeMP': 0,
-			'mobilePhone': 0,
-			'day': 0,
-			'month': '',
-			'year': 0,
-			'country': '',
+			'city': '',
+			'postalCode': '',
+			'areaCodeLP': '',
+			'linePhone': '',
+			'areaCodeMP': '',
+			'mobilePhone': '',
 			'summary': '',
 			'summaryCustomTitle': '',
 			'summaryIsVisible': true,
@@ -77,8 +73,6 @@ class PersonalDetail extends React.Component {
 				mobilePhone: Yup.number()
 								.min(1)
 								.max(9999999999),
-				country: Yup.string()
-							.max(100),
 				summary: Yup.string()
 							.required()
 							.max(300),
@@ -106,7 +100,7 @@ class PersonalDetail extends React.Component {
 					<legend className="mb-4">Detalles personales</legend>
 					<fieldset>
 						{/*<input type="hidden" id="personalDetailId" />
-						<input type="hidden" id="Type" />*/}
+						<input type="hidden" id="type" />*/}
 				        <Row>
 				            <Col md={7}>
 				                <div className="form-group">
@@ -218,7 +212,7 @@ class PersonalDetail extends React.Component {
 				        <Row>
 				            <Col md={6}>
 				                <div className="form-group">
-				                    <label>Ciudad / localidad</label>
+				                    <label>Ciudad/Localidad</label>
 				                    <Field id="city" name="city" className="form-control"></Field>
 				                    <ErrorMessage name="city" component="div" className="text-danger"></ErrorMessage>
 				                </div>
@@ -233,16 +227,9 @@ class PersonalDetail extends React.Component {
 				        </Row>
 
 				        <Row>
-				            <Col md={6}>
+				            <Col>
 				                <div className="form-group">
-				                    <label>Nacionalidad</label>
-				                    <Field id="country" name="country" className="form-control"></Field>
-				                    <ErrorMessage name="country" component="div" className="text-danger"></ErrorMessage>
-				                </div>
-				            </Col>
-				            <Col md={6}>
-				                <div className="form-group">
-				                    <label>Páginas web</label>
+				                    <label>Blogs/Sitios web</label>
 				                    <Field id="web_page_url" name="webPageUrl" className="form-control"></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
 				                    <ErrorMessage name="webPageUrl" component="div" className="text-danger"></ErrorMessage>
