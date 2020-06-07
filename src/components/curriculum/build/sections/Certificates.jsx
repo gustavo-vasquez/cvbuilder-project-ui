@@ -41,7 +41,7 @@ export const Certificates = () => {
         }, 400);
     	}}>
 		{({ values, isSubmitting }) => (
-			<Form id="work_experience_section_form">
+			<Form id="certificate_section_form">
 				<legend className="mb-4">Certificado</legend>
 				<fieldset>
 					{/*<input type="hidden" id="studyId" />
