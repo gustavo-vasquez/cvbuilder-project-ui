@@ -3,14 +3,14 @@ import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-export const Languages = () => {
+export const CustomSection = () => {
 	let formFields = {
-			'languageId': 0,
-			'name': '',
-			'level': '',
+			'customSectionId': 0,
+			'sectionName': '',
+			'description': '',
 			'isVisible': true,
 			'id_curriculum': 0,
-			'formId': 'language',
+			'formId': 'custom_section',
 			'formMode': 0
 	};
 
@@ -18,12 +18,11 @@ export const Languages = () => {
 		<Formik
 		initialValues={formFields}
 		validationSchema={Yup.object({
-			name: Yup.string()
-					 .max(100)
-					 .required(),
-			level: Yup.string()
-					  .oneOf(["advanced","expert"], "Debe elegir un nivel.")
-					  .required()
+			sectionName: Yup.string()
+					 		.max(100)
+					 		.required(),
+			description: Yup.string()
+					 		.required()
 		})}
 		onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -32,8 +31,8 @@ export const Languages = () => {
         }, 400);
     	}}>
 		{({ values, isSubmitting }) => (
-			<Form id="language_section_form">
-				<legend className="mb-4">Idioma</legend>
+			<Form id="custom_section_section_form">
+				<legend className="mb-4">Sección propia</legend>
 				<fieldset>
 					{/*<input type="hidden" id="studyId" />
 					<input type="hidden" id="type" />*/}
@@ -52,22 +51,21 @@ export const Languages = () => {
 			        </Row>
 
 			        <Row>
-			            <Col md={6}>
+			            <Col>
 			                <div className="form-group">
-			                    <label>Idioma</label>
-			                    <Field id="name" name="name" className="form-control" placeholder="Ej: Español"></Field>
-			                    <ErrorMessage name="name" component="div" className="text-danger"></ErrorMessage>
+			                    <label>Nombre de la sección</label>
+			                    <Field id="section_name" name="sectionName" className="form-control" placeholder="Ej: Emprendimientos"></Field>
+			                    <ErrorMessage name="sectionName" component="div" className="text-danger"></ErrorMessage>
 			                </div>
 			            </Col>
-			            <Col md={6}>
+			        </Row>
+
+			        <Row>
+			            <Col>
 			                <div className="form-group">
-			                    <label>Nivel</label>
-			                    <Field as="select" id="level" name="level" className="custom-select">
-	                        		<option value="">Elegir nivel...</option>
-	                        		<option value="advanced">Avanzado</option>
-	                        		<option value="expert">Experto</option>
-	                        	</Field>
-	                            <ErrorMessage name="level" component="div" className="text-danger"></ErrorMessage>
+			                    <label>Descripción</label>
+			                    <Field as="textarea" id="description" name="description" rows="10" className="form-control" placeholder="Sin límite de caracteres..."></Field>
+			                    <ErrorMessage name="description" component="div" className="text-danger"></ErrorMessage>
 			                </div>
 			            </Col>
 			        </Row>

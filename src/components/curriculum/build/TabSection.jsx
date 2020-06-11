@@ -3,14 +3,14 @@ import { Card } from 'react-bootstrap';
 
 import {
 	PersonalDetail,
-	Studies,
-	WorkExperiences,
-	Certificates,
-	Languages,
-	Skills,
-	Interests,
-	PersonalReferences,
-	CustomSections
+	Study,
+	WorkExperience,
+	Certificate,
+	Language,
+	Skill,
+	Interest,
+	PersonalReference,
+	CustomSection
 } from './sections';
 
 class TabSection extends React.Component {
@@ -24,39 +24,39 @@ class TabSection extends React.Component {
         return (new URLSearchParams(window.location.search)).get('sectionName');
     }
 
-    renderSection(sectionId) {
+    renderSection(tabId) {
     	this.props.navigationButtonsDisplay();
-    	switch(sectionId) {
-    		case this.props.tabSections[0].id:
+    	switch(tabId) {
+    		case this.props.tabnames[0].id:
     			return <PersonalDetail></PersonalDetail>
-    		case this.props.tabSections[1].id:
+    		case this.props.tabnames[1].id:
     			return <React.Fragment>
-	    			   	<Studies></Studies>
-	    				<WorkExperiences></WorkExperiences>
-	    				<Certificates></Certificates>
+	    			   	<Study></Study>
+	    				<WorkExperience></WorkExperience>
+	    				<Certificate></Certificate>
 	    			   </React.Fragment>
-    		case this.props.tabSections[2].id:
+    		case this.props.tabnames[2].id:
     			return <React.Fragment>
-						<Languages></Languages>
-						<Skills></Skills>
-						<Interests></Interests>
-						<PersonalReferences></PersonalReferences>
+						<Language></Language>
+						<Skill></Skill>
+						<Interest></Interest>
+						<PersonalReference></PersonalReference>
     				   </React.Fragment>
-    		case this.props.tabSections[3].id:
-    			return <CustomSections></CustomSections>
+    		case this.props.tabnames[3].id:
+    			return <CustomSection></CustomSection>
     		default:
     			return <PersonalDetail></PersonalDetail>
     	}
     }
 	
 	render() {
-		//let sectionId = this.getSectionNameParameter();
-		let sectionId = this.props.sectionName;
+		//let tabId = this.getSectionNameParameter();
+		let tabId = this.props.tabname;
 
 		return (
-			<div id={sectionId} className="mb-4">
+			<div id={tabId} className="mb-4">
 	            <Card border="success" className="overflow-hidden">
-	                <Card.Body>{this.renderSection(sectionId)}</Card.Body>
+	                <Card.Body>{this.renderSection(tabId)}</Card.Body>
 	            </Card>
 	        </div>
 		);

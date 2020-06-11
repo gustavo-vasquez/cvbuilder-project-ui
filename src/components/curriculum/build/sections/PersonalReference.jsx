@@ -3,7 +3,7 @@ import { Row, Col, Button, InputGroup, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-export const PersonalReferences = () => {
+export const PersonalReference = () => {
 	let formFields = {
 			'personalReferenceId': 0,
 			'company': '',

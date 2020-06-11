@@ -3,7 +3,7 @@ import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-export const Interests = () => {
+export const Interest = () => {
 	let formFields = {
 			'interestId': 0,
 			'name': '',

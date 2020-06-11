@@ -116,9 +116,19 @@
 }
 
 .edit-block, .remove-block {
-	font-size: 17px;
-	padding-left: 0.8em;
-	padding-right: 0.8em;
+	font-size: 16px !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.close-block {
+  border: none;
+  background: transparent;
+  transition: all .5s;
+}
+
+.close-block:hover {
+  color: red;
 }
 
 .section-item-separator {
@@ -129,11 +139,12 @@
 }
 
 form[id$=_section_form] {
-  animation-name: slideDown;
-  animation-duration: 3.5s;
+  margin-bottom: 1.5rem;
+  animation-name: fadein;
+  animation-duration: 1s;
   animation-iteration-count: 1;
-  -webkit-animation-name: slideDown;
-  -webkit-animation-duration: 3.5s;
+  -webkit-animation-name: fadein;
+  -webkit-animation-duration: 1s;
   -webkit-animation-iteration-count: 1;
 }
 

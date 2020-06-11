@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, NavLink, Link } from 'react-router-dom';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
-import TabSection from './TabSection';
+import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 
 import '../../../assets/css/build-cv.css';
@@ -14,7 +14,7 @@ class Build extends React.Component {
         super(props);
 
         this.state = {
-            tabSections: [
+            tabnames: [
                 { id: "personal_details", text: "Detalles personales" },
                 { id: "studies_experiencies", text: "Estudios y experiencias" },
                 { id: "other_information", text: "Información adicional" },
@@ -70,22 +70,11 @@ class Build extends React.Component {
         
         timer = setTimeout(() => {
             let element = document.getElementById("navigation_buttons");
-            let navigationButtonsFixed = document.getElementById("navigation_buttons_fixed");
 
-            if(this.isElementInView(document.getElementById("navigation_buttons_wrapper"))) {
-                //element.classList.remove("navigation-buttons-fixed");
-                if(navigationButtonsFixed)
-                    navigationButtonsFixed.remove();
-            }
-            else {
-                //element.classList.add("navigation-buttons-fixed");
-                if(!navigationButtonsFixed) {
-                    let clone = element.cloneNode(true); // true means clone all childNodes and all event handlers
-                    clone.id = "navigation_buttons_fixed";
-                    clone.classList.add("navigation-buttons-fixed");
-                    document.getElementById("navigation_buttons_wrapper").appendChild(clone);
-                }
-            }
+            if(this.isElementInView(document.getElementById("navigation_buttons_wrapper")))
+                element.classList.remove("navigation-buttons-fixed");
+            else
+                element.classList.add("navigation-buttons-fixed");
         }, 150);
     }
 
@@ -94,43 +83,42 @@ class Build extends React.Component {
         let lastSlashIndex = pathname.lastIndexOf("/");
         let parameter = pathname.substring(lastSlashIndex + 1);
 
-        return parameter === "build" ? this.state.tabSections[0].id : parameter;
+        return parameter === "build" ? this.state.tabnames[0].id : parameter;
     }
 
     switchingTabs = (event) => {
         let parameter = this.getCurrentLocation();
-        let { tabSections } = this.state;
+        let { tabnames } = this.state;
         let pathUrl = "";
-
         
         if(event.target.classList.contains("next-page")) {
             switch(parameter) {
-                case tabSections[1].id:
-                    pathUrl = tabSections[2].id;
+                case tabnames[1].id:
+                    pathUrl = tabnames[2].id;
                     break;
-                case tabSections[2].id:
-                    pathUrl = tabSections[3].id;
+                case tabnames[2].id:
+                    pathUrl = tabnames[3].id;
                     break;
-                case tabSections[3].id:
+                case tabnames[3].id:
                     break;
-                case tabSections[0].id:
+                case tabnames[0].id:
                 default:
-                    pathUrl = tabSections[1].id;
+                    pathUrl = tabnames[1].id;
                     break;
             }
         }
         else if(event.target.classList.contains("previous-page")) {
             switch(parameter) {
-                case tabSections[1].id:
-                    pathUrl = tabSections[0].id;
+                case tabnames[1].id:
+                    pathUrl = tabnames[0].id;
                     break;
-                case tabSections[2].id:
-                    pathUrl = tabSections[1].id;
+                case tabnames[2].id:
+                    pathUrl = tabnames[1].id;
                     break;
-                case tabSections[3].id:
-                    pathUrl = tabSections[2].id;
+                case tabnames[3].id:
+                    pathUrl = tabnames[2].id;
                     break;
-                case tabSections[0].id:
+                case tabnames[0].id:
                 default:
                     break;
             }
@@ -145,8 +133,8 @@ class Build extends React.Component {
                 <Container>
                     <Row className="btn-group-row">
                         <ButtonGroup className="col tabs-group mb-3">
-                        {this.state.tabSections.map(tabSection =>
-                            <Button as={NavLink} to={`${this.props.url}/${tabSection.id}`} key={tabSection.id} variant="outline-default">{tabSection.text}</Button>
+                        {this.state.tabnames.map(name =>
+                            <Button as={NavLink} to={`${this.props.url}/${name.id}`} key={name.id} variant="outline-default">{name.text}</Button>
                         )}
                         </ButtonGroup>
                     </Row>
@@ -165,15 +153,15 @@ class Build extends React.Component {
                         </Col>
                         <Col md={9} className="cv-sections">
                             <Switch>
-                                <Route path={`${this.props.path}/:sectionName`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabSection>}></Route>
-                                <Route path={`${this.props.path}`} render={({match}) => <TabSection tabSections={this.state.tabSections} sectionName={match.params.sectionName} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabSection>}></Route>
+                                <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
+                                <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                             </Switch>
                             <div id="navigation_buttons_wrapper">
                                 <div id="navigation_buttons" className="text-center">
                                     <ButtonGroup>
-                                        <Button variant="default" className="previous-page" type="button" disabled={this.getCurrentLocation() === this.state.tabSections[0].id}><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
+                                        <Button variant="default" className="previous-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[0].id}><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
                                         <Link to="/curriculum/finished" className="btn btn-default"><i className="fas fa-save"></i> Visualizar CV</Link>
-                                        <Button variant="default" className="next-page" type="button" disabled={this.getCurrentLocation() === this.state.tabSections[3].id}>Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
+                                        <Button variant="default" className="next-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[3].id}>Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
                                     </ButtonGroup>
                                 </div>
                             </div>
