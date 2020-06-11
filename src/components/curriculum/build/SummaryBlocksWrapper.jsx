@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Row, Col, Button, Card } from 'react-bootstrap';
+
 import { SummaryBlock } from './SummaryBlock';
 import { Study, Certificate, WorkExperience } from './sections';
 
@@ -58,37 +60,37 @@ class SummaryBlocksWrapper extends React.Component {
 	render() {
 		return (
 			<div id={this.props.id}>
-                {this.props.sectionsPage.map(sectionPage =>
-                    <div className="card border-success overflow-hidden mb-3" key={sectionPage.id}>
-                        <section id={sectionPage.id} className="card-body">
-                            <h4>{sectionPage.title}</h4>
-                            <div className="row mb-4">
-                                <div className="col">
+                {this.props.sectionsInTab.map(sectionInTab =>
+                    <Card border="success" className="overflow-hidden mb-3" key={sectionInTab.id}>
+                        <section id={sectionInTab.id} className="card-body">
+                            <h4>{sectionInTab.title}</h4>
+                            <Row className="mb-4">
+                                <Col>
                                     <div className="custom-control custom-switch">
-                                        <input type="checkbox" id={`${sectionPage.id}_is_visible`} name={`${sectionPage.id}IsVisible`} className="custom-control-input toggle-section-visibility" defaultChecked={sectionPage.isVisible} />
-                                        <label className="custom-control-label" htmlFor={`${sectionPage.id}_is_visible`}>Visible</label>
+                                        <input type="checkbox" id={`${sectionInTab.id}_is_visible`} name={`${sectionInTab.id}IsVisible`} className="custom-control-input toggle-section-visibility" onChange={() => alert("hooooooooooola!")} defaultChecked={sectionInTab.isVisible} />
+                                        <label className="custom-control-label" htmlFor={`${sectionInTab.id}_is_visible`}>Visible</label>
                                     </div>
-                                </div>
-                            </div>
+                                </Col>
+                            </Row>
 
-                            <div className={sectionPage.isVisible ? "summary-block-wrapper" : "summary-block-wrapper section-not-visible"}>
-                                <div className="row">
-                                    <div className="col">
+                            <div className={sectionInTab.isVisible ? "summary-block-wrapper" : "summary-block-wrapper section-not-visible"}>
+                                <Row>
+                                    <Col>
                                         <div className="contracted-block-group">
-                                        {sectionPage.blocks.map(block =>
-                                            <SummaryBlock getForm={this.getForm} formId={sectionPage.formId} blockData={block} key={block.summaryId}></SummaryBlock>
+                                        {sectionInTab.blocks.map(block =>
+                                            <SummaryBlock getForm={this.getForm} formId={sectionInTab.formId} blockData={block} key={block.summaryId}></SummaryBlock>
                                         )}
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col text-center form-action">
-                                        <button type="button" className="btn btn-outline-secondary add-block" onClick={(event) => this.getForm(event, sectionPage.formId)}><i className="fas fa-plus"></i> Agregar un bloque</button>
-                                    </div>
-                                </div>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className="text-center mb-2">
+                                        <Button type="button" variant="outline-secondary" className="add-block" onClick={(event) => this.getForm(event, sectionInTab.formId)}><i className="fas fa-plus"></i> Agregar un bloque</Button>
+                                    </Col>
+                                </Row>
                             </div>
                         </section>
-                    </div>
+                    </Card>
                 )}
             </div>
 		);

@@ -1,5 +1,4 @@
 import React from 'react';
-//import { Link } from 'react-router-dom';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 
 class SummaryBlock extends React.Component {
@@ -12,7 +11,7 @@ class SummaryBlock extends React.Component {
 		}
 	
 		return (
-			<Card bg="light" border="secondary" className={this.props.blockData.isVisible ? "contracted-block mb-3" : "contracted-block mb-3 border-0"}>
+			<Card bg="light" border={this.props.blockData.isVisible && "secondary"} className="contracted-block mb-3">
 			    <Card.Body className="pt-2 pb-2">
 			        <Row>
 			            <Col>
