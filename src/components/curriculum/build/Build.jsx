@@ -34,7 +34,8 @@ class Build extends React.Component {
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
         window.addEventListener("scroll", this.navigationButtonsDisplay, false);
-        document.querySelector("#navigation_buttons_wrapper").addEventListener("click", event => this.switchingTabs(event), false);
+        document.querySelector(".previous-page").addEventListener("click", () => this.switchingTabs(true), false);
+        document.querySelector(".next-page").addEventListener("click", () => this.switchingTabs(), false);
         this.navigationButtonsDisplay();
     }
 
@@ -43,6 +44,8 @@ class Build extends React.Component {
         cvPreviewElement.removeEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.removeEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
         window.removeEventListener("scroll", this.navigationButtonsDisplay, false);
+        document.querySelector(".previous-page").removeEventListener("click", () => this.switchingTabs(true), false);
+        document.querySelector(".next-page").removeEventListener("click", () => this.switchingTabs(), false);
     }
 
     toggleChooseTemplateDialogButton(e) {
@@ -86,12 +89,12 @@ class Build extends React.Component {
         return parameter === "build" ? this.state.tabnames[0].id : parameter;
     }
 
-    switchingTabs = (event) => {
+    switchingTabs = (toBack) => {
         let parameter = this.getCurrentLocation();
         let { tabnames } = this.state;
         let pathUrl = "";
         
-        if(event.target.classList.contains("next-page")) {
+        if(!toBack) {
             switch(parameter) {
                 case tabnames[1].id:
                     pathUrl = tabnames[2].id;
@@ -107,7 +110,7 @@ class Build extends React.Component {
                     break;
             }
         }
-        else if(event.target.classList.contains("previous-page")) {
+        else {
             switch(parameter) {
                 case tabnames[1].id:
                     pathUrl = tabnames[0].id;
