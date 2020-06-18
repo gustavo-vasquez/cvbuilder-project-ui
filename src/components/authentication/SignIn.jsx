@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
@@ -7,6 +7,9 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
 const SignIn = (props) => {
+    useEffect(() => {
+      document.title = "Acceder - CVBuilder";
+    }, []);
     //render() {
     let location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };

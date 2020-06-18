@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+//import { Helmet } from 'react-helmet';
+
 import { Container, Row, Col, Image } from 'react-bootstrap';
 
 // estilos css de librerias
@@ -13,6 +15,10 @@ import googlePlayImage from '../../assets/img/google-play-badge.svg';
 import appleStoreImage from '../../assets/img/app-store-badge.svg';
 
 export const Main = () => {
+	useEffect(() => {
+	  document.title = "Inicio - CVBuilder";
+	}, []);
+
   return (
   	<div className="body-content">
   		<header id="landing_page" className="masthead">

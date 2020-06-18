@@ -226,6 +226,20 @@ section a:hover {
   left: unset !important;
 }
 
+.alert-wrapper {
+  position: fixed;
+  top: 4rem;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-name: notificationSlideDown;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  -webkit-animation-name: notificationSlideDown;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: 1;
+}
+
 @-webkit-keyframes rotate {
     from {-webkit-transform: rotate(0deg);}
     to {-webkit-transform: rotate(360deg);}
@@ -239,4 +253,52 @@ section a:hover {
 @keyframes rotate {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
+}
+
+@keyframes notificationSlideDown {
+  0% {
+    transform: translate(-50%,-100%);
+  }
+  14.28% {
+    transform: translate(-50%,0);
+  }
+  85.71% {
+    transform: translate(-50%,0);
+  }
+}
+
+@-webkit-keyframes notificationSlideDown {
+  0% {
+    transform: translate(-50%,-100%);
+  }
+  14.28% {
+    transform: translate(-50%,0);
+  }
+  85.71% {
+    transform: translate(-50%,0);
+  }
+}
+
+@keyframes notificationSlideUp {
+  0% {
+    transform: translate(-50%,0);
+  }
+  14.28% {
+    transform: translate(-50%,0);
+  }
+  85.71% {
+    transform: translate(-50%,-200%);
+  }
+}
+
+@-webkit-keyframes notificationSlideUp {
+  0% {
+    transform: translate(-50%,0);
+  }
+  14.28% {
+    transform: translate(-50%,0);
+  }
+  85.71% {
+    transform: translate(-50%,-200%);
+  }
 }

@@ -6,6 +6,7 @@ import { NavigationBar, Main, Footer } from './components/home';
 import { SignIn } from './components/authentication';
 import { Build } from './components/curriculum/build';
 import NotFound from './components/NotFound';
+import { authenticationHandler } from './components/helpers';
 
 // estilos css de librerias
 import './assets/lib/bootstrap/bootstrap.min.css';
@@ -20,8 +21,13 @@ class WebApp extends React.Component {
 		super(props);
 		this.userLogged = this.userLogged.bind(this);
 		this.state = {
+			currentUser: null,
 			loginData: null
 		}
+	}
+
+	componentDidMount() {
+		authenticationHandler.currentUser.subscribe(x => this.setState({ currentUser: x }));
 	}
 
 	userLogged(data) {
@@ -32,15 +38,15 @@ class WebApp extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<NavigationBar loginData={this.state.loginData}></NavigationBar>
+				<NavigationBar loginData={this.state.currentUser}></NavigationBar>
 				<Switch>
 					<Route path="/account/signin">
 						<SignIn userLogged={this.userLogged}></SignIn>
 					</Route>
-					<Route path="/curriculum/build" render={({match, history}) =>
+					<PrivateRoute path="/curriculum/build" loginData={this.state.currentUser} render={({match, history}) =>
 						<Build path={match.path} url={match.url} history={history}></Build>
 					}>
-					</Route>
+					</PrivateRoute>
 					<PrivateRoute path="/curriculum/finished">
 						<NotFound></NotFound>
 					</PrivateRoute>
@@ -63,8 +69,9 @@ export default WebApp;
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
 	return (
-		<Route {...rest} render={({ location }) =>
-	    	rest.loginData ? children : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
+		<Route {...rest} render={({ match, history, location }) =>
+			authenticationHandler.currentUserValue ? children || rest.render({match, history}) : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
+	    	//rest.loginData ? children || rest.render({match, history}) : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
 		}/>
 	);
 }

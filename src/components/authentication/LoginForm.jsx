@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 // componentes
 //import { authenticationHandler } from './handler';
+import { authenticationHandler } from '../helpers';
 import { Spinner } from '../Spinner';
 
 const LoginForm = (props) => {
@@ -22,12 +23,12 @@ const LoginForm = (props) => {
         })}
         onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-                //let result = authenticationHandler.login("username", "password");
                 //alert(JSON.stringify(values, null, 2));
-                let dateNow = new Date();
-                let formattedDate = dateNow.getDate() + "/" + (dateNow.getMonth() + 1) + "/" + dateNow.getFullYear() + " " + checkZero(dateNow.getHours()) + ":" + checkZero(dateNow.getMinutes()) + ":" + checkZero(dateNow.getSeconds());
-                var loginData = { email: 'cosme.fulanito@gmail.com', loginAt: formattedDate };
-                props.userLogged(loginData);
+                //let dateNow = new Date();
+                //let formattedDate = dateNow.getDate() + "/" + (dateNow.getMonth() + 1) + "/" + dateNow.getFullYear() + " " + checkZero(dateNow.getHours()) + ":" + checkZero(dateNow.getMinutes()) + ":" + checkZero(dateNow.getSeconds());
+                //var loginData = { email: 'cosme.fulanito@gmail.com', loginAt: formattedDate };
+                //props.userLogged(loginData);
+                authenticationHandler.login(values.loginEmail,values.loginPassword);
                 setSubmitting(false);
                 history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
             }, 400);

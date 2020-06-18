@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Navbar, Container, Button, Image, Dropdown } from 'react-bootstrap';
+
+import { authenticationHandler } from '../helpers';
 import NavBarLinks from './NavBarLinks';
 
 import cvbuilderIcon from '../../assets/img/cvbuilder_icon.png';
 
 class NavBar extends React.Component {
+    userLogout = () => {
+        authenticationHandler.logout();
+        this.props.history.replace("/");
+    }
+
 	render() {
         const { loginData } = this.props;
 
@@ -26,13 +33,13 @@ class NavBar extends React.Component {
                             <Dropdown.Menu alignRight={true}>
                                 <Dropdown.Item href="/" className="disabled">
                                     <span className="d-block">{loginData.email}</span>
-                                    <span className="d-block">{loginData.loginAt}</span>
+                                    <span className="d-block">{loginData.accessDate}</span>
                                 </Dropdown.Item>
                                 <Dropdown.Divider/>
                                 <Dropdown.Item as={Link} to="/curriculum/build"><i className="fas fa-marker"></i> Editar curriculum</Dropdown.Item>
                                 <Dropdown.Item as={Link} to="/curriculum/finished"><i className="fas fa-print"></i> Imprimir/guardar como PDF</Dropdown.Item>
                                 <Dropdown.Divider/>
-                                <Dropdown.Item href="/account/logoff"><i className="fas fa-sign-out-alt"></i> Salir</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={this.userLogout}><i className="fas fa-sign-out-alt"></i> Salir</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                         : <Button as={Link} to="/account/signin" variant="outline-default" size="sm" className="btn-myaccount">Acceder <i className="fas fa-sign-in-alt"></i></Button>}

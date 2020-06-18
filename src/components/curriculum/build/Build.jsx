@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch, Route, NavLink, Link } from 'react-router-dom';
+//import { Helmet } from 'react-helmet';
+
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
 import TabPages from './TabPages';
@@ -30,6 +32,7 @@ class Build extends React.Component {
     }
 
     componentDidMount() {
+        document.title = "Crea tu curriculum - CVBuilder";
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
