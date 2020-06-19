@@ -14,7 +14,7 @@ class NavBar extends React.Component {
     }
 
 	render() {
-        const { loginData } = this.props;
+        const { currentUser } = this.props;
 
 		return (
 			<Navbar expand="lg" id="mainNav" className="fixed-top navbar-shrink">
@@ -27,13 +27,13 @@ class NavBar extends React.Component {
 		                <hr />
 		                <NavBarLinks pathUrl={window.location.pathname}></NavBarLinks>
 		            </Navbar.Collapse>
-                        {loginData != null ?
+                        {currentUser != null ?
                         <Dropdown>
                             <Dropdown.Toggle variant="outline-default" size="sm" className="btn-myaccount" title="Haz clic para ver las opciones.">Mi cuenta</Dropdown.Toggle>
                             <Dropdown.Menu alignRight={true}>
                                 <Dropdown.Item href="/" className="disabled">
-                                    <span className="d-block">{loginData.email}</span>
-                                    <span className="d-block">{loginData.accessDate}</span>
+                                    <span className="d-block">{currentUser.email}</span>
+                                    <span className="d-block">{currentUser.accessDate}</span>
                                 </Dropdown.Item>
                                 <Dropdown.Divider/>
                                 <Dropdown.Item as={Link} to="/curriculum/build"><i className="fas fa-marker"></i> Editar curriculum</Dropdown.Item>
@@ -42,7 +42,7 @@ class NavBar extends React.Component {
                                 <Dropdown.Item as="button" onClick={this.userLogout}><i className="fas fa-sign-out-alt"></i> Salir</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        : <Button as={Link} to="/account/signin" variant="outline-default" size="sm" className="btn-myaccount">Acceder <i className="fas fa-sign-in-alt"></i></Button>}
+                        : <Button as={Link} to="/account/signin" onClick={(event) => window.location.pathname === "/account/signin" && event.preventDefault()} variant="outline-default" size="sm" className="btn-myaccount">Acceder <i className="fas fa-sign-in-alt"></i></Button>}
 		        </Container>
 		    </Navbar>
 		);

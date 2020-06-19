@@ -11,8 +11,7 @@ export const authenticationHandler = {
     logout,
     currentUser: currentUserSubject.asObservable(),
     get currentUserValue () { return currentUserSubject.value },
-    exchangeToken,
-    updateCurrentUserSubject
+    exchangeToken
 };
 
 function login(email, password) {

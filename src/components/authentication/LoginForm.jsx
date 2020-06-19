@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-//import { Alert } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -22,15 +22,18 @@ const LoginForm = (props) => {
                               .required('Campo obligatorio.')
         })}
         onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
+            setTimeout(async () => {
                 //alert(JSON.stringify(values, null, 2));
                 //let dateNow = new Date();
                 //let formattedDate = dateNow.getDate() + "/" + (dateNow.getMonth() + 1) + "/" + dateNow.getFullYear() + " " + checkZero(dateNow.getHours()) + ":" + checkZero(dateNow.getMinutes()) + ":" + checkZero(dateNow.getSeconds());
                 //var loginData = { email: 'cosme.fulanito@gmail.com', loginAt: formattedDate };
                 //props.userLogged(loginData);
-                authenticationHandler.login(values.loginEmail,values.loginPassword);
-                setSubmitting(false);
-                history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
+                var result = await authenticationHandler.login(values.loginEmail,values.loginPassword);
+
+                if(result) {
+                    setSubmitting(false);
+                    history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
+                }
             }, 400);
         }}>
         {({ isSubmitting }) => (
@@ -53,14 +56,14 @@ const LoginForm = (props) => {
                         </div>
                     </div>
                 </fieldset>
-                <div className="form-group row">
-                    <div className="col-lg-5">
-                        <button type="submit" className="btn btn-default" disabled={isSubmitting}><Spinner loading={isSubmitting} width="20"></Spinner> Ingresar</button>
-                    </div>
-                    <div className="col-lg-7 text-right">
+                <Row className="form-group">
+                    <Col md="5">
+                        <Button type="submit" variant="default" disabled={isSubmitting}><Spinner loading={isSubmitting} width="20"></Spinner> Ingresar</Button>
+                    </Col>
+                    <Col md="7" className="text-right">
                         <a href="/">¿Has olvidado tu contraseña?</a>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 {/*<Alert className="mb-0" variant="danger">Usuario y/o contraseña incorrecta.</Alert>*/}
             </Form>
         )}

@@ -38,12 +38,12 @@ class WebApp extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<NavigationBar loginData={this.state.currentUser}></NavigationBar>
+				<NavigationBar currentUser={this.state.currentUser}></NavigationBar>
 				<Switch>
 					<Route path="/account/signin">
-						<SignIn userLogged={this.userLogged}></SignIn>
+						<SignIn></SignIn>
 					</Route>
-					<PrivateRoute path="/curriculum/build" loginData={this.state.currentUser} render={({match, history}) =>
+					<PrivateRoute path="/curriculum/build" render={({match, history}) =>
 						<Build path={match.path} url={match.url} history={history}></Build>
 					}>
 					</PrivateRoute>

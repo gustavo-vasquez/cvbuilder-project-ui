@@ -22,7 +22,7 @@ const SignIn = (props) => {
                             <Card border="success" className="mb-3">
                                 <Card.Body>
                                     <Card.Title className="mb-4">Accede a tu cuenta.</Card.Title>
-                                    <LoginForm returnUrl={from} userLogged={props.userLogged}></LoginForm>
+                                    <LoginForm returnUrl={from}></LoginForm>
                                 </Card.Body>
                             </Card>
                             <Card border="success" className="mb-3">
