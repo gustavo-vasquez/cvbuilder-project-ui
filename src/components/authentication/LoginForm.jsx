@@ -34,6 +34,8 @@ const LoginForm = (props) => {
                     setSubmitting(false);
                     history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
                 }
+
+                setSubmitting(false);
             }, 400);
         }}>
         {({ isSubmitting }) => (
@@ -73,10 +75,10 @@ const LoginForm = (props) => {
 
 export default LoginForm;
 
-function checkZero(data) {
+/*function checkZero(data) {
     if(data < 10) {
         data = "0" + data;
     }
 
     return data;
-}
+}*/

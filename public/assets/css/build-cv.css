@@ -115,6 +115,13 @@
     top: 25%;
 }
 
+#block_context_menu {
+  left: 0;
+  top: 0;
+  display: block;
+  visibility: hidden;
+}
+
 .edit-block, .remove-block {
 	font-size: 16px !important;
   border: none !important;

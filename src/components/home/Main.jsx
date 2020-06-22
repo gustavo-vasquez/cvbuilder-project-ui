@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-//import { Helmet } from 'react-helmet';
-
+import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 
 // estilos css de librerias
-import '../../assets/device-mockups/device-mockups.css';
+//import '../../assets/device-mockups/device-mockups.css';
 
 // imágenes
-import classicTemplateImage from '../../assets/img/templates/classic.png';
+/*import classicTemplateImage from '../../assets/img/templates/classic.png';
 import elegantTemplateImage from '../../assets/img/templates/elegant.png';
 import modernTemplateImage from '../../assets/img/templates/modern.png';
 import googlePlayImage from '../../assets/img/google-play-badge.svg';
-import appleStoreImage from '../../assets/img/app-store-badge.svg';
+import appleStoreImage from '../../assets/img/app-store-badge.svg';*/
 
 export const Main = () => {
-	useEffect(() => {
+	/*useEffect(() => {
 	  document.title = "Inicio - CVBuilder";
-	}, []);
+	}, []);*/
 
   return (
   	<div className="body-content">
+  		<Helmet>
+  		<title>Inicio - CVBuilder</title>
+  			<link rel="stylesheet" type="text/css" href="/assets/device-mockups/device-mockups.css"/>
+  		</Helmet>
   		<header id="landing_page" className="masthead">
 		    <Container className="container-content h-100">
 		        <Row className="h-100">
@@ -35,7 +38,7 @@ export const Main = () => {
 		                    <div className="device-mockup ipad_air_2 portrait silver">
 		                        <div className="device">
 		                            <div className="screen">
-		                                <Image src={modernTemplateImage} alt="cv_example" fluid></Image>
+		                                <Image src="/assets/img/templates/modern.png" alt="cv_example" fluid></Image>
 		                            </div>
 		                            <a href="#templates" className="button" title="Ver todas las plantillas"> </a>
 		                        </div>
@@ -122,15 +125,15 @@ export const Main = () => {
 		        </Row>
 		        <Row className="available-templates">
 		            <Col md="4">
-		                <a href={classicTemplateImage} target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src={classicTemplateImage} alt="classic_template" fluid /></a>
+		                <a href="/assets/img/templates/classic.png" target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src="/assets/img/templates/classic.png" alt="classic_template" fluid/></a>
 		                <p className="template-name">Classic</p>
 		            </Col>
 		            <Col md="4">
-		                <a href={elegantTemplateImage} target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src={elegantTemplateImage} alt="elegant_template" fluid /></a>
+		                <a href="/assets/img/templates/elegant.png" target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src="/assets/img/templates/elegant.png" alt="elegant_template" fluid/></a>
 		                <p className="template-name">Elegant</p>
 		            </Col>
 		            <Col md="4">
-		                <a href={modernTemplateImage} target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src={modernTemplateImage} alt="modern_template" fluid /></a>
+		                <a href="/assets/img/templates/modern.png" target="_blank" rel="noopener noreferrer" title="Ver en detalle"><Image src="/assets/img/templates/modern.png" alt="modern_template" fluid/></a>
 		                <p className="template-name">Modern</p>
 		            </Col>
 		        </Row>
@@ -194,8 +197,8 @@ export const Main = () => {
 		                <h2 className="section-heading">¡Descubre una manera eficiente de elaborar curriculum profesionales!</h2>
 		                <p>¡Nuestra aplicación está disponible para cualquier dispositivo móvil! ¡Descárgalo ahora para comenzar!</p>
 		                <div className="badges">
-		                    <a className="badge-link" href={googlePlayImage} target="_blank" rel="noopener noreferrer"><Image src={googlePlayImage} alt="google_play_link" /></a>
-		                    <a className="badge-link" href={appleStoreImage} target="_blank" rel="noopener noreferrer"><Image src={appleStoreImage} alt="app_store_link" /></a>
+		                    <a className="badge-link" href="/assets/img/google-play-badge.svg" target="_blank" rel="noopener noreferrer"><Image src="/assets/img/google-play-badge.svg" alt="google_play_link" /></a>
+		                    <a className="badge-link" href="/assets/img/app-store-badge.svg" target="_blank" rel="noopener noreferrer"><Image src="/assets/img/app-store-badge.svg" alt="app_store_link" /></a>
 		                </div>
 		            </Col>
 		        </Row>

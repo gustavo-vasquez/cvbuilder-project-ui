@@ -155,13 +155,13 @@ header.masthead .container-content {
 	min-height: 100vh;
 }
 
-section a {
+section a:not('.dropdown-item') {
 	color: #3aab03;
   border-radius: 4px;
   padding: 0 0.125rem;
 }
 
-section a:hover {
+section a:hover:not('.dropdown-item') {
 	color: white;
 	text-decoration: none;
 	background-color: #3aab03;

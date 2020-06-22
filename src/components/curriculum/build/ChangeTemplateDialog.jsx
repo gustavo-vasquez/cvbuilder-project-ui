@@ -1,10 +1,16 @@
 import React from 'react';
 import { Modal, Button, Image } from 'react-bootstrap';
 
-const templates = [
+/*const templates = [
 			require('../../../assets/img/templates/classic.png'),
 			require('../../../assets/img/templates/elegant.png'),
 			require('../../../assets/img/templates/modern.png')
+		];*/
+
+const templates = [
+			"/assets/img/templates/classic.png",
+			"/assets/img/templates/elegant.png",
+			"/assets/img/templates/modern.png"
 		];
 
 class ChangeTemplateDialog extends React.Component {
@@ -14,11 +20,9 @@ class ChangeTemplateDialog extends React.Component {
 		this.state = {
 			activeTemplate: 0
 		}
-
-		this.slideTo = this.slideTo.bind(this);
 	}
 
-	slideTo(direction) {
+	slideTo = (direction) => {
 		let currentTemplate = this.state.activeTemplate;
 
 		switch(direction) {

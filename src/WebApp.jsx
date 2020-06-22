@@ -9,12 +9,12 @@ import NotFound from './components/NotFound';
 import { authenticationHandler } from './components/helpers';
 
 // estilos css de librerias
-import './assets/lib/bootstrap/bootstrap.min.css';
-import './assets/lib/fontawesome-free/css/all.min.css';
+//import './assets/lib/bootstrap/bootstrap.min.css';
+//import './assets/lib/fontawesome-free/css/all.min.css';
 
 // estilos propios
-import './assets/css/new-age.css';
-import './assets/css/site.css';
+//import './assets/css/new-age.css';
+//import './assets/css/site.css';
 
 class WebApp extends React.Component {
 	constructor(props) {
@@ -43,10 +43,13 @@ class WebApp extends React.Component {
 					<Route path="/account/signin">
 						<SignIn></SignIn>
 					</Route>
-					<PrivateRoute path="/curriculum/build" render={({match, history}) =>
+					<Route path="/curriculum/build" render={({match, history}) =>
+						<Build path={match.path} url={match.url} history={history}></Build>
+					}/>
+					{/*<PrivateRoute path="/curriculum/build" render={({match, history}) =>
 						<Build path={match.path} url={match.url} history={history}></Build>
 					}>
-					</PrivateRoute>
+					</PrivateRoute>*/}
 					<PrivateRoute path="/curriculum/finished">
 						<NotFound></NotFound>
 					</PrivateRoute>

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Switch, Route, NavLink, Link } from 'react-router-dom';
-//import { Helmet } from 'react-helmet';
-
+import { Helmet } from 'react-helmet';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 
-import '../../../assets/css/build-cv.css';
+//import '../../../assets/css/build-cv.css';
 
 var timer = null;
 
@@ -32,7 +31,6 @@ class Build extends React.Component {
     }
 
     componentDidMount() {
-        document.title = "Crea tu curriculum - CVBuilder";
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
@@ -136,6 +134,10 @@ class Build extends React.Component {
     render() {
         return (
             <section id="building_cv">
+                <Helmet>
+                    <title>Crea tu curriculum - CVBuilder</title>
+                    <link rel="stylesheet" type="text/css" href="/assets/css/build-cv.css"/>
+                </Helmet>
                 <Container>
                     <Row className="btn-group-row">
                         <ButtonGroup className="col tabs-group mb-3">
@@ -147,7 +149,7 @@ class Build extends React.Component {
                     <Row className="flex-column-reverse flex-lg-row">
                         <Col md={3}>
                             <Card border="success" className="cv-preview mb-3">
-                                <Image src={require('../../../assets/img/templates/classic.png')} alt="active_template" fluid />
+                                <Image src="/assets/img/templates/classic.png" alt="active_template" fluid />
                                 <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={this.handleChangeTemplateDialog} data-target="#template_wizard">Cambiar plantilla</Button>
                             </Card>
                             <Card border="success" className="mb-3">

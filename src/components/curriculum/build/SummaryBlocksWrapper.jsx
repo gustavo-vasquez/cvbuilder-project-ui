@@ -13,23 +13,42 @@ class SummaryBlocksWrapper extends React.Component {
             forms: ['study_section_form','certificate_section_form','work_experience_section_form'],
             activeForm: '',
             editMode: 0,
-            dummy: ''
+            dummy: '',
+            showContextMenu: false,
+            activeFormId: '',
+            eventElement: ''
         }
     }
 
     componentDidMount() {
         document.addEventListener("keydown", (event) => event.keyCode === 27 && this.closeForm(), false);
+        document.addEventListener('click', this.hideBlockContextMenu, false);
     }
 
     componentWillUnmount() {
         document.removeEventListener("keydown", (event) => event.keyCode === 27 && this.closeForm(), false);
+        document.removeEventListener('click', this.hideBlockContextMenu, false);
     }
 
-    getForm = (event, formId, dummy, mode) => {
+    getForm = (event, mode, formId, dummy) => {
         this.closeForm();
         const wrapper = document.createElement("div");
         wrapper.id = Date.now();
-        this.findAncestor(event.target, "card-body").appendChild(wrapper);
+        let ancestor;
+
+        switch(mode) {
+            case 0:
+                ancestor = this.findAncestorByClass(event.target, "summary-block-wrapper");
+                break;
+            case 1:
+                ancestor = this.findAncestorByClass(event.target, "card-body");
+                break;
+            default:
+                break;
+        }
+
+        if(ancestor)
+            ancestor.appendChild(wrapper);
 
         switch(formId) {
             case this.state.forms[0]:
@@ -52,9 +71,19 @@ class SummaryBlocksWrapper extends React.Component {
             lastActiveForm.remove();
     }
 
-    findAncestor = (element, className) => {
+    findAncestorByClass = (element, className) => {
         while ((element = element.parentElement) && !element.classList.contains(className));
         return element;
+    }
+
+    showBlockContextMenu = (eventElement, formId) => {
+        this.setState({ showContextMenu: true, activeFormId: formId, eventElement: eventElement });
+    }
+
+    hideBlockContextMenu = (event) => {
+        const blockContextMenu = document.getElementById('block_context_menu');
+        if(!blockContextMenu.contains(event.target))
+            this.setState({ showContextMenu: false });
     }
 
 	render() {
@@ -62,7 +91,7 @@ class SummaryBlocksWrapper extends React.Component {
 			<div id={this.props.id}>
                 {this.props.sectionsInTab.map(sectionInTab =>
                     <Card border="success" className="overflow-hidden mb-3" key={sectionInTab.id}>
-                        <section id={sectionInTab.id} className="card-body">
+                        <section id={sectionInTab.id} className="card-body hola">
                             <h4>{sectionInTab.title}</h4>
                             <Row className="mb-4">
                                 <Col>
@@ -78,20 +107,25 @@ class SummaryBlocksWrapper extends React.Component {
                                     <Col>
                                         <div className="contracted-block-group">
                                         {sectionInTab.blocks.map(block =>
-                                            <SummaryBlock getForm={this.getForm} formId={sectionInTab.formId} blockData={block} key={block.summaryId}></SummaryBlock>
+                                            <SummaryBlock getForm={this.getForm} formId={sectionInTab.formId} blockData={block} key={block.summaryId} showBlockContextMenu={this.showBlockContextMenu}></SummaryBlock>
                                         )}
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col className="text-center mb-2">
-                                        <Button type="button" variant="outline-secondary" className="add-block" onClick={(event) => this.getForm(event, sectionInTab.formId)}><i className="fas fa-plus"></i> Agregar un bloque</Button>
+                                        <Button type="button" variant="outline-secondary" className="add-block" onClick={(event) => this.getForm(event, 0, sectionInTab.formId)}><i className="fas fa-plus"></i> Agregar un bloque</Button>
                                     </Col>
                                 </Row>
                             </div>
                         </section>
                     </Card>
                 )}
+                <div id="block_context_menu" className={this.state.showContextMenu ? "dropdown-menu visible": "dropdown-menu"}>
+                    <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.getForm(this.state.eventElement, 0, this.state.activeFormId)}}>Agregar nuevo bloque</button>
+                    <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.getForm(this.state.eventElement, 1, this.state.activeFormId, "looool")}}>Editar bloque</button>
+                    <button className="dropdown-item">Eliminar bloque</button>
+                </div>
             </div>
 		);
 	}

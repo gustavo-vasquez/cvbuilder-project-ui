@@ -5,7 +5,7 @@ import { Navbar, Container, Button, Image, Dropdown } from 'react-bootstrap';
 import { authenticationHandler } from '../helpers';
 import NavBarLinks from './NavBarLinks';
 
-import cvbuilderIcon from '../../assets/img/cvbuilder_icon.png';
+//import cvbuilderIcon from '../../assets/img/cvbuilder_icon.png';
 
 class NavBar extends React.Component {
     userLogout = () => {
@@ -19,9 +19,9 @@ class NavBar extends React.Component {
 		return (
 			<Navbar expand="lg" id="mainNav" className="fixed-top navbar-shrink">
 		        <Container className="justify-content-center">
-		            <Navbar.Brand as={Link} to="/" title="Ir a página principal"><Image src={cvbuilderIcon} width="24"></Image> CVBuilder</Navbar.Brand>
+		            <Navbar.Brand as={Link} to="/" title="Ir a página principal"><Image src="/assets/img/cvbuilder_icon.png" width="24"></Image> CVBuilder</Navbar.Brand>
 		            <Navbar.Toggle className="navbar-toggler-right" aria-controls="navbarResponsive">
-		                <Navbar.Brand className="align-middle"><Image src={cvbuilderIcon} width="24"></Image> CVBuilder <i className="fas fa-caret-down"></i></Navbar.Brand>
+		                <Navbar.Brand className="align-middle"><Image src="/assets/img/cvbuilder_icon.png" width="24"></Image> CVBuilder <i className="fas fa-caret-down"></i></Navbar.Brand>
 		            </Navbar.Toggle>
 		            <Navbar.Collapse id="navbarResponsive">
 		                <hr />
