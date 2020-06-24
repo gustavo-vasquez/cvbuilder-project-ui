@@ -4,7 +4,7 @@ export const alertNotifications = {
 }
 
 function success(message) {
-	alert(message, "alert-success");
+	alert(message, "alert-success", "#28a745");
 }
 
 function error(message) {

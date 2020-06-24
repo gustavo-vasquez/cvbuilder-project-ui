@@ -12,6 +12,8 @@ body {
 
 body {
   font-family: 'Oxygen', 'Muli', 'Helvetica', 'Arial', 'sans-serif';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -21,9 +23,9 @@ a {
   transition: all .35s;
 }
 
-a:hover, a:focus {
+/*a:hover, a:focus {
   color: #50e056;
-}
+}*/
 
 .navbar-brand {
   position: relative;

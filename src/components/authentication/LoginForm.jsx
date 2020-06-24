@@ -5,7 +5,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 // componentes
-//import { authenticationHandler } from './handler';
 import { authenticationHandler } from '../helpers';
 import { Spinner } from '../Spinner';
 
@@ -29,13 +28,10 @@ const LoginForm = (props) => {
                 //var loginData = { email: 'cosme.fulanito@gmail.com', loginAt: formattedDate };
                 //props.userLogged(loginData);
                 var result = await authenticationHandler.login(values.loginEmail,values.loginPassword);
-
-                if(result) {
-                    setSubmitting(false);
-                    history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
-                }
-
                 setSubmitting(false);
+
+                if(result)
+                    history.replace(props.returnUrl.pathname); // al tocar atrás en el navegador no vuelve a la página de login.
             }, 400);
         }}>
         {({ isSubmitting }) => (
@@ -60,13 +56,14 @@ const LoginForm = (props) => {
                 </fieldset>
                 <Row className="form-group">
                     <Col md="5">
-                        <Button type="submit" variant="default" disabled={isSubmitting}><Spinner loading={isSubmitting} width="20"></Spinner> Ingresar</Button>
+                        <Button type="submit" variant="default" disabled={isSubmitting}>Ingresar</Button>
                     </Col>
                     <Col md="7" className="text-right">
                         <a href="/">¿Has olvidado tu contraseña?</a>
                     </Col>
                 </Row>
                 {/*<Alert className="mb-0" variant="danger">Usuario y/o contraseña incorrecta.</Alert>*/}
+                <Spinner loading={isSubmitting}></Spinner>
             </Form>
         )}
         </Formik>

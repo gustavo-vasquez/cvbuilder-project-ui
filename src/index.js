@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
-import './index.css';
 import WebApp from './WebApp';
 import * as serviceWorker from './serviceWorker';
 import ScrollToTop from './components/ScrollToTop';

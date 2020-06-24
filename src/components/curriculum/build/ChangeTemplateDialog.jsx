@@ -1,11 +1,7 @@
 import React from 'react';
 import { Modal, Button, Image } from 'react-bootstrap';
 
-/*const templates = [
-			require('../../../assets/img/templates/classic.png'),
-			require('../../../assets/img/templates/elegant.png'),
-			require('../../../assets/img/templates/modern.png')
-		];*/
+import { handleResponse, authorizationHeader, alertNotifications } from '../../helpers';
 
 const templates = [
 			"/assets/img/templates/classic.png",
@@ -42,6 +38,21 @@ class ChangeTemplateDialog extends React.Component {
 		}
 	}
 
+	changeTemplate = async (templatePathUrl) => {
+		const requestOptions = {
+			method: "PUT",
+			headers: {...authorizationHeader(), "Content-type": "application/json"},
+        	body: JSON.stringify(templatePathUrl)
+		}
+
+		await fetch("https://localhost:5001/api/curriculum/template", requestOptions)
+		.then(handleResponse)
+		.then(successMessage => alertNotifications.success(successMessage.message))
+		.catch(errorMessage => alertNotifications.error(errorMessage));
+
+		this.props.toggleDisplay();
+	}
+
 	render() {
 		return (
 			<Modal className="text-center" id="template_wizard" show={this.props.visible} onHide={this.props.toggleDisplay}>
@@ -52,10 +63,10 @@ class ChangeTemplateDialog extends React.Component {
 		            <Modal.Body>
 		                <Button variant="default" className="btn-wizard-arrow" onClick={() => this.slideTo('back')} title="Anterior"><i className="fas fa-angle-left"></i></Button>
 		                <Button variant="default" className="btn-wizard-arrow" onClick={() => this.slideTo('next')} title="Siguiente"><i className="fas fa-angle-right"></i></Button>
-		                <Image className="cv-preview-img" src={templates[this.state.activeTemplate]} alt="available_templates" fluid/>
+		                <Image className="cv-preview-img" src={templates[this.state.activeTemplate]} alt="available_template" fluid/>
 		            </Modal.Body>
 		            <Modal.Footer>
-		                <Button variant="default" id="changeTemplate" type="button" onClick={() => alert("Elegiste: " + templates[this.state.activeTemplate])} block>Elegir</Button>
+		                <Button variant="default" id="changeTemplate" type="button" onClick={() => this.changeTemplate(templates[this.state.activeTemplate])} block>Elegir</Button>
 		            </Modal.Footer>
 		        </div>
 			</Modal>

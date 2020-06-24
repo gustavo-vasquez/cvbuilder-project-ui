@@ -67,10 +67,11 @@ const RegisterForm = (props) => {
                 </fieldset>
                 <div className="form-group row">
                     <div className="col-lg-6">
-                        <button type="submit" className="btn btn-default" disabled={isSubmitting}><Spinner loading={isSubmitting} width="20"></Spinner> Registrarse</button>
+                        <button type="submit" className="btn btn-default" disabled={isSubmitting}>Registrarse</button>
                     </div>
                 </div>
                 {/*<Alert className="mb-0" variant="danger">Usuario y/o contraseña incorrecta.</Alert>*/}
+                <Spinner loading={isSubmitting}></Spinner>
             </Form>
         )}
         </Formik>

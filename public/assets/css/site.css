@@ -155,16 +155,16 @@ header.masthead .container-content {
 	min-height: 100vh;
 }
 
-section a:not('.dropdown-item') {
-	color: #3aab03;
+section a {
+	/*color: #3aab03;*/
   border-radius: 4px;
   padding: 0 0.125rem;
 }
 
-section a:hover:not('.dropdown-item') {
+section a:hover {
 	color: white;
 	text-decoration: none;
-	background-color: #3aab03;
+	background-color: #3aab03 !important;
 }
 
 ::-moz-selection { /* Code for Firefox */
@@ -199,9 +199,34 @@ section a:hover:not('.dropdown-item') {
 
 
 /* spinner svg */
-#svg-spinner {
-  position: absolute;
-  left: 50%;
+#spinner_loading_wrapper {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    font-family: 'IBM Plex Sans';
+    animation-name: fadein;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    -webkit-animation-name: fadein;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+}
+
+.spinner {
+  position: relative;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  top: 47%;
+}
+
+.spinner > svg {
+  /*position: absolute;
+  left: 50%;*/
   -webkit-transition-property: -webkit-transform;
   -webkit-transition-duration: 1.2s;
   -webkit-animation-name: rotate;
@@ -229,6 +254,7 @@ section a:hover:not('.dropdown-item') {
 .alert-wrapper {
   position: fixed;
   top: 4rem;
+  text-align: center;
   z-index: 1;
   left: 50%;
   transform: translateX(-50%);

@@ -6,8 +6,6 @@ import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-boo
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 
-//import '../../../assets/css/build-cv.css';
-
 var timer = null;
 
 class Build extends React.Component {

@@ -5,8 +5,6 @@ import { Navbar, Container, Button, Image, Dropdown } from 'react-bootstrap';
 import { authenticationHandler } from '../helpers';
 import NavBarLinks from './NavBarLinks';
 
-//import cvbuilderIcon from '../../assets/img/cvbuilder_icon.png';
-
 class NavBar extends React.Component {
     userLogout = () => {
         authenticationHandler.logout();

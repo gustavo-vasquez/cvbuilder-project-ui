@@ -9,16 +9,17 @@ export const handleResponse = response => {
         if (!response.ok) {
             if ([401, 403].indexOf(response.status) !== -1) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                const currentUser = authenticationHandler.currentUserValue;
+                let currentUser = authenticationHandler.currentUserValue;
+
                 if(currentUser)
-                    authenticationHandler.exchangeToken(currentUser.token, currentUser.exchangeToken, true);
+                    authenticationHandler.exchangeToken(currentUser.token, currentUser.refreshToken, true);
 
                 console.log("Debería ir a la pantalla de login.");
                 /*authenticationHandler.logout();
                 return <Redirect to="/account/signin"></Redirect>*/
             }
 
-            const error = (data && data.message) || response.statusText;
+            const error = (data && data.message) || data.title || response.statusText;
             return Promise.reject(error);
         }
 
