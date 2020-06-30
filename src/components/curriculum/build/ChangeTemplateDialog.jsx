@@ -3,11 +3,7 @@ import { Modal, Button, Image } from 'react-bootstrap';
 
 import { handleResponse, authorizationHeader, alertNotifications } from '../../helpers';
 
-const templates = [
-			"/assets/img/templates/classic.png",
-			"/assets/img/templates/elegant.png",
-			"/assets/img/templates/modern.png"
-		];
+const templates = ["/assets/img/templates/classic.png","/assets/img/templates/elegant.png","/assets/img/templates/modern.png"];
 
 class ChangeTemplateDialog extends React.Component {
 	constructor(props) {
@@ -17,6 +13,11 @@ class ChangeTemplateDialog extends React.Component {
 			activeTemplate: 0
 		}
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if(prevProps.templatePath !== this.props.templatePath)
+	 		this.setState({activeTemplate: templates.indexOf(this.props.templatePath)});
+ 	}
 
 	slideTo = (direction) => {
 		let currentTemplate = this.state.activeTemplate;
@@ -47,10 +48,19 @@ class ChangeTemplateDialog extends React.Component {
 
 		await fetch("https://localhost:5001/api/curriculum/template", requestOptions)
 		.then(handleResponse)
-		.then(successMessage => alertNotifications.success(successMessage.message))
-		.catch(errorMessage => alertNotifications.error(errorMessage));
-
-		this.props.toggleDisplay();
+		.then(success => {
+			if(success.updatedToken)
+				this.changeTemplate(templatePathUrl);
+			else {
+				alertNotifications.success(success.message);
+				this.props.toggleDisplay(templatePathUrl);
+			}
+		})
+		.catch(error => {
+			if(error)
+				alertNotifications.error(error || error.message);
+			this.props.toggleDisplay();
+		});
 	}
 
 	render() {

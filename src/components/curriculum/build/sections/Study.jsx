@@ -57,7 +57,7 @@ class Study extends React.Component {
 	    	}}>
 			{({ values, isSubmitting }) => (
 				<Form id={this.props.formId}>
-					<div className="text-center py-2"><i class="fas fa-chevron-down"></i></div>
+					<div className="text-center py-2"><i className="fas fa-chevron-down"></i></div>
 					<legend className="text-center">Estudio académico</legend>
 					<fieldset>
 						{/*<input type="hidden" id="studyId" />

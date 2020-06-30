@@ -110,9 +110,9 @@
 }
 
 .contracted-block h5 {
-    font-size: 17px;
+  font-size: 17px;
 	position: relative;
-    top: 25%;
+  top: 20%;
 }
 
 #block_context_menu {

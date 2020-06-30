@@ -164,7 +164,7 @@ section a {
 section a:hover {
 	color: white;
 	text-decoration: none;
-	background-color: #3aab03 !important;
+	background-color: #3aab03;
 }
 
 ::-moz-selection { /* Code for Firefox */
@@ -216,7 +216,7 @@ section a:hover {
     -webkit-animation-iteration-count: 1;
 }
 
-.spinner {
+#spinner {
   position: relative;
   text-align: center;
   color: white;
@@ -224,7 +224,7 @@ section a:hover {
   top: 47%;
 }
 
-.spinner > svg {
+#spinner > svg {
   /*position: absolute;
   left: 50%;*/
   -webkit-transition-property: -webkit-transform;

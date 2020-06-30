@@ -94,14 +94,14 @@ a {
     transition: none;
 }
 
-.dropdown-item {
+/*.dropdown-item {
     animation-name: slideUp;
   	animation-duration: 2s;
   	animation-iteration-count: 1;
   	-webkit-animation-name: slideUp;
   	-webkit-animation-duration: 2s;
   	-webkit-animation-iteration-count: 1;
-}
+}*/
 
 .dropdown-item:not(:hover):not(:focus) > i {
     color: #169461;

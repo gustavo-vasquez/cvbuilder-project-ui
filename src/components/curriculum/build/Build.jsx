@@ -3,6 +3,7 @@ import { Switch, Route, NavLink, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
+import { authorizationHeader, alertNotifications } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 
@@ -19,16 +20,18 @@ class Build extends React.Component {
                 { id: "other_information", text: "Información adicional" },
                 { id: "own_sections", text: "Secciones personalizadas" }
             ],
-            showChangeTemplateDialog: false
+            showChangeTemplateDialog: false,
+            curriculumData: {}
         }
 
-        this.handleChangeTemplateDialog = this.handleChangeTemplateDialog.bind(this);
+        //this.handleChangeTemplateDialog = this.handleChangeTemplateDialog.bind(this);
         this.toggleChooseTemplateDialogButton = this.toggleChooseTemplateDialogButton.bind(this);
         this.navigationButtonsDisplay = this.navigationButtonsDisplay.bind(this);
         this.isElementInView = this.isElementInView.bind(this);
     }
 
     componentDidMount() {
+        this.getCurriculumData();
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
@@ -47,13 +50,39 @@ class Build extends React.Component {
         document.querySelector(".next-page").removeEventListener("click", () => this.switchingTabs(), false);
     }
 
+    getCurriculumData = async () => {
+        const requestOptions = {
+            method: "GET",
+            headers: authorizationHeader()
+        }
+
+        await fetch("https://localhost:5001/api/curriculum", requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            if(data.updatedToken) {
+                this.getCurriculumContent();
+            }
+            else {
+                this.setState({curriculumData: data});
+            }
+        })
+        .catch(error => {
+            if(error)
+                alertNotifications.error(error || error.message);
+        });
+    }
+
     toggleChooseTemplateDialogButton(e) {
         let button = e.target.querySelector("#choose_template");
         button.classList.contains("invisible") ? button.classList.remove("invisible") : button.classList.add("invisible");
     }
 
-    handleChangeTemplateDialog() {
-        this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog }));
+    handleChangeTemplateDialog = (newTemplatePathUrl) => {
+        if(newTemplatePathUrl) {
+            this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog, curriculumData: { ...prevState.curriculumData, templatePath: newTemplatePathUrl } }));
+        }
+        else
+            this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog }));
     }
 
     isElementInView(element) {
@@ -129,7 +158,7 @@ class Build extends React.Component {
         return this.props.history.push(`${this.props.path}/${pathUrl}`);
     }
 
-    render() {
+    render() {//console.log(this.state.curriculumData);
         return (
             <section id="building_cv">
                 <Helmet>
@@ -147,8 +176,8 @@ class Build extends React.Component {
                     <Row className="flex-column-reverse flex-lg-row">
                         <Col md={3}>
                             <Card border="success" className="cv-preview mb-3">
-                                <Image src="/assets/img/templates/classic.png" alt="active_template" fluid />
-                                <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={this.handleChangeTemplateDialog} data-target="#template_wizard">Cambiar plantilla</Button>
+                                <Image src={this.state.curriculumData.templatePath} alt="active_template" fluid />
+                                <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
                             </Card>
                             <Card border="success" className="mb-3">
                                 <Card.Body>
@@ -159,8 +188,8 @@ class Build extends React.Component {
                         </Col>
                         <Col md={9} className="cv-sections">
                             <Switch>
-                                <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
-                                <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
+                                <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumContent={this.state.curriculumContent} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
+                                <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumContent={this.state.curriculumContent} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                             </Switch>
                             <div id="navigation_buttons_wrapper">
                                 <div id="navigation_buttons" className="text-center">
@@ -174,7 +203,7 @@ class Build extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-                <ChangeTemplateDialog toggleDisplay={this.handleChangeTemplateDialog} visible={this.state.showChangeTemplateDialog}></ChangeTemplateDialog>
+                <ChangeTemplateDialog templatePath={this.state.curriculumData.templatePath} toggleDisplay={this.handleChangeTemplateDialog} visible={this.state.showChangeTemplateDialog}></ChangeTemplateDialog>
             </section>
         );
     }

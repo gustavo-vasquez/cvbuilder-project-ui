@@ -4,7 +4,7 @@ export const Spinner = (props) => {
     return (
         props.loading ?
         <div id="spinner_loading_wrapper">
-          <div className="spinner">
+          <div id="spinner">
             <svg xmlns="http://www.w3.org/2000/svg" width={props.width ? props.width : 48} viewBox="0 0 48 48">
               <circle cx="24" cy="4" r="4" fill="#fff"/>
               <circle cx="12.19" cy="7.86" r="3.7" fill="#fffbf2"/>
@@ -16,7 +16,7 @@ export const Spinner = (props) => {
               <circle cx="42.98" cy="30.32" r="1.9" fill="#fde3a1"/>
               <circle cx="42.98" cy="17.68" r="1.6" fill="#fddf94"/>
               <circle cx="35.81" cy="7.86" r="1.3" fill="#fcdb86"/>
-            </svg> Procesando...
+            </svg> Espere un momento...
           </div>
         </div> : null
     );

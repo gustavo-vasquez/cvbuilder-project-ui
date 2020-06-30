@@ -50,7 +50,7 @@ const LoginForm = (props) => {
                     <div className="form-group">
                         <div className="custom-control custom-checkbox">
                             <input type="checkbox" id="login_remember_me" className="custom-control-input"/>
-                            <label className="custom-control-label" htmlFor="login_remember_me">Recordarme</label>
+                            <label className="custom-control-label" htmlFor="login_remember_me">Mantener conectado</label>
                         </div>
                     </div>
                 </fieldset>

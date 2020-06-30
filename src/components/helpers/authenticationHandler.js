@@ -4,7 +4,7 @@ import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(getValidUserData());
-console.log(currentUserSubject);
+//console.log(currentUserSubject);
 
 export const authenticationHandler = {
     login,
@@ -49,14 +49,15 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
             storedUser.token = newTokens.token;
             storedUser.refreshToken = newTokens.refreshToken;
             localStorage[CURRENT_USER_STORAGE_KEY] = JSON.stringify(storedUser);
-            console.log(storedUser);
 
-            if(updateUserSubject)
-                currentUserSubject.next(JSON.stringify(storedUser));
+            if(updateUserSubject) {
+                currentUserSubject.next(storedUser);
+                return true;
+            }
             else
                 return JSON.stringify(storedUser);
         })
-        .catch(errorMessage => { alertNotifications.error(errorMessage); logout(); });
+        .catch(errorMessage => { alertNotifications.error(errorMessage); authenticationHandler.logout(); });
 }
 
 function getValidUserData() {

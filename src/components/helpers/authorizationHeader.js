@@ -5,7 +5,7 @@ export function authorizationHeader() {
     const currentUser = authenticationHandler.currentUserValue;
 
     if (currentUser && currentUser.token)
-        return { Authorization: 'Bearer ' + currentUser.token };
+        return { Authorization: `Bearer ${currentUser.token}` };
     else
         return {};
 }

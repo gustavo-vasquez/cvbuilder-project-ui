@@ -20,19 +20,12 @@ class SummaryBlock extends React.Component {
 	}
 
 	render() {
-		/*let dummyModel = {
-			summaryId: 1,
-			title: "Soy un título",
-			stateInTime: "(2014-2015)",
-			isVisible: true
-		}*/
-	
 		return (
 			<Card bg="light" border={this.props.blockData.isVisible && "secondary"} className="contracted-block mb-3" onContextMenu={(event) => this.openContextMenu(event, this.props.blockData.summaryId)}>
 			    <Card.Body className="pt-2 pb-2">
 			        <Row>
 			            <Col>
-			                <h5>{this.props.blockData.title} {this.props.blockData.stateInTime}</h5>
+			                <h5>{this.props.blockData.title} {this.props.blockData.timePeriod}</h5>
 			            </Col>
 			            <Col md="auto" className="text-right form-action">
 			                <Button onClick={(event) => this.props.getForm(event, 1, this.props.formId, "looool")} type="button" variant="outline-success" size="sm" className="edit-block" title={`Editar id ${this.props.blockData.summaryId}`}><i className="fas fa-pencil-alt"></i></Button>
