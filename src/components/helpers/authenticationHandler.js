@@ -4,9 +4,10 @@ import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(getValidUserData());
-//console.log(currentUserSubject);
+console.log(currentUserSubject);
 
 export const authenticationHandler = {
+    register,
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
@@ -16,23 +17,42 @@ export const authenticationHandler = {
     exchangeToken
 };
 
+function register(email, password, confirmPassword, termsAndConditions) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, confirmPassword, termsAndConditions })
+    }
+
+    return fetch("https://localhost:5001/api/account/register", requestOptions)
+           .then(handleResponse)
+           .then(userData => {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(userData));
+                currentUserSubject.next(userData);
+
+                return userData;
+           })
+           .catch(errorMessage => alertNotifications.error(errorMessage));
+}
+
 function login(email, password) {
     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
     };
 
-    return fetch('https://localhost:5001/api/account/login', requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(user));
-            currentUserSubject.next(user);
+    return fetch("https://localhost:5001/api/account/login", requestOptions)
+           .then(handleResponse)
+           .then(userData => {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(userData));
+                currentUserSubject.next(userData);
 
-            return user;
-        })
-        .catch(errorMessage => alertNotifications.error(errorMessage));
+                return userData;
+           })
+           .catch(errorMessage => alertNotifications.error(errorMessage));
 }
 
 function exchangeToken(token, refreshToken, updateUserSubject) {
@@ -57,7 +77,10 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
             else
                 return JSON.stringify(storedUser);
         })
-        .catch(errorMessage => { alertNotifications.error(errorMessage); authenticationHandler.logout(); });
+        .catch(errorMessage => {
+            alertNotifications.error(errorMessage);
+            logout();
+        });
 }
 
 function getValidUserData() {
@@ -71,8 +94,11 @@ function getValidUserData() {
     fetch(`https://localhost:5001/api/account/validToken?token=${currentUserObject.token}`)
     .then(handleResponse)
     .then(tokenIsValid => {
-        if(!tokenIsValid)
-            return exchangeToken(currentUserObject.token, currentUserObject.refreshToken);
+        if(!tokenIsValid) {
+            let result = exchangeToken(currentUserObject.token, currentUserObject.refreshToken);
+            if(result && typeof result === "object")
+                return result;
+        }
     })
     .catch(errorMessage => alertNotifications.error(errorMessage));
 

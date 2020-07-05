@@ -1,0 +1,22 @@
+{
+	"REQUIRED": "Campo obligatorio",
+	"MAX_LENGTH_50": "Máximo 50 caracteres",
+	"MAX_LENGTH_100": "Máximo 100 caracteres",
+    "MAX_LENGTH_200": "Máximo 200 caracteres",
+    "MAX_LENGTH_300": "Máximo 300 caracteres",
+    "MAX_RANGE_4": "Máximo 4 números",
+    "MAX_RANGE_5": "Máximo 5 números",
+    "MAX_RANGE_10": "Máximo 10 números",
+    "MIN_LENGTH_6": "Mínimo 6 caracteres",
+    "EMAIL_NOT_VALID": "Correo no válido",
+    "PASSWORD_NOT_VALID": "Caracteres especiales no permitidos",
+    "COMPARE_PASSWORD": "Las contraseñas no coinciden",
+    "TERMS_AND_CONDITIONS": "Debes aceptar para continuar",
+    "MONTH_PERIOD_REQUIRED": "Elija un mes",
+    "YEAR_PERIOD_REQUIRED": "Elija un año",
+    "START_YEAR_LESS_THAN": "El año de inicio es mayor que la finalización",
+    "END_YEAR_GREATER_THAN": "El año de finalización es menor que el inicio",
+    "MAX_FILE_SIZE": "El archivo es superior a 1 MB",
+    "POSTED_FILE_EXTENSIONS": "Permitido: jpg, jpeg y png",
+    "LEVEL_REQUIRED": "Nivel obligatorio"
+}

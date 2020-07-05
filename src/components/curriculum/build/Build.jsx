@@ -24,7 +24,6 @@ class Build extends React.Component {
             curriculumData: {}
         }
 
-        //this.handleChangeTemplateDialog = this.handleChangeTemplateDialog.bind(this);
         this.toggleChooseTemplateDialogButton = this.toggleChooseTemplateDialogButton.bind(this);
         this.navigationButtonsDisplay = this.navigationButtonsDisplay.bind(this);
         this.isElementInView = this.isElementInView.bind(this);
@@ -158,7 +157,7 @@ class Build extends React.Component {
         return this.props.history.push(`${this.props.path}/${pathUrl}`);
     }
 
-    render() {//console.log(this.state.curriculumData);
+    render() {
         return (
             <section id="building_cv">
                 <Helmet>

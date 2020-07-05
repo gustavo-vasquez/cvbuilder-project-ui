@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 // componentes
 import { authenticationHandler } from '../helpers';
+import validationMessages from '../helpers/validationMessages';
 import { Spinner } from '../Spinner';
 
 const LoginForm = (props) => {
@@ -16,9 +17,9 @@ const LoginForm = (props) => {
         initialValues={{ loginEmail: '', loginPassword: '' }}
         validationSchema={Yup.object({
             loginEmail: Yup.string()
-                           .required('Campo obligatorio.'),
+                           .required(validationMessages.REQUIRED),
             loginPassword: Yup.string()
-                              .required('Campo obligatorio.')
+                              .required(validationMessages.REQUIRED)
         })}
         onSubmit={(values, { setSubmitting }) => {
             setTimeout(async () => {
