@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 // componentes
 import { authenticationHandler } from '../helpers';
 import validationMessages from '../helpers/validationMessages';
-import { Spinner } from '../Spinner';
+import { FullSpinner } from '../Spinners';
 
 const LoginForm = (props) => {
     let history = useHistory();
@@ -64,7 +64,7 @@ const LoginForm = (props) => {
                     </Col>
                 </Row>
                 {/*<Alert className="mb-0" variant="danger">Usuario y/o contraseña incorrecta.</Alert>*/}
-                <Spinner loading={isSubmitting}></Spinner>
+                <FullSpinner loading={isSubmitting}></FullSpinner>
             </Form>
         )}
         </Formik>

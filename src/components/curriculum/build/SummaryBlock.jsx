@@ -23,9 +23,9 @@ class SummaryBlock extends React.Component {
 		return (
 			<Card bg="light" border={this.props.blockData.isVisible && "secondary"} className="contracted-block mb-3" onContextMenu={(event) => this.openContextMenu(event, this.props.blockData.summaryId)}>
 			    <Card.Body className="pt-2 pb-2">
-			        <Row>
+			        <Row className="justify-content-center align-items-center">
 			            <Col>
-			                <h5>{this.props.blockData.title} {this.props.blockData.timePeriod}</h5>
+			                <span>{this.props.blockData.title} {this.props.blockData.timePeriod}</span>
 			            </Col>
 			            <Col md="auto" className="text-right form-action">
 			                <Button onClick={(event) => this.props.getForm(event, 1, this.props.formId, "looool")} type="button" variant="outline-success" size="sm" className="edit-block" title={`Editar id ${this.props.blockData.summaryId}`}><i className="fas fa-pencil-alt"></i></Button>

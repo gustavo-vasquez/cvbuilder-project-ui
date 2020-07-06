@@ -3,22 +3,24 @@ import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+import validationMessages from '../../../helpers/validationMessages';
+
 class Study extends React.Component {
 	render() {
 		let formFields = {
-				'studyId': 0,
-				'title': this.props.dummy,
-				'institute': '',
-				'city': '',
-				'startMonth': '',
-				'startYear': '',
-				'endMonth': '',
-				'endYear': '',
-				'description': '',
-				'isVisible': true,
-				'id_curriculum': 0,
-				'formId': 'study',
-				'formMode': 0
+			'studyId': 0,
+			'title': this.props.dummy,
+			'institute': '',
+			'city': '',
+			'startMonth': '',
+			'startYear': '',
+			'endMonth': '',
+			'endYear': '',
+			'description': '',
+			'isVisible': true,
+			'id_curriculum': 0,
+			'formId': 'study',
+			'formMode': 0
 		};
 	
 		return (
@@ -26,28 +28,28 @@ class Study extends React.Component {
 			initialValues={formFields}
 			validationSchema={Yup.object({
 				title: Yup.string()
-						 .required()
-						 .max(100),
+						 .required(validationMessages.REQUIRED)
+						 .max(100, validationMessages.MAX_LENGTH_100),
 				institute: Yup.string()
-							 .required()
-							 .max(100),
+							 .required(validationMessages.REQUIRED)
+							 .max(100, validationMessages.MAX_LENGTH_100),
 				city: Yup.string()
-						  .required()
-						  .max(100),
+						  .required(validationMessages.REQUIRED)
+						  .max(100, validationMessages.MAX_LENGTH_100),
 				startMonth: Yup.string()
 							.oneOf(["december"], "Mes no válido.")
-							.required(),
+							.required(validationMessages.REQUIRED),
 				startYear: Yup.string()
 							.oneOf(["2020"], "Año no válido.")
-							.required(),
+							.required(validationMessages.REQUIRED),
 				endMonth: Yup.string()
 							.oneOf(["december"], "Mes no válido.")
-							.required(),
+							.required(validationMessages.REQUIRED),
 				endYear: Yup.string()
 							.oneOf(["2020"], "Año no válido.")
-							.required(),
+							.required(validationMessages.REQUIRED),
 				description: Yup.string()
-							.max(300)
+							.max(300, validationMessages.MAX_LENGTH_300)
 			})}
 			onSubmit={(values, { setSubmitting }) => {
 	        setTimeout(() => {

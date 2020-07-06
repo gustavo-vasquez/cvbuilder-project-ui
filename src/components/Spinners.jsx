@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Spinner = (props) => {
+export const FullSpinner = props => {
     return (
         props.loading ?
         <div id="spinner_loading_wrapper">
@@ -20,4 +20,8 @@ export const Spinner = (props) => {
           </div>
         </div> : null
     );
+}
+
+export const NormalSpinner = props => {
+  return <div className="spinner"></div>
 }

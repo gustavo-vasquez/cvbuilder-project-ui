@@ -3,6 +3,8 @@ import { Row, Col, Button, InputGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+import validationMessages from '../../../helpers/validationMessages';
+
 class PersonalDetail extends React.Component {
 	componentDidMount() {
 		document.querySelector(".tabs-group").firstElementChild.classList.add('active');
@@ -46,48 +48,48 @@ class PersonalDetail extends React.Component {
 			initialValues={formFields}
 			validationSchema={Yup.object({
 				name: Yup.string()
-						 .required()
-						 .max(100),
+						 .required(validationMessages.REQUIRED)
+						 .max(100, validationMessages.MAX_LENGTH_100),
 				lastName: Yup.string()
-							 .required()
-							 .max(100),
+							 .required(validationMessages.REQUIRED)
+							 .max(100, validationMessages.MAX_LENGTH_100),
 				email: Yup.string()
-						  .required()
-						  .max(100),
+						  .required(validationMessages.REQUIRED)
+						  .max(100, validationMessages.MAX_LENGTH_100),
 				address: Yup.string()
-							.max(100),
+							.max(100, validationMessages.MAX_LENGTH_100),
 				city: Yup.string()
-						 .max(100),
+						 .max(100, validationMessages.MAX_LENGTH_100),
 				postalCode: Yup.number()
-							   .min(1)
-							   .max(99999),
+							   .min(1, validationMessages.MAX_RANGE_5)
+							   .max(99999, validationMessages.MAX_RANGE_5),
 				areaCodeLP: Yup.number()
-							   .min(1)
-							   .max(9999),
+							   .min(1, validationMessages.MAX_RANGE_5)
+							   .max(9999, validationMessages.MAX_RANGE_5),
 				linePhone: Yup.number()
-							  .min(1)
-							  .max(9999999999),
+							  .min(1, validationMessages.MAX_RANGE_10)
+							  .max(9999999999, validationMessages.MAX_RANGE_10),
 				areaCodeMP: Yup.number()
-							   .min(1)
-							   .max(9999),
+							   .min(1, validationMessages.MAX_RANGE_4)
+							   .max(9999, validationMessages.MAX_RANGE_4),
 				mobilePhone: Yup.number()
-								.min(1)
-								.max(9999999999),
+								.min(1, validationMessages.MAX_RANGE_10)
+								.max(9999999999, validationMessages.MAX_RANGE_10),
 				summary: Yup.string()
-							.required()
-							.max(300),
+							.required(validationMessages.REQUIRED)
+							.max(300, validationMessages.MAX_LENGTH_300),
 				summaryCustomTitle: Yup.string()
-									   .max(50),
+									   .max(50, validationMessages.MAX_LENGTH_50),
 				webPageUrl: Yup.string()
-							   .max(300),
+							   .max(300, validationMessages.MAX_LENGTH_300),
 				linkedInUrl: Yup.string()
-							   .max(300),
+							   .max(300, validationMessages.MAX_LENGTH_300),
 				githubUrl: Yup.string()
-							   .max(300),
+							   .max(300, validationMessages.MAX_LENGTH_300),
 				facebookUrl: Yup.string()
-							   .max(300),
+							   .max(300, validationMessages.MAX_LENGTH_300),
 				twitterUrl: Yup.string()
-							   .max(300)
+							   .max(300, validationMessages.MAX_LENGTH_300)
 			})}
 			onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
@@ -243,6 +245,7 @@ class PersonalDetail extends React.Component {
 				                    <label>LinkedIn</label>
 				                    <Field id="linkedIn_url" name="linkedInUrl" className="form-control"></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
+				                    <ErrorMessage name="linkedInUrl" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
 				            <Col md={6}>

@@ -89,7 +89,7 @@ class SummaryBlocksWrapper extends React.Component {
 	render() {
 		return (
 			<div id={this.props.id}>
-                {this.props.sectionsInTab.map(sectionInTab =>
+                {this.props.sectionsInTab && this.props.sectionsInTab.map(sectionInTab =>
                     <Card border="success" className="overflow-hidden mb-3" key={sectionInTab.id}>
                         <section id={sectionInTab.id} className="card-body hola">
                             <h4>{sectionInTab.title}</h4>
@@ -106,7 +106,7 @@ class SummaryBlocksWrapper extends React.Component {
                                 <Row>
                                     <Col>
                                         <div className="contracted-block-group">
-                                        {sectionInTab.blocks.map(block =>
+                                        {sectionInTab.blocks && sectionInTab.blocks.map(block =>
                                             <SummaryBlock getForm={this.getForm} formId={sectionInTab.formId} blockData={block} key={block.summaryId} showBlockContextMenu={this.showBlockContextMenu}></SummaryBlock>
                                         )}
                                         </div>

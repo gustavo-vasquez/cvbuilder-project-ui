@@ -3,9 +3,10 @@ import { Switch, Route, NavLink, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
-import { authorizationHeader, alertNotifications } from '../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
+import { NormalSpinner } from '../../Spinners';
 
 var timer = null;
 
@@ -56,10 +57,10 @@ class Build extends React.Component {
         }
 
         await fetch("https://localhost:5001/api/curriculum", requestOptions)
-        .then(response => response.json())
+        .then(handleResponse)
         .then(data => {
             if(data.updatedToken) {
-                this.getCurriculumContent();
+                this.getCurriculumData();
             }
             else {
                 this.setState({curriculumData: data});
@@ -175,8 +176,15 @@ class Build extends React.Component {
                     <Row className="flex-column-reverse flex-lg-row">
                         <Col md={3}>
                             <Card border="success" className="cv-preview mb-3">
-                                <Image src={this.state.curriculumData.templatePath} alt="active_template" fluid />
-                                <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
+                            {this.state.curriculumData.templatePath ?
+                                <React.Fragment>
+                                    <Image src={this.state.curriculumData.templatePath} alt="active_template" fluid />
+                                    <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
+                                </React.Fragment>
+                                : <Card.Body>
+                                    <NormalSpinner></NormalSpinner>
+                                  </Card.Body>
+                            }
                             </Card>
                             <Card border="success" className="mb-3">
                                 <Card.Body>
@@ -187,8 +195,8 @@ class Build extends React.Component {
                         </Col>
                         <Col md={9} className="cv-sections">
                             <Switch>
-                                <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumContent={this.state.curriculumContent} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
-                                <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumContent={this.state.curriculumContent} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
+                                <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
+                                <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                             </Switch>
                             <div id="navigation_buttons_wrapper">
                                 <div id="navigation_buttons" className="text-center">
