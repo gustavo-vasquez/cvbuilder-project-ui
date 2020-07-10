@@ -5,10 +5,6 @@ class SummaryBlock extends React.Component {
 	openContextMenu = (event, summaryId) => {
 		event.preventDefault();
 		event.persist();
-		/*const element = this.findAncestor(event.target, "contracted-block");
-
-		if(element)
-			element.style.borderStyle = "dashed";*/
 		
 		let blockContextMenu = document.getElementById("block_context_menu");
 		blockContextMenu.style.left = 0;
@@ -29,7 +25,7 @@ class SummaryBlock extends React.Component {
 			            </Col>
 			            <Col md="auto" className="text-right form-action">
 			                <Button onClick={(event) => this.props.getForm(event, 1, this.props.formId, "looool")} type="button" variant="outline-success" size="sm" className="edit-block" title={`Editar id ${this.props.blockData.summaryId}`}><i className="fas fa-pencil-alt"></i></Button>
-			                <Button type="button" variant="outline-danger" size="sm" className="remove-block ml-2" title={`Eliminar id ${this.props.blockData.summaryId}`}><i className="far fa-trash-alt"></i></Button>
+			                <Button onClick={() => this.props.removeBlock(this.props.sectionIndex, this.props.blockData.summaryId)} type="button" variant="outline-danger" size="sm" className="remove-block ml-2" title={`Eliminar id ${this.props.blockData.summaryId}`}><i className="far fa-trash-alt"></i></Button>
 			            </Col>
 			        </Row>
 			    </Card.Body>

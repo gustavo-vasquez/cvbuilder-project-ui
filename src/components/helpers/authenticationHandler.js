@@ -4,7 +4,7 @@ import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(getValidUserData());
-console.log(currentUserSubject);
+//console.log(currentUserSubject);
 
 export const authenticationHandler = {
     register,
