@@ -4,62 +4,78 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import validationMessages from '../../../helpers/validationMessages';
-import { handleResponse, authorizationHeader, alertNotifications } from '../../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications, dateDropdownLists } from '../../../helpers';
+import { FullSpinner } from '../../../Spinners';
 
 class Study extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.initialFormValues = {
-			'studyId': 0,
-			'title': '',
-			'institute': '',
-			'city': '',
-			'startMonth': '',
-			'startYear': '',
-			'endMonth': '',
-			'endYear': '',
-			'description': '',
-			'isVisible': true,
-			'id_curriculum': this.props.curriculumId,
-			'formId': this.props.formId,
-			'formMode': 0
-		};
+		this.state = {
+			initialFormValues: {
+				'studyId': 0,
+				'title': '',
+				'institute': '',
+				'city': '',
+				'startMonth': '',
+				'startYear': '',
+				'endMonth': '',
+				'endYear': '',
+				'description': '',
+				'isVisible': true,
+				'id_curriculum': this.props.curriculumId,
+				'formId': this.props.formId,
+				'formMode': this.props.editMode
+			}
+		}
 
 		this.formValidationSchema = Yup.object({
 			title: Yup.string()
-					 .required(validationMessages.REQUIRED)
-					 .max(100, validationMessages.MAX_LENGTH_100),
+					  .max(100, validationMessages.MAX_LENGTH_100)
+					  .required(validationMessages.REQUIRED),
 			institute: Yup.string()
-						 .required(validationMessages.REQUIRED)
-						 .max(100, validationMessages.MAX_LENGTH_100),
+						  .max(100, validationMessages.MAX_LENGTH_100)
+						  .required(validationMessages.REQUIRED),
 			city: Yup.string()
-					  .required(validationMessages.REQUIRED)
-					  .max(100, validationMessages.MAX_LENGTH_100),
+					 .max(100, validationMessages.MAX_LENGTH_100)
+					 .required(validationMessages.REQUIRED),
 			startMonth: Yup.string()
-						.oneOf(["december"], "Mes no válido.")
-						.required(validationMessages.REQUIRED),
+						   .oneOf(dateDropdownLists.startPeriod.months.map(month => month.value), "Mes no válido.")
+						   .required(validationMessages.REQUIRED),
 			startYear: Yup.number()
-						.oneOf([2020], "Año no válido.")
-						.required(validationMessages.REQUIRED),
+						  .oneOf(dateDropdownLists.startPeriod.years.map(year => year.value), "Año no válido.")
+						  .required(validationMessages.REQUIRED),
 			endMonth: Yup.string()
-						.oneOf(["december"], "Mes no válido.")
-						.required(validationMessages.REQUIRED),
+						 .oneOf(dateDropdownLists.endPeriod.months.map(month => month.value), "Mes no válido.")
+						 .required(validationMessages.REQUIRED),
 			endYear: Yup.number()
-						.oneOf([2020], "Año no válido.")
+						.oneOf(dateDropdownLists.endPeriod.years.map(year => year.value), "Año no válido.")
 						.required(validationMessages.REQUIRED),
 			description: Yup.string()
 						.max(300, validationMessages.MAX_LENGTH_300)
 		});
 	}
 
+	async componentDidMount() {
+        const requestOptions = {
+            method: "GET",
+            headers: authorizationHeader()
+        }
+
+        await fetch(`https://localhost:5001/api/curriculum/study/${this.props.sectionIndex + 1}/${this.props.summaryId}`, requestOptions)
+        	  .then(handleResponse)
+        	  .then(success => this.setState({ initialFormValues: success }))
+        	  .catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
+	}
+
 	formikSubmit = (values, { setSubmitting }) => {
 	    setTimeout(async () => {
 			values.startYear = parseInt(values.startYear);
 			values.endYear = parseInt(values.endYear);
+			values.formMode = this.props.editMode;
 
 	    	const requestOptions = {
-	    		method: "POST",
+	    		method: this.props.editMode ? "PUT" : "POST",
 	    		headers: { ...authorizationHeader(), "Content-Type": "application/json" },
 	    		body: JSON.stringify(values)
 	    	}
@@ -75,7 +91,7 @@ class Study extends React.Component {
 				await fetch(`https://localhost:5001/api/curriculum/section/${this.props.sectionIndex + 1}/${success.id}`, requestOptions)
 				.then(handleResponse)
 				.then(success => {
-					alertNotifications.success(`El bloque ${success.title} se ha creado.`);
+					alertNotifications.success(!this.props.editMode ? `El bloque ${success.title} se ha creado.` : `El bloque ${success.title} se ha modificado.`);
 					this.props.refreshBlocks(this.props.sectionIndex, this.props.formId, this.props.editMode, success);
 				})
 				.catch(errorMessage => alertNotifications.error(errorMessage));
@@ -87,9 +103,9 @@ class Study extends React.Component {
 	    }, 400);
 	}
 
-	render() {
+	render() {console.log(this.props.editMode);
 		return (
-			<Formik initialValues={this.initialFormValues} validationSchema={this.formValidationSchema}	onSubmit={this.formikSubmit}>
+			<Formik initialValues={this.state.initialFormValues} validationSchema={this.formValidationSchema} onSubmit={this.formikSubmit} enableReinitialize>
 			{({ values, isSubmitting }) => (
 				<Form id={this.props.formId}>
 					<div className="text-center py-2"><i className="fas fa-chevron-down"></i></div>
@@ -145,14 +161,16 @@ class Study extends React.Component {
 				                    <Row>
 				                        <Col md="8">
 				                        	<Field as="select" id="startMonth" name="startMonth" className="custom-select">
-				                        		<option value="">Elegir mes...</option>
-				                        		<option value="december">Diciembre</option>
+				                        	{dateDropdownLists.startPeriod.months.map(month => 
+				                        		<option key={month.value} value={month.value}>{month.text}</option>
+				                        	)}
 				                        	</Field>
 				                        </Col>
 				                        <Col md="4">
 				                        	<Field as="select" id="startYear" name="startYear" className="custom-select">
-				                        		<option value="">Elegir año...</option>
-				                        		<option value="2020">2020</option>
+				                        	{dateDropdownLists.startPeriod.years.map(year =>
+												<option key={year.value} value={year.value}>{year.text}</option>
+				                        	)}
 				                        	</Field>
 				                        </Col>
 				                    </Row>
@@ -166,14 +184,16 @@ class Study extends React.Component {
 				                    <Row>
 				                        <Col md="8">
 				                        	<Field as="select" id="endMonth" name="endMonth" className="custom-select">
-				                        		<option value="">Elegir mes...</option>
-				                        		<option value="december">Diciembre</option>
+				                        	{dateDropdownLists.endPeriod.months.map(month =>
+												<option key={month.value} value={month.value}>{month.text}</option>
+				                        	)}
 				                        	</Field>
 				                        </Col>
 				                        <Col md="4">
 				                        	<Field as="select" id="endYear" name="endYear" className="custom-select">
-				                        		<option value="">Elegir año...</option>
-				                        		<option value="2020">2020</option>
+				                        	{dateDropdownLists.endPeriod.years.map(year =>
+				                        		<option key={year.value} value={year.value}>{year.text}</option>
+				                        	)}
 				                        	</Field>
 				                        </Col>
 				                    </Row>
@@ -202,6 +222,7 @@ class Study extends React.Component {
 				            </ButtonGroup>
 				        </Col>
 				    </Row>
+					<FullSpinner loading={isSubmitting}></FullSpinner>
 				</Form>
 			)}
 			</Formik>

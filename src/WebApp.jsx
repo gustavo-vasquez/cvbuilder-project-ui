@@ -7,14 +7,14 @@ import { SignIn } from './components/authentication';
 import { Build } from './components/curriculum/build';
 import NotFound from './components/NotFound';
 import { authenticationHandler } from './components/helpers';
+import { SplashScreen } from './SplashScreen';
 
 class WebApp extends React.Component {
 	constructor(props) {
 		super(props);
-		this.userLogged = this.userLogged.bind(this);
+
 		this.state = {
-			currentUser: null,
-			loginData: null
+			currentUser: null
 		}
 	}
 
@@ -22,39 +22,37 @@ class WebApp extends React.Component {
 		authenticationHandler.currentUser.subscribe(x => this.setState({ currentUser: x }));
 	}
 
-	userLogged(data) {
-		console.log(data);
-		this.setState({ loginData: data });
-	}
-
 	render() {
-		return (
-			<React.Fragment>
-				<NavigationBar currentUser={this.state.currentUser}></NavigationBar>
-				<Switch>
-					<Route path="/account/signin">
-						<SignIn></SignIn>
-					</Route>
-					{/*<Route path="/curriculum/build" render={({match, history}) =>
-						<Build path={match.path} url={match.url} history={history}></Build>
-					}/>*/}
-					<PrivateRoute path="/curriculum/build" render={({match, history}) =>
-						<Build path={match.path} url={match.url} history={history}></Build>
-					}>
-					</PrivateRoute>
-					<PrivateRoute path="/curriculum/finished">
-						<NotFound></NotFound>
-					</PrivateRoute>
-					<Route exact path="/">
-						<Main></Main>
-					</Route>
-					<Route>
-						<NotFound></NotFound>
-					</Route>
-				</Switch>
-				<Footer></Footer>
-			</React.Fragment>
-		);
+		if(authenticationHandler.currentUserValue === undefined)
+			return <SplashScreen></SplashScreen>
+		else
+			return (
+				<React.Fragment>
+					<NavigationBar currentUser={this.state.currentUser}></NavigationBar>
+					<Switch>
+						<Route path="/account/signin">
+							<SignIn></SignIn>
+						</Route>
+						{/*<Route path="/curriculum/build" render={({match, history}) =>
+							<Build path={match.path} url={match.url} history={history}></Build>
+						}/>*/}
+						<PrivateRoute path="/curriculum/build" render={({match, history}) =>
+							<Build path={match.path} url={match.url} history={history}></Build>
+						}>
+						</PrivateRoute>
+						<PrivateRoute path="/curriculum/finished">
+							<NotFound></NotFound>
+						</PrivateRoute>
+						<Route exact path="/">
+							<Main></Main>
+						</Route>
+						<Route>
+							<NotFound></NotFound>
+						</Route>
+					</Switch>
+					<Footer></Footer>
+				</React.Fragment>
+			);
 	}
 }
 
@@ -66,7 +64,6 @@ function PrivateRoute({ children, ...rest }) {
 	return (
 		<Route {...rest} render={({ match, history, location }) =>
 			authenticationHandler.currentUserValue ? children || rest.render({match, history}) : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
-	    	//rest.loginData ? children || rest.render({match, history}) : <Redirect to={{ pathname: "/account/signin", state: { from: location }}}/>
 		}/>
 	);
 }

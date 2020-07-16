@@ -15,7 +15,6 @@ class SummaryBlocksWrapper extends React.Component {
             forms: ['study_section_form','certificate_section_form','work_experience_section_form'],
             activeForm: '',
             editMode: 0,
-            dummy: '',
             showContextMenu: false,
             activeFormId: '',
             eventElement: '',
@@ -33,13 +32,13 @@ class SummaryBlocksWrapper extends React.Component {
         document.removeEventListener('click', this.hideBlockContextMenu, false);
     }
 
-    getForm = (event, mode, formId, dummy) => {
+    getForm = (event, editMode, formId, sectionIndex, summaryId) => {
         this.closeForm();
+        let ancestor;
         const wrapper = document.createElement("div");
         wrapper.id = Date.now();
-        let ancestor;
 
-        switch(mode) {
+        switch(editMode) {
             case 0:
                 ancestor = this.findAncestorByClass(event.target, "summary-block-wrapper");
                 break;
@@ -55,7 +54,7 @@ class SummaryBlocksWrapper extends React.Component {
 
         switch(formId) {
             case sectionMetadata.studies.formId:
-                ReactDOM.render(<Study closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionIndex={sectionMetadata.studies.index} formId={formId} curriculumId={this.props.curriculumId} editMode={mode} dummy={dummy}></Study>, wrapper);
+                ReactDOM.render(<Study closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionIndex={sectionMetadata.studies.index} formId={formId} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Study>, wrapper);
                 break;
             case sectionMetadata.certificates.formId:
                 ReactDOM.render(<Certificate closeForm={this.closeForm} formId={formId} curriculumId={this.props.curriculumId}></Certificate>, wrapper);
@@ -136,10 +135,12 @@ class SummaryBlocksWrapper extends React.Component {
 
         if(editMode) {
             // editar
-            sectionsInTab[sectionIndex].blocks.foreEach((currentValue, index, array) => {
-                if(currentValue.summaryId === newBlockData.summaryId)
-                    sectionsInTab[sectionIndex].blocks[index] = newBlockData;
-            });
+            for(var i = 0; i < sectionsInTab[sectionIndex].blocks.length; i++) {
+                if(sectionsInTab[sectionIndex].blocks[i].summaryId === newBlockData.summaryId) {
+                     sectionsInTab[sectionIndex].blocks.splice(i, 1, newBlockData);
+                    break;
+                }
+            }
         }
         else
             // agregar

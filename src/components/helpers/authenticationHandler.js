@@ -3,7 +3,8 @@ import { handleResponse } from './handleResponse';
 import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
-var currentUserSubject = new BehaviorSubject(getValidUserData());
+var currentUserSubject = new BehaviorSubject(undefined);
+setTimeout(async () => await currentUserSubject.next(getValidUserData()), 400);
 //console.log(currentUserSubject);
 
 export const authenticationHandler = {
@@ -100,7 +101,10 @@ function getValidUserData() {
                 return result;
         }
     })
-    .catch(errorMessage => alertNotifications.error(errorMessage));
+    .catch(errorMessage => {
+        alertNotifications.error(errorMessage);
+        return currentUserSubject.next(currentUserObject);
+    });
 
     return currentUserObject;
 }
