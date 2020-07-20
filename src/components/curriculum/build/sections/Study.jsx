@@ -4,7 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import validationMessages from '../../../helpers/validationMessages';
-import { handleResponse, authorizationHeader, alertNotifications, dateDropdownLists } from '../../../helpers';
+import { addOrUpdateBlock, loadSectionFormData, dateDropdownLists } from './sectionTasks';
 import { FullSpinner } from '../../../Spinners';
 
 class Study extends React.Component {
@@ -23,9 +23,7 @@ class Study extends React.Component {
 				'endYear': '',
 				'description': '',
 				'isVisible': true,
-				'id_curriculum': this.props.curriculumId,
-				'formId': this.props.formId,
-				'formMode': this.props.editMode
+				'id_curriculum': this.props.curriculumId
 			}
 		}
 
@@ -57,70 +55,50 @@ class Study extends React.Component {
 	}
 
 	async componentDidMount() {
-        const requestOptions = {
-            method: "GET",
-            headers: authorizationHeader()
-        }
+		/*if(this.props.editMode) {
+	        const requestOptions = {
+	            method: "GET",
+	            headers: authorizationHeader()
+	        }
 
-        await fetch(`https://localhost:5001/api/curriculum/study/${this.props.sectionIndex + 1}/${this.props.summaryId}`, requestOptions)
-        	  .then(handleResponse)
-        	  .then(success => this.setState({ initialFormValues: success }))
-        	  .catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
+	        await fetch(`https://localhost:5001/api/curriculum/study/${this.props.sectionMetadata.index + 1}/${this.props.summaryId}`, requestOptions)
+	        	  .then(handleResponse)
+	        	  .then(success => this.setState({ initialFormValues: success }))
+	        	  .catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
+    	}*/
+		await loadSectionFormData(this.props.editMode, this.props.sectionMetadata.index, this.props.summaryId, this);
 	}
 
 	formikSubmit = (values, { setSubmitting }) => {
-	    setTimeout(async () => {
-			values.startYear = parseInt(values.startYear);
-			values.endYear = parseInt(values.endYear);
-			values.formMode = this.props.editMode;
+		values.startYear = parseInt(values.startYear);
+		values.endYear = parseInt(values.endYear);
+		values.formMode = this.props.editMode;
 
-	    	const requestOptions = {
-	    		method: this.props.editMode ? "PUT" : "POST",
-	    		headers: { ...authorizationHeader(), "Content-Type": "application/json" },
-	    		body: JSON.stringify(values)
-	    	}
-
-	    	await fetch("https://localhost:5001/api/curriculum/study", requestOptions)
-			.then(handleResponse)
-			.then(async success => {
-				const requestOptions = {
-					method: "GET",
-					headers: authorizationHeader()
-				}
-
-				await fetch(`https://localhost:5001/api/curriculum/section/${this.props.sectionIndex + 1}/${success.id}`, requestOptions)
-				.then(handleResponse)
-				.then(success => {
-					alertNotifications.success(!this.props.editMode ? `El bloque ${success.title} se ha creado.` : `El bloque ${success.title} se ha modificado.`);
-					this.props.refreshBlocks(this.props.sectionIndex, this.props.formId, this.props.editMode, success);
-				})
-				.catch(errorMessage => alertNotifications.error(errorMessage));
-			})
-	    	.catch(errorMessage => alertNotifications.error(errorMessage));
-
-	        //alert(JSON.stringify(values, null, 2));
-	        setSubmitting(false);
-	    }, 400);
+	    addOrUpdateBlock(
+	    	values,
+	    	{ setSubmitting },
+	    	this.props.sectionMetadata,
+	    	this.props.editMode,
+	    	this.props.refreshBlocks
+	    );
 	}
 
-	render() {console.log(this.props.editMode);
+	render() {
 		return (
 			<Formik initialValues={this.state.initialFormValues} validationSchema={this.formValidationSchema} onSubmit={this.formikSubmit} enableReinitialize>
 			{({ values, isSubmitting }) => (
-				<Form id={this.props.formId}>
+				<Form id={this.props.sectionMetadata.formId}>
 					<div className="text-center py-2"><i className="fas fa-chevron-down"></i></div>
 					<legend className="text-center">Estudio académico</legend>
 					<fieldset>
-						{/*<input type="hidden" id="studyId" />
-						<input type="hidden" id="type" />*/}
 						<Row className="mb-4">
-				            <Col md={10}>
+				            <Col md="10">
 				                <div className="custom-control custom-switch">
 				                	<Field type="checkbox" id="is_visible" name="isVisible" className="custom-control-input"></Field>
 				                    <label className="custom-control-label" htmlFor="is_visible">Bloque visible</label>
 				                </div>
 				            </Col>
-				            <Col md={2} className="text-right">
+				            <Col md="2" className="text-right">
 				                <button type="button" onClick={this.props.closeForm} className="close-block" title="Cerrar">
 				                    <i className="fas fa-times h4 mb-0"></i>
 				                </button>
@@ -138,14 +116,14 @@ class Study extends React.Component {
 				        </Row>
 	
 				        <Row>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Instituto</label>
 				                    <Field id="institute" name="institute" className="form-control"></Field>
 				                    <ErrorMessage name="institute" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Ciudad</label>
 				                    <Field id="city" name="city" className="form-control"></Field>
@@ -165,6 +143,7 @@ class Study extends React.Component {
 				                        		<option key={month.value} value={month.value}>{month.text}</option>
 				                        	)}
 				                        	</Field>
+		                        			<ErrorMessage name="startMonth" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
 				                        <Col md="4">
 				                        	<Field as="select" id="startYear" name="startYear" className="custom-select">
@@ -172,10 +151,9 @@ class Study extends React.Component {
 												<option key={year.value} value={year.value}>{year.text}</option>
 				                        	)}
 				                        	</Field>
+		                        			<ErrorMessage name="startYear" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
 				                    </Row>
-		                        	<ErrorMessage name="startMonth" component="div" className="text-danger"></ErrorMessage>
-		                        	<ErrorMessage name="startYear" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
 				            <Col md="6">
@@ -188,6 +166,7 @@ class Study extends React.Component {
 												<option key={month.value} value={month.value}>{month.text}</option>
 				                        	)}
 				                        	</Field>
+				                    		<ErrorMessage name="endMonth" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
 				                        <Col md="4">
 				                        	<Field as="select" id="endYear" name="endYear" className="custom-select">
@@ -195,10 +174,9 @@ class Study extends React.Component {
 				                        		<option key={year.value} value={year.value}>{year.text}</option>
 				                        	)}
 				                        	</Field>
+		                        			<ErrorMessage name="endYear" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
 				                    </Row>
-				                    <ErrorMessage name="endMonth" component="div" className="text-danger"></ErrorMessage>
-		                        	<ErrorMessage name="endYear" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
 				        </Row>
@@ -218,7 +196,7 @@ class Study extends React.Component {
 				        <Col>
 				            <ButtonGroup className="btn-block">
 				                <Button type="submit" variant="success" size="sm" disabled={isSubmitting}><i className="fas fa-check"></i> Hecho</Button>&nbsp;
-				                <Button onClick={() => this.props.editMode ? this.props.removeBlock(this.props.sectionIndex, 1) : this.props.closeForm() } type="button" variant="danger" size="sm" className="remove-form-block"><i className="far fa-trash-alt"></i> Eliminar</Button>
+				                <Button onClick={() => this.props.editMode ? this.props.removeBlock(this.props.sectionMetadata.index, this.state.initialFormValues.studyId) : this.props.closeForm() } type="button" variant="danger" size="sm" className="remove-form-block"><i className="far fa-trash-alt"></i> Eliminar</Button>
 				            </ButtonGroup>
 				        </Col>
 				    </Row>

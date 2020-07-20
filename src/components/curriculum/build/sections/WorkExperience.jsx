@@ -3,76 +3,94 @@ import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+import validationMessages from '../../../helpers/validationMessages';
+import { addOrUpdateBlock, loadSectionFormData, dateDropdownLists } from './sectionTasks';
+import { FullSpinner } from '../../../Spinners';
+
 class WorkExperience extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			initialFormValues: {
+				workExperienceId: 0,
+				job: '',
+				city: '',
+				company: '',
+				startMonth: '',
+				startYear: '',
+				endMonth: '',
+				endYear: '',
+				description: '',
+				isVisible: true,
+				id_curriculum: this.props.curriculumId
+			}
+		}
+
+		this.formValidationSchema = Yup.object({
+			job: Yup.string()
+					  .max(100, validationMessages.MAX_LENGTH_100)
+					  .required(validationMessages.REQUIRED),
+			city: Yup.string()
+						  .max(100, validationMessages.MAX_LENGTH_100)
+						  .required(validationMessages.REQUIRED),
+			company: Yup.string()
+					 .max(100, validationMessages.MAX_LENGTH_100)
+					 .required(validationMessages.REQUIRED),
+			startMonth: Yup.string()
+						   .oneOf(dateDropdownLists.startPeriod.months.map(month => month.value), "Mes no válido.")
+						   .required(validationMessages.REQUIRED),
+			startYear: Yup.number()
+						  .oneOf(dateDropdownLists.startPeriod.years.map(year => year.value), "Año no válido.")
+						  .required(validationMessages.REQUIRED),
+			endMonth: Yup.string()
+						 .oneOf(dateDropdownLists.endPeriod.months.map(month => month.value), "Mes no válido.")
+						 .required(validationMessages.REQUIRED),
+			endYear: Yup.number()
+						.oneOf(dateDropdownLists.endPeriod.years.map(year => year.value), "Año no válido.")
+						.required(validationMessages.REQUIRED),
+			description: Yup.string()
+						.max(300, validationMessages.MAX_LENGTH_300)
+		});
+	}
+
+	async componentDidMount() {
+    	await loadSectionFormData(this.props.editMode, this.props.sectionMetadata.index, this.props.summaryId, this);
+	}
+
+	formikSubmit = (values, { setSubmitting }) => {
+		values.startYear = parseInt(values.startYear);
+		values.endYear = parseInt(values.endYear);
+		values.formMode = this.props.editMode;
+
+	    addOrUpdateBlock(
+	    	values,
+	    	{ setSubmitting },
+	    	this.props.sectionMetadata,
+	    	this.props.editMode,
+	    	this.props.refreshBlocks
+	    );
+	}
+
 	render() {
-		let formFields = {
-				'workExperienceId': 0,
-				'job': '',
-				'city': '',
-				'company': '',
-				'startMonth': '',
-				'startYear': '',
-				'endMonth': '',
-				'endYear': '',
-				'description': '',
-				'isVisible': true,
-				'id_curriculum': 0,
-				'formId': 'work_experience',
-				'formMode': 0
-		};
-	
 		return (
-			<Formik
-			initialValues={formFields}
-			validationSchema={Yup.object({
-				job: Yup.string()
-						 .max(100)
-						 .required(),
-				city: Yup.string()
-							 .max(100)
-							 .required(),
-				company: Yup.string()
-						  .max(100)
-						  .required(),
-				startMonth: Yup.string()
-							.oneOf(["december"], "Mes no válido.")
-							.required(),
-				startYear: Yup.string()
-							.oneOf(["2020"], "Año no válido.")
-							.required(),
-				endMonth: Yup.string()
-							.oneOf(["december"], "Mes no válido.")
-							.required(),
-				endYear: Yup.string()
-							.oneOf(["2020"], "Año no válido.")
-							.required(),
-				description: Yup.string()
-							.max(300)
-			})}
-			onSubmit={(values, { setSubmitting }) => {
-	        setTimeout(() => {
-	            alert(JSON.stringify(values, null, 2));
-	            setSubmitting(false);
-	        }, 400);
-	    	}}>
+			<Formik initialValues={this.state.initialFormValues} validationSchema={this.formValidationSchema} onSubmit={this.formikSubmit} enableReinitialize>
 			{({ values, isSubmitting }) => (
-				<Form id={this.props.formId}>
-					<div className="text-center py-2"><i class="fas fa-chevron-down"></i></div>
+				<Form id={this.props.sectionMetadata.formId}>
+					<div className="text-center py-2"><i className="fas fa-chevron-down"></i></div>
 					<legend className="text-center">Experiencia laboral</legend>
 					<fieldset>
-						{/*<input type="hidden" id="studyId" />
-						<input type="hidden" id="type" />*/}
 						<Row className="mb-4">
-				            <Col md={10}>
+				            <Col md="10">
 				                <div className="custom-control custom-switch">
 				                	<Field type="checkbox" id="is_visible" name="isVisible" className="custom-control-input"></Field>
 				                    <label className="custom-control-label" htmlFor="is_visible">Bloque visible</label>
 				                </div>
 				            </Col>
-				            <Col md={2} className="text-right">
-				                <Button type="button" onClick={this.props.closeForm} variant="outline-secondary" size="sm" className="border-0 close-block" title="Cerrar">
+				            <Col md="2" className="text-right">
+				                <button type="button" onClick={this.props.closeForm} className="close-block" title="Cerrar">
 				                    <i className="fas fa-times h4 mb-0"></i>
-				                </Button>
+				                </button>
 				            </Col>
 				        </Row>
 	
@@ -87,14 +105,14 @@ class WorkExperience extends React.Component {
 				        </Row>
 	
 				        <Row>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Empresa</label>
 				                    <Field id="company" name="company" className="form-control"></Field>
 				                    <ErrorMessage name="company" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Ciudad</label>
 				                    <Field id="city" name="city" className="form-control"></Field>
@@ -104,46 +122,50 @@ class WorkExperience extends React.Component {
 				        </Row>
 	
 				        <Row>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Fecha de ingreso</label>
 				                    <Row>
-				                        <Col md={8}>
+				                        <Col md="8">
 				                        	<Field as="select" id="startMonth" name="startMonth" className="custom-select">
-				                        		<option value="">Elegir mes...</option>
-				                        		<option value="december">Diciembre</option>
+			                        		{dateDropdownLists.startPeriod.months.map(month => 
+				                        		<option key={month.value} value={month.value}>{month.text}</option>
+				                        	)}
 				                        	</Field>
+		                        			<ErrorMessage name="startMonth" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
-				                        <div md={4}>
+				                        <Col md="4">
 				                        	<Field as="select" id="startYear" name="startYear" className="custom-select">
-				                        		<option value="">Elegir año...</option>
-				                        		<option value="2020">2020</option>
+				                        	{dateDropdownLists.startPeriod.years.map(year =>
+												<option key={year.value} value={year.value}>{year.text}</option>
+				                        	)}
 				                        	</Field>
-				                        </div>
+		                        			<ErrorMessage name="startYear" component="div" className="text-danger"></ErrorMessage>
+				                        </Col>
 				                    </Row>
-		                        	<ErrorMessage name="startMonth" component="div" className="text-danger"></ErrorMessage>
-		                        	<ErrorMessage name="startYear" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
-				            <Col md={6}>
+				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Fecha de finalización</label>
 				                    <Row>
-				                        <Col md={8}>
+				                        <Col md="8">
 				                        	<Field as="select" id="endMonth" name="endMonth" className="custom-select">
-				                        		<option value="">Elegir mes...</option>
-				                        		<option value="december">Diciembre</option>
+				                        	{dateDropdownLists.endPeriod.months.map(month =>
+												<option key={month.value} value={month.value}>{month.text}</option>
+				                        	)}
 				                        	</Field>
+				                    		<ErrorMessage name="endMonth" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
-				                        <Col md={4}>
+				                        <Col md="4">
 				                        	<Field as="select" id="endYear" name="endYear" className="custom-select">
-				                        		<option value="">Elegir año...</option>
-				                        		<option value="2020">2020</option>
+				                        	{dateDropdownLists.endPeriod.years.map(year =>
+				                        		<option key={year.value} value={year.value}>{year.text}</option>
+				                        	)}
 				                        	</Field>
+		                        			<ErrorMessage name="endYear" component="div" className="text-danger"></ErrorMessage>
 				                        </Col>
 				                    </Row>
-				                    <ErrorMessage name="endMonth" component="div" className="text-danger"></ErrorMessage>
-		                        	<ErrorMessage name="endYear" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
 				        </Row>
@@ -163,10 +185,11 @@ class WorkExperience extends React.Component {
 				        <Col>
 				            <ButtonGroup className="btn-block">
 				                <Button type="submit" variant="success" size="sm" disabled={isSubmitting}><i className="fas fa-check"></i> Hecho</Button>&nbsp;
-				                <Button type="button" variant="danger" size="sm" className="remove-form-block"><i className="far fa-trash-alt"></i> Eliminar</Button>
+				                <Button onClick={() => this.props.editMode ? this.props.removeBlock(this.props.sectionMetadata.index, this.state.initialFormValues.workExperienceId) : this.props.closeForm() } type="button" variant="danger" size="sm" className="remove-form-block"><i className="far fa-trash-alt"></i> Eliminar</Button>
 				            </ButtonGroup>
 				        </Col>
 				    </Row>
+				    <FullSpinner loading={isSubmitting}></FullSpinner>
 				</Form>
 			)}
 			</Formik>

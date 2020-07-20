@@ -1,48 +1,56 @@
 {
     "studies": {
     	"id": "studies",
+        "name": "study",
     	"index": 0,
     	"title": "Estudios",
 		"formId": "studies_section_form"
 	},
+    "workExperiences": {
+        "id": "workExperiences",
+        "name": "workExperience",
+        "index": 1,
+        "title": "Experiencias laborales",
+        "formId": "work_experiences_section_form"
+    },
     "certificates": {
     	"id": "certificates",
-    	"index": 1,
+        "name": "certificate",
+    	"index": 2,
     	"title": "Certificados",
     	"formId": "certificates_section_form"
     },
-    "workExperiences": {
-    	"id": "workExperience",
-    	"index": 2,
-    	"title": "Experiencias laborales",
-    	"formId": "work_experiences_section_form"
-    },
     "languages": {
     	"id": "languages",
+        "name": "language",
     	"index": 3,
     	"title": "Idiomas",
     	"formId": "languages_section_form"
     },
     "skills": {
     	"id": "skills",
+        "name": "skill",
     	"index": 4,
     	"title": "Habilidades",
     	"formId": "skills_section_form"
     },
     "interests": {
     	"id": "interests",
+        "name": "interest",
     	"index": 5,
     	"title": "Intereses",
     	"formId": "interests_section_form"
     },
     "personalReferences": {
     	"id": "personalReferences",
+        "name": "personalReference",
     	"index": 6,
     	"title": "Referencias personales",
     	"formId": "personalReferences_section_form"
     },
     "customSections": {
     	"id": "customSections",
+        "name": "customSection",
     	"index": 7,
     	"title": "Secciones personalizadas",
     	"formId": "customSections_section_form"

@@ -54,31 +54,17 @@ class SummaryBlocksWrapper extends React.Component {
 
         switch(formId) {
             case sectionMetadata.studies.formId:
-                ReactDOM.render(<Study closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionIndex={sectionMetadata.studies.index} formId={formId} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Study>, wrapper);
+                ReactDOM.render(<Study closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.studies} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Study>, wrapper);
+                break;
+            case sectionMetadata.workExperiences.formId:
+                ReactDOM.render(<WorkExperience closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.workExperiences} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></WorkExperience>, wrapper);
                 break;
             case sectionMetadata.certificates.formId:
                 ReactDOM.render(<Certificate closeForm={this.closeForm} formId={formId} curriculumId={this.props.curriculumId}></Certificate>, wrapper);
                 break;
-            case sectionMetadata.workExperiences.formId:
-                ReactDOM.render(<WorkExperience closeForm={this.closeForm} formId={formId} curriculumId={this.props.curriculumId}></WorkExperience>, wrapper);
-                break;
             default:
                 break;
         }
-
-        /*switch(formId) {
-            case this.state.forms[0]:
-                ReactDOM.render(<Study closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} sectionId={this.props.id} formId={this.state.forms[0]} curriculumId={this.props.curriculumId} dummy={dummy}></Study>, wrapper);
-                break;
-            case this.state.forms[1]:
-                ReactDOM.render(<Certificate closeForm={this.closeForm} formId={this.state.forms[1]} curriculumId={this.props.curriculumId}></Certificate>, wrapper);
-                break;
-            case this.state.forms[2]:
-                ReactDOM.render(<WorkExperience closeForm={this.closeForm} formId={this.state.forms[2]} curriculumId={this.props.curriculumId}></WorkExperience>, wrapper);
-                break;
-            default:
-                break;
-        }*/
     }
 
     closeForm = () => {
@@ -124,7 +110,7 @@ class SummaryBlocksWrapper extends React.Component {
                     }
                 }
     
-                this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.success(success.message));
+                this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.warning(success.message));
             })
             .catch(errorMessage => alertNotifications.error(errorMessage));
         }
@@ -159,15 +145,15 @@ class SummaryBlocksWrapper extends React.Component {
 	render() {
 		return (
 			<div id={this.props.id}>
-                {this.state.sectionsInTab && this.state.sectionsInTab.map(sectionInTab =>
-                    <Card border="success" className="overflow-hidden mb-3" key={sectionInTab.metadata.id}>
+                {this.state.sectionsInTab && this.state.sectionsInTab.map((sectionInTab, index) =>
+                    <Card border="success" className="overflow-hidden mb-3" key={index}>
                         <section id={sectionInTab.metadata.id} className="card-body">
                             <h4>{sectionInTab.metadata.title}</h4>
                             <Row className="mb-4">
                                 <Col>
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" id={`${sectionInTab.metadata.id}_is_visible`} name={`${sectionInTab.metadata.id}IsVisible`} className="custom-control-input toggle-section-visibility" onChange={() => alert("hooooooooooola!")} defaultChecked={sectionInTab.isVisible} />
-                                        <label className="custom-control-label" htmlFor={`${sectionInTab.id}_is_visible`}>Visible</label>
+                                        <label className="custom-control-label" htmlFor={`${sectionInTab.metadata.id}_is_visible`}>Visible</label>
                                     </div>
                                 </Col>
                             </Row>
@@ -176,8 +162,8 @@ class SummaryBlocksWrapper extends React.Component {
                                 <Row>
                                     <Col>
                                         <div className="contracted-block-group">
-                                        {sectionInTab.blocks && sectionInTab.blocks.map(block =>
-                                            <SummaryBlock getForm={this.getForm} removeBlock={this.removeBlock} sectionIndex={sectionInTab.metadata.index} formId={sectionInTab.metadata.formId} blockData={block} key={block.summaryId} showBlockContextMenu={this.showBlockContextMenu}></SummaryBlock>
+                                        {sectionInTab.blocks && sectionInTab.blocks.map((block, index) =>
+                                            <SummaryBlock getForm={this.getForm} removeBlock={this.removeBlock} sectionIndex={sectionInTab.metadata.index} formId={sectionInTab.metadata.formId} blockData={block} key={index} showBlockContextMenu={this.showBlockContextMenu}></SummaryBlock>
                                         )}
                                         </div>
                                     </Col>

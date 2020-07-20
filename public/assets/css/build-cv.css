@@ -38,14 +38,15 @@
 }
 
 .cv-preview button {
-    color: white;
-    border-color: white;
-    background-color: rgba(48, 132, 42, 0.7);
-    border-radius: 4px;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	top: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  color: white;
+  border-color: white;
+  background-color: rgba(48, 132, 42, 0.7);
+  border-radius: 4px;
+  padding: 0.7rem;
 	z-index: 1;
 }
 

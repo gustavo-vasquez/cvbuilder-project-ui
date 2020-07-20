@@ -1,22 +1,27 @@
 export const alertNotifications = {
 	success,
-	error
+	error,
+    warning
 }
 
 function success(message) {
-	alert(message, "alert-success", "#28a745");
+	alert(message, "alert-success", "border-success");
 }
 
 function error(message) {
-	alert(message, "alert-danger", "#d68a91");
+	alert(message, "alert-danger", "border-error");
 }
 
-function alert(message, alertTypeClass, borderColor) {
-	let alertDiv = document.createElement("div");
-    alertDiv.classList = `alert ${alertTypeClass} alert-wrapper`;
+function warning(message) {
+    alert(message, "alert-warning", "border-warning");
+}
 
-    if(borderColor)
-    	alertDiv.style.borderColor = borderColor;
+function alert(message, alertTypeClass, borderColorClass) {
+	let alertDiv = document.createElement("div");
+    alertDiv.classList = `alert ${alertTypeClass} alert-wrapper ${borderColorClass}`;
+
+    /*if(borderColor)
+    	alertDiv.style.borderColor = borderColor;*/
 
     alertDiv.innerText = message;
     document.querySelector('#root').append(alertDiv);
