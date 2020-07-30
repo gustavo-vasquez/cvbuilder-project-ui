@@ -1,88 +1,88 @@
 import React from 'react';
-import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Row, Col } from 'react-bootstrap';
+import { Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-export const Skill = () => {
-	let formFields = {
-			'skillId': 0,
-			'name': '',
-			'level': '',
-			'isVisible': true,
-			'id_curriculum': 0,
-			'formId': 'skill',
-			'formMode': 0
-	};
+// componentes
+import validationMessages from '../../../helpers/validationMessages';
+import { addOrUpdateBlock, loadSectionFormData, levelOptions } from './sectionTasks';
+import { FormikFormModel } from './FormikFormModel';
 
-	return (
-		<Formik
-		initialValues={formFields}
-		validationSchema={Yup.object({
+class Skill extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			initialFormValues: {
+				'skillId': 0,
+				'name': '',
+				'level': '',
+				'isVisible': true,
+				'id_curriculum': this.props.curriculumId
+			}
+		}
+
+		this.formValidationSchema = Yup.object({
 			name: Yup.string()
-					 .max(100)
-					 .required(),
+					  .max(100, validationMessages.MAX_LENGTH_100)
+					  .required(validationMessages.REQUIRED),
 			level: Yup.string()
-					  .oneOf(["advanced","expert"], "Debe elegir un nivel.")
-					  .required()
-		})}
-		onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-        }, 400);
-    	}}>
-		{({ values, isSubmitting }) => (
-			<Form id="skill_section_form">
-				<legend className="mb-4">Habilidad informática</legend>
-				<fieldset>
-					{/*<input type="hidden" id="studyId" />
-					<input type="hidden" id="type" />*/}
-					<Row className="mb-4">
-			            <Col md={10}>
-			                <div className="custom-control custom-switch">
-			                	<Field type="checkbox" id="is_visible" name="isVisible" className="custom-control-input"></Field>
-			                    <label className="custom-control-label" htmlFor="is_visible">Bloque visible</label>
-			                </div>
-			            </Col>
-			            <Col md={2} className="text-right">
-			                <Button type="button" variant="outline-secondary" size="sm" className="border-0 close-block" title="Cerrar">
-			                    <i className="fas fa-times h4 mb-0"></i>
-			                </Button>
-			            </Col>
-			        </Row>
+					  .oneOf(levelOptions.slice(1).map(option => option.value), "Nivel obligatorio.")
+					  .required(validationMessages.REQUIRED)
+		});
+	}
 
-			        <Row>
-			            <Col md={6}>
-			                <div className="form-group">
-			                    <label>Nombre de la aplicación</label>
-			                    <Field id="name" name="name" className="form-control" placeholder="Ej: Microsoft Word"></Field>
-			                    <ErrorMessage name="name" component="div" className="text-danger"></ErrorMessage>
-			                </div>
-			            </Col>
-			            <Col md={6}>
-			                <div className="form-group">
-			                    <label>Nivel</label>
-			                    <Field as="select" id="level" name="level" className="custom-select">
-	                        		<option value="">Elegir nivel...</option>
-	                        		<option value="advanced">Avanzado</option>
-	                        		<option value="expert">Experto</option>
-	                        	</Field>
-	                            <ErrorMessage name="level" component="div" className="text-danger"></ErrorMessage>
-			                </div>
-			            </Col>
-			        </Row>
-			    </fieldset>
+	async componentDidMount() {
+		await loadSectionFormData(this.props.editMode, this.props.sectionMetadata.index, this.props.summaryId, this);
+	}
 
-			    <Row>
-			        <Col>
-			            <ButtonGroup className="btn-block">
-			                <Button type="submit" variant="success" size="sm" disabled={isSubmitting}><i className="fas fa-check"></i> Hecho</Button>&nbsp;
-			                <Button type="button" variant="danger" size="sm" className="remove-form-block"><i className="far fa-trash-alt"></i> Eliminar</Button>
-			            </ButtonGroup>
-			        </Col>
-			    </Row>
-			</Form>
-		)}
-		</Formik>
-	);
+	formikSubmit = (values, { setSubmitting }) => {
+		values.formMode = this.props.editMode;
+
+	    addOrUpdateBlock(
+	    	values,
+	    	{ setSubmitting },
+	    	this.props.sectionMetadata,
+	    	this.props.editMode,
+	    	this.props.refreshBlocks
+	    );
+	}
+	
+	render() {
+		return (
+			<FormikFormModel
+				initialFormValues={this.state.initialFormValues}
+				formValidationSchema={this.formValidationSchema}
+				formikSubmit={this.formikSubmit}
+				formTitle="Habilidad informática"
+				formId={this.props.sectionMetadata.formId}
+				sectionIndex={this.props.sectionMetadata.index}
+				editMode={this.props.editMode}
+				removeBlock={this.props.removeBlock}
+				closeForm={this.props.closeForm}>
+				<Row>
+		            <Col md="6">
+		                <div className="form-group">
+		                    <label>Nombre de la aplicación</label>
+		                    <Field id="name" name="name" className="form-control" placeholder="Ej: Microsoft Word"></Field>
+		                    <ErrorMessage name="name" component="div" className="text-danger"></ErrorMessage>
+		                </div>
+		            </Col>
+		            <Col md="6">
+		                <div className="form-group">
+		                    <label>Nivel</label>
+		                    <Field as="select" id="level" name="level" className="custom-select">
+		                    	{levelOptions.map(option =>
+									<option key={option.value} value={option.value}>{option.text}</option>
+		                    	)}
+                        	</Field>
+                            <ErrorMessage name="level" component="div" className="text-danger"></ErrorMessage>
+		                </div>
+		            </Col>
+		        </Row>
+			</FormikFormModel>
+		);
+	}
 }
+
+export { Skill };

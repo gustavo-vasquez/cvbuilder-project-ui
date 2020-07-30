@@ -1,7 +1,7 @@
 export const alertNotifications = {
 	success,
 	error,
-    warning
+    info
 }
 
 function success(message) {
@@ -9,20 +9,16 @@ function success(message) {
 }
 
 function error(message) {
-	alert(message, "alert-danger", "border-error");
+	alert(message, "alert-danger", "border-danger");
 }
 
-function warning(message) {
-    alert(message, "alert-warning", "border-warning");
+function info(message) {
+    alert(message, "alert-info", "border-info");
 }
 
 function alert(message, alertTypeClass, borderColorClass) {
 	let alertDiv = document.createElement("div");
     alertDiv.classList = `alert ${alertTypeClass} alert-wrapper ${borderColorClass}`;
-
-    /*if(borderColor)
-    	alertDiv.style.borderColor = borderColor;*/
-
     alertDiv.innerText = message;
     document.querySelector('#root').append(alertDiv);
     setTimeout(function(){ alertDiv.style.animationName = "notificationSlideUp"; }, 7000);

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 // componentes
 import { authenticationHandler } from '../helpers';
 import validationMessages from '../helpers/validationMessages';
-import { FullSpinner } from '../Spinners';
+import { CircleSpinner } from '../Spinners';
 
 const RegisterForm = (props) => {
 	let history = useHistory();
@@ -73,7 +73,7 @@ const RegisterForm = (props) => {
                         <Button type="submit" variant="default" disabled={isSubmitting}>Registrarse</Button>
                     </Col>
                 </Row>
-                <FullSpinner loading={isSubmitting}></FullSpinner>
+                <CircleSpinner loading={isSubmitting}></CircleSpinner>
             </Form>
         )}
         </Formik>

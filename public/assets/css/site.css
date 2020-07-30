@@ -205,13 +205,14 @@ section a:hover {
 
 /* spinner svg */
 #spinner_loading_wrapper {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    background-color: rgba(19, 64, 15, 0.6);
+    /*backdrop-filter: blur(2px);*/
     left: 0;
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 9999;
+    /*z-index: 9999;*/
     font-family: 'IBM Plex Sans';
     animation-name: fadein;
     animation-duration: 0.5s;
@@ -226,12 +227,11 @@ section a:hover {
   text-align: center;
   color: white;
   font-size: 20px;
+  text-shadow: 1px 1px 1px black;
   top: 47%;
 }
 
 #spinner > svg {
-  /*position: absolute;
-  left: 50%;*/
   -webkit-transition-property: -webkit-transform;
   -webkit-transition-duration: 1.2s;
   -webkit-animation-name: rotate;

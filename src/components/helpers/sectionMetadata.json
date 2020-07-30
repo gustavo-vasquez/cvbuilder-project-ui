@@ -54,5 +54,12 @@
     	"index": 7,
     	"title": "Secciones personalizadas",
     	"formId": "customSections_section_form"
+    },
+    "personalDetail": {
+        "id": "personalDetail",
+        "name": "personalDetail",
+        "index": 8,
+        "title": "Detalles personales",
+        "formId": "personal_detail_section_form"
     }
 }

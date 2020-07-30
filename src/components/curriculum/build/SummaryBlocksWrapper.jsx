@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 
 import { SummaryBlock } from './SummaryBlock';
-import { Study, Certificate, WorkExperience } from './sections';
+import { Study, Certificate, WorkExperience, Language, Skill, Interest, PersonalReference, CustomSection } from './sections';
 import sectionMetadata from '../../helpers/sectionMetadata';
 import { authorizationHeader, handleResponse, alertNotifications } from '../../helpers';
 
@@ -12,7 +12,6 @@ class SummaryBlocksWrapper extends React.Component {
         super(props);
 
         this.state = {
-            forms: ['study_section_form','certificate_section_form','work_experience_section_form'],
             activeForm: '',
             editMode: 0,
             showContextMenu: false,
@@ -60,7 +59,22 @@ class SummaryBlocksWrapper extends React.Component {
                 ReactDOM.render(<WorkExperience closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.workExperiences} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></WorkExperience>, wrapper);
                 break;
             case sectionMetadata.certificates.formId:
-                ReactDOM.render(<Certificate closeForm={this.closeForm} formId={formId} curriculumId={this.props.curriculumId}></Certificate>, wrapper);
+                ReactDOM.render(<Certificate closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.certificates} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Certificate>, wrapper);
+                break;
+            case sectionMetadata.languages.formId:
+                ReactDOM.render(<Language closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.languages} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Language>, wrapper);
+                break;
+            case sectionMetadata.skills.formId:
+                ReactDOM.render(<Skill closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.skills} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Skill>, wrapper);
+                break;
+            case sectionMetadata.interests.formId:
+                ReactDOM.render(<Interest closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.interests} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></Interest>, wrapper);
+                break;
+            case sectionMetadata.personalReferences.formId:
+                ReactDOM.render(<PersonalReference closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.personalReferences} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></PersonalReference>, wrapper);
+                break;
+            case sectionMetadata.customSections.formId:
+                ReactDOM.render(<CustomSection closeForm={this.closeForm} refreshBlocks={this.refreshBlocks} removeBlock={this.removeBlock} sectionMetadata={sectionMetadata.customSections} curriculumId={this.props.curriculumId} editMode={editMode} summaryId={summaryId}></CustomSection>, wrapper);
                 break;
             default:
                 break;
@@ -102,15 +116,23 @@ class SummaryBlocksWrapper extends React.Component {
             .then(success => {
                 // borrar
                 let sectionsInTab = this.state.sectionsInTab;
+                let patchIndex = sectionIndex;
+
+                switch(sectionsInTab.length) {
+                    case 3: break;
+                    case 4: patchIndex = sectionIndex - (sectionsInTab.length - 1); break;
+                    case 1: patchIndex = 0; break;
+                    default: return;
+                }
                 
-                for(var i = 0; i < sectionsInTab[sectionIndex].blocks.length; i++) {
-                    if(sectionsInTab[sectionIndex].blocks[i].summaryId === summaryId) {
-                         sectionsInTab[sectionIndex].blocks.splice(i,1);
+                for(var i = 0; i < sectionsInTab[patchIndex].blocks.length; i++) {
+                    if(sectionsInTab[patchIndex].blocks[i].summaryId === summaryId) {
+                         sectionsInTab[patchIndex].blocks.splice(i,1);
                         break;
                     }
                 }
     
-                this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.warning(success.message));
+                this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.info(success.message));
             })
             .catch(errorMessage => alertNotifications.error(errorMessage));
         }
@@ -118,19 +140,27 @@ class SummaryBlocksWrapper extends React.Component {
 
     refreshBlocks = (sectionIndex, formId, editMode, newBlockData) => {
         let sectionsInTab = this.state.sectionsInTab;
+        let patchIndex = sectionIndex;
+
+        switch(sectionsInTab.length) {
+            case 3: break;
+            case 4: patchIndex = sectionIndex - (sectionsInTab.length - 1); break;
+            case 1: patchIndex = 0; break;
+            default: return;
+        }
 
         if(editMode) {
             // editar
-            for(var i = 0; i < sectionsInTab[sectionIndex].blocks.length; i++) {
-                if(sectionsInTab[sectionIndex].blocks[i].summaryId === newBlockData.summaryId) {
-                     sectionsInTab[sectionIndex].blocks.splice(i, 1, newBlockData);
+            for(var i = 0; i < sectionsInTab[patchIndex].blocks.length; i++) {
+                if(sectionsInTab[patchIndex].blocks[i].summaryId === newBlockData.summaryId) {
+                    sectionsInTab[patchIndex].blocks.splice(i, 1, newBlockData);
                     break;
                 }
             }
         }
         else
             // agregar
-            sectionsInTab[sectionIndex].blocks.push(newBlockData);
+            sectionsInTab[patchIndex].blocks.push(newBlockData);
         
         this.setState({ sectionsInTab: sectionsInTab }, this.closeForm());
     }

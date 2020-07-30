@@ -160,6 +160,10 @@ form[id$=_section_form] {
   -webkit-animation-iteration-count: 1;
 }
 
+form[id$=_section_form] legend {
+  text-align: center;
+}
+
 .navigation-buttons-fixed {
     position: fixed;
     padding-bottom: 10px;

@@ -12,13 +12,14 @@ class TabPages extends React.Component {
 		super(props);
 
         this.state = {
-            curriculumData: null
+            curriculumData: null,
+            currentTabName: ''
         }
 	}
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.curriculumData !== this.props.curriculumData)
-           this.setState({ curriculumData: this.props.curriculumData });
+           this.setState({ curriculumData: this.props.curriculumData, currentTabName: this.props.tabname });
      }
 
     renderSection = tabId => {
@@ -31,27 +32,22 @@ class TabPages extends React.Component {
                     sections.push({blocks: this.state.curriculumData.studies, isVisible: this.state.curriculumData.sectionVisibilities.studiesIsVisible, metadata: sectionMetadata.studies });
                     sections.push({blocks: this.state.curriculumData.workExperiences, isVisible: this.state.curriculumData.sectionVisibilities.workExperiencesIsVisible, metadata: sectionMetadata.workExperiences });
                     sections.push({blocks: this.state.curriculumData.certificates, isVisible: this.state.curriculumData.sectionVisibilities.certificatesIsVisible, metadata: sectionMetadata.certificates });
-                    //sections.push({blocks: [{summaryId: 1, title: "hola", timePeriod: "(2015-2016)", isVisible: false}], isVisible: true, id: "work_experiences", title: "Experiencias laborales", formId: "work_experience_section_form"});
-                    return <SummaryBlocksWrapper sectionsInTab={sections} id={tabId} curriculumId={this.state.curriculumData.curriculumId}></SummaryBlocksWrapper>
-        			//return <StudiesExperiencesWrapper id={this.props.tabnames[1].id}></StudiesExperiencesWrapper>
+                    return <SummaryBlocksWrapper key={tabId} sectionsInTab={sections} id={tabId} curriculumId={this.state.curriculumData.curriculumId}></SummaryBlocksWrapper>
         		case this.props.tabnames[2].id:
                     sections.push({blocks: this.state.curriculumData.languages, isVisible: this.state.curriculumData.sectionVisibilities.languagesIsVisible, metadata: sectionMetadata.languages });
                     sections.push({blocks: this.state.curriculumData.skills, isVisible: this.state.curriculumData.sectionVisibilities.skillsIsVisible, metadata: sectionMetadata.skills });
                     sections.push({blocks: this.state.curriculumData.interests, isVisible: this.state.curriculumData.sectionVisibilities.interestsIsVisible, metadata: sectionMetadata.interests });
                     sections.push({blocks: this.state.curriculumData.personalReferences, isVisible: this.state.curriculumData.sectionVisibilities.personalReferencesIsVisible, metadata: sectionMetadata.personalReferences });
-                    return <SummaryBlocksWrapper sectionsInTab={sections} id={tabId}></SummaryBlocksWrapper>
-        			//return <OtherInformationWrapper id={this.props.tabnames[2].id}></OtherInformationWrapper>
+                    return <SummaryBlocksWrapper key={tabId} sectionsInTab={sections} id={tabId} curriculumId={this.state.curriculumData.curriculumId}></SummaryBlocksWrapper>
         		case this.props.tabnames[3].id:
                     sections.push({blocks: this.state.curriculumData.customSections, isVisible: this.state.curriculumData.sectionVisibilities.customSectionsIsVisible, metadata: sectionMetadata.customSections });
-                    //sections.push({blocks: [{summaryId: 1, title: "hola", timePeriod: "(2015-2016)", isVisible: true},{summaryId: 2, title: "hola de nuevo", timePeriod: "(2016-2020)", isVisible: true}], isVisible: true, id: "custom_sections", title: "Secciones personalizadas", formId: "custom_section_section_form"});
-                    return <SummaryBlocksWrapper sectionsInTab={sections} id={tabId}></SummaryBlocksWrapper>
-        			//return <CustomSectionsWrapper id={this.props.tabnames[3].id}></CustomSectionsWrapper>
+                    return <SummaryBlocksWrapper key={tabId} sectionsInTab={sections} id={tabId} curriculumId={this.state.curriculumData.curriculumId}></SummaryBlocksWrapper>
         		case this.props.tabnames[0].id:
         		default:
         			return <div id={this.props.tabnames[0].id}>
                     			<Card border="success" className="overflow-hidden mb-3">
                         			<Card.Body>
-        								<PersonalDetail></PersonalDetail>
+        								<PersonalDetail formData={this.state.curriculumData.personalDetail} metadata={sectionMetadata.personalDetail} curriculumId={this.state.curriculumData.curriculumId}></PersonalDetail>
         							</Card.Body>
         						</Card>
         					</div>
@@ -67,8 +63,7 @@ class TabPages extends React.Component {
     }
 	
 	render() {
-		let tabId = this.props.tabname;
-		return this.renderSection(tabId);
+		return this.renderSection(this.props.tabname);
 	}
 }
 

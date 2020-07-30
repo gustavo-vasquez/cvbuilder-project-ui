@@ -174,7 +174,7 @@ class Build extends React.Component {
                         </ButtonGroup>
                     </Row>
                     <Row className="flex-column-reverse flex-lg-row">
-                        <Col md={3}>
+                        <Col md="3">
                             <Card border="success" className="cv-preview mb-3">
                             {this.state.curriculumData.templatePath ?
                                 <React.Fragment>
@@ -193,7 +193,7 @@ class Build extends React.Component {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col md={9} className="cv-sections">
+                        <Col md="9" className="cv-sections">
                             <Switch>
                                 <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                                 <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>

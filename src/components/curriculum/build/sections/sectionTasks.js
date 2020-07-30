@@ -1,6 +1,7 @@
 import { handleResponse, authorizationHeader, alertNotifications } from '../../../helpers';
+import sectionMetadata from '../../../helpers/sectionMetadata';
 
-export const addOrUpdateBlock = (values, { setSubmitting }, sectionMetadata, editMode, refreshBlocks) => {
+export const addOrUpdateBlock = (values, { setSubmitting }, metadata, editMode, refreshBlocks) => {
 	setTimeout(async () => {
     	const requestOptions = {
     		method: editMode ? "PUT" : "POST",
@@ -8,19 +9,28 @@ export const addOrUpdateBlock = (values, { setSubmitting }, sectionMetadata, edi
     		body: JSON.stringify(values)
     	}
 
-    	await fetch(`https://localhost:5001/api/curriculum/${sectionMetadata.name}`, requestOptions)
+    	await fetch(`https://localhost:5001/api/curriculum/${metadata.name}`, requestOptions)
 		.then(handleResponse)
 		.then(async success => {
+			switch(metadata.index) {
+				case sectionMetadata.personalReferences.index:
+					if(values.areaCode === null) values.areaCode = '';
+					if(values.telephone === null) values.telephone = '';
+					break;
+				default:
+					break;
+			}
+
 			const requestOptions = {
 				method: "GET",
 				headers: authorizationHeader()
 			}
 
-			await fetch(`https://localhost:5001/api/curriculum/section/${sectionMetadata.index + 1}/${success.id}`, requestOptions)
+			await fetch(`https://localhost:5001/api/curriculum/section/${metadata.index + 1}/${success.id}`, requestOptions)
 			.then(handleResponse)
 			.then(success => {
-				alertNotifications.success(!editMode ? `El bloque ${success.title} se ha creado.` : `El bloque ${success.title} se ha modificado.`);
-				refreshBlocks(sectionMetadata.index, sectionMetadata.formId, editMode, success);
+				alertNotifications.success(!editMode ? `El bloque '${success.title}' se ha creado.` : `El bloque '${success.title}' se ha modificado.`);
+				refreshBlocks(metadata.index, metadata.formId, editMode, success);
 			})
 			.catch(errorMessage => alertNotifications.error(errorMessage));
 		})
@@ -40,7 +50,17 @@ export const loadSectionFormData = (editMode, sectionIndex, summaryId, thisConte
 
         fetch(`https://localhost:5001/api/curriculum/study/${sectionIndex + 1}/${summaryId}`, requestOptions)
 		.then(handleResponse)
-		.then(success => thisContext.setState({ initialFormValues: success }))
+		.then(success => {
+			switch(sectionIndex) {
+				case sectionMetadata.personalReferences.index:
+					if(success.areaCode === null) success.areaCode = '';
+					if(success.telephone === null) success.telephone = '';
+					break;
+				default:
+					break;
+			}
+			thisContext.setState({ initialFormValues: success })
+		})
 		.catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
 	}
 }
@@ -56,13 +76,20 @@ export const dateDropdownLists = {
 	}
 }
 
+export const levelOptions = [
+	{ value: "none", text: "Elegir nivel" },
+	{ value: "beginner", text: "Principiante" },
+	{ value: "intermediate", text: "Intermedio" },
+	{ value: "advanced", text: "Avanzado" }
+]
+
 
 // Funciones
 
 function getMonthList(period) {
 	// Generación del combo con los meses
 	let months = [];
-	months.push({ value: "", text: "Elegir mes" });
+	months.push({ value: "none", text: "Elegir mes" });
 
 	if (period === "END_PERIOD")
 		months.push({ value: "present", text: "Presente" });
@@ -97,7 +124,7 @@ function getYearsList() {
 
 	// Generación del combo con los años
 	let years = [];
-	years.push({ value: "", text: "Año" });
+	years.push({ value: 0, text: "Año" });
 
 	for (var i = currentYear; i >= yearRangeStart; i--)
 		years.push({ value: i, text: i });

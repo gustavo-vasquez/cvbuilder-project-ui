@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 // componentes
 import { authenticationHandler } from '../helpers';
 import validationMessages from '../helpers/validationMessages';
-import { FullSpinner } from '../Spinners';
+import { CircleSpinner } from '../Spinners';
 
 const LoginForm = (props) => {
     let history = useHistory();
@@ -23,11 +23,6 @@ const LoginForm = (props) => {
         })}
         onSubmit={(values, { setSubmitting }) => {
             setTimeout(async () => {
-                //alert(JSON.stringify(values, null, 2));
-                //let dateNow = new Date();
-                //let formattedDate = dateNow.getDate() + "/" + (dateNow.getMonth() + 1) + "/" + dateNow.getFullYear() + " " + checkZero(dateNow.getHours()) + ":" + checkZero(dateNow.getMinutes()) + ":" + checkZero(dateNow.getSeconds());
-                //var loginData = { email: 'cosme.fulanito@gmail.com', loginAt: formattedDate };
-                //props.userLogged(loginData);
                 var result = await authenticationHandler.login(values.loginEmail,values.loginPassword);
                 setSubmitting(false);
 
@@ -63,8 +58,7 @@ const LoginForm = (props) => {
                         <a href="/">¿Has olvidado tu contraseña?</a>
                     </Col>
                 </Row>
-                {/*<Alert className="mb-0" variant="danger">Usuario y/o contraseña incorrecta.</Alert>*/}
-                <FullSpinner loading={isSubmitting}></FullSpinner>
+                <CircleSpinner loading={isSubmitting}></CircleSpinner>
             </Form>
         )}
         </Formik>
@@ -72,11 +66,3 @@ const LoginForm = (props) => {
 }
 
 export default LoginForm;
-
-/*function checkZero(data) {
-    if(data < 10) {
-        data = "0" + data;
-    }
-
-    return data;
-}*/
