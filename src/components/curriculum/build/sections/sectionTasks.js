@@ -1,4 +1,4 @@
-import { handleResponse, authorizationHeader, alertNotifications } from '../../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../../helpers';
 import sectionMetadata from '../../../helpers/sectionMetadata';
 
 export const addOrUpdateBlock = (values, { setSubmitting }, metadata, editMode, refreshBlocks) => {
@@ -11,28 +11,36 @@ export const addOrUpdateBlock = (values, { setSubmitting }, metadata, editMode, 
 
     	await fetch(`https://localhost:5001/api/curriculum/${metadata.name}`, requestOptions)
 		.then(handleResponse)
-		.then(async success => {
-			switch(metadata.index) {
-				case sectionMetadata.personalReferences.index:
-					if(values.areaCode === null) values.areaCode = '';
-					if(values.telephone === null) values.telephone = '';
-					break;
-				default:
-					break;
-			}
+		.then(async result => {
+			if(result) {
+				if(!result.retry) {
+					switch(metadata.index) {
+						case sectionMetadata.personalReferences.index:
+							if(values.areaCode === null) values.areaCode = '';
+							if(values.telephone === null) values.telephone = '';
+							break;
+						default:
+							break;
+					}
 
-			const requestOptions = {
-				method: "GET",
-				headers: authorizationHeader()
-			}
+					const requestOptions = {
+						method: "GET",
+						headers: authorizationHeader()
+					}
 
-			await fetch(`https://localhost:5001/api/curriculum/section/${metadata.index + 1}/${success.id}`, requestOptions)
-			.then(handleResponse)
-			.then(success => {
-				alertNotifications.success(!editMode ? `El bloque '${success.title}' se ha creado.` : `El bloque '${success.title}' se ha modificado.`);
-				refreshBlocks(metadata.index, metadata.formId, editMode, success);
-			})
-			.catch(errorMessage => alertNotifications.error(errorMessage));
+					await fetch(`https://localhost:5001/api/curriculum/block/${metadata.index + 1}/${result.id}`, requestOptions)
+					.then(handleResponse)
+					.then(result => {
+						alertNotifications.success(!editMode ? `El bloque "${result.title}" se ha creado.` : `Bloque "${result.title}" actualizado.`);
+						refreshBlocks(metadata.index, metadata.formId, editMode, result);
+					})
+					.catch(errorMessage => alertNotifications.error(errorMessage));
+				}
+				else {
+					await abortSignal.updateAbortSignal();
+                    addOrUpdateBlock(values, { setSubmitting }, metadata, editMode, refreshBlocks);
+				}
+			}
 		})
     	.catch(errorMessage => alertNotifications.error(errorMessage));
 
@@ -48,18 +56,27 @@ export const loadSectionFormData = (editMode, sectionIndex, summaryId, thisConte
             headers: authorizationHeader()
         }
 
-        fetch(`https://localhost:5001/api/curriculum/study/${sectionIndex + 1}/${summaryId}`, requestOptions)
+        fetch(`https://localhost:5001/api/curriculum/section/${sectionIndex + 1}/${summaryId}`, requestOptions)
 		.then(handleResponse)
-		.then(success => {
-			switch(sectionIndex) {
-				case sectionMetadata.personalReferences.index:
-					if(success.areaCode === null) success.areaCode = '';
-					if(success.telephone === null) success.telephone = '';
-					break;
-				default:
-					break;
+		.then(async result => {
+			if(result) {
+				if(!result.retry) {
+					switch(sectionIndex) {
+						case sectionMetadata.personalReferences.index:
+							if(result.areaCode === null) result.areaCode = '';
+							if(result.telephone === null) result.telephone = '';
+							break;
+						default:
+							break;
+					}
+
+					thisContext.setState({ initialFormValues: result });
+				}
+				else {
+					await abortSignal.updateAbortSignal();
+                    loadSectionFormData(editMode, sectionIndex, summaryId, thisContext);
+				}
 			}
-			thisContext.setState({ initialFormValues: success })
 		})
 		.catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
 	}

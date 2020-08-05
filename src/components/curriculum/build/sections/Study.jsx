@@ -41,8 +41,12 @@ class Study extends React.Component {
 						   .oneOf(dateDropdownLists.startPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
 						   .required(validationMessages.REQUIRED),
 			startYear: Yup.number()
-						  .oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
-						  .required(validationMessages.REQUIRED),
+						  //.oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+						  .when('startMonth', {
+						  	is: (value) => value !== "not_show",
+						  	then: Yup.number().oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.").required(validationMessages.REQUIRED)
+						  }),
+						  //.required(validationMessages.REQUIRED),
 			endMonth: Yup.string()
 						 .oneOf(dateDropdownLists.endPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
 						 .required(validationMessages.REQUIRED),

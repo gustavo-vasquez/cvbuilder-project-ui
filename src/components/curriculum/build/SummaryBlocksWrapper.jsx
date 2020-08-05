@@ -5,7 +5,7 @@ import { Row, Col, Button, Card } from 'react-bootstrap';
 import { SummaryBlock } from './SummaryBlock';
 import { Study, Certificate, WorkExperience, Language, Skill, Interest, PersonalReference, CustomSection } from './sections';
 import sectionMetadata from '../../helpers/sectionMetadata';
-import { authorizationHeader, handleResponse, alertNotifications } from '../../helpers';
+import { authorizationHeader, handleResponse, alertNotifications, abortSignal } from '../../helpers';
 
 class SummaryBlocksWrapper extends React.Component {
     constructor(props) {
@@ -111,28 +111,36 @@ class SummaryBlocksWrapper extends React.Component {
                 headers: authorizationHeader()
             }
     
-            await fetch(`https://localhost:5001/api/curriculum/section/${sectionIndex + 1}/${summaryId}`, requestOptions)
+            await fetch(`https://localhost:5001/api/curriculum/block/${sectionIndex + 1}/${summaryId}`, requestOptions)
             .then(handleResponse)
-            .then(success => {
-                // borrar
-                let sectionsInTab = this.state.sectionsInTab;
-                let patchIndex = sectionIndex;
+            .then(async success => {
+                if(success) {
+                    if(!success.retry) {
+                        // borrar
+                        let sectionsInTab = this.state.sectionsInTab;
+                        let patchIndex = sectionIndex;
 
-                switch(sectionsInTab.length) {
-                    case 3: break;
-                    case 4: patchIndex = sectionIndex - (sectionsInTab.length - 1); break;
-                    case 1: patchIndex = 0; break;
-                    default: return;
-                }
-                
-                for(var i = 0; i < sectionsInTab[patchIndex].blocks.length; i++) {
-                    if(sectionsInTab[patchIndex].blocks[i].summaryId === summaryId) {
-                         sectionsInTab[patchIndex].blocks.splice(i,1);
-                        break;
+                        switch(sectionsInTab.length) {
+                            case 3: break;
+                            case 4: patchIndex = sectionIndex - (sectionsInTab.length - 1); break;
+                            case 1: patchIndex = 0; break;
+                            default: return;
+                        }
+                        
+                        for(var i = 0; i < sectionsInTab[patchIndex].blocks.length; i++) {
+                            if(sectionsInTab[patchIndex].blocks[i].summaryId === summaryId) {
+                                 sectionsInTab[patchIndex].blocks.splice(i,1);
+                                break;
+                            }
+                        }
+
+                        this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.info(success.message));
+                    }
+                    else {
+                        await abortSignal.updateAbortSignal();
+                        this.removeBlock(sectionIndex, summaryId);
                     }
                 }
-    
-                this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.info(success.message));
             })
             .catch(errorMessage => alertNotifications.error(errorMessage));
         }
@@ -165,11 +173,39 @@ class SummaryBlocksWrapper extends React.Component {
         this.setState({ sectionsInTab: sectionsInTab }, this.closeForm());
     }
 
-    searchClassInNodes = (element) => {
-        for(var i = 0; i < element.childNodes.length; i++) {
-            if(element.childNodes[i].classList.contains("contracted-block-group"))
-                return element.childNodes[i];
+    toggleSectionVisibility = async (sectionIndex) => {
+        const requestOptions = {
+            method: "PUT",
+            headers: authorizationHeader()
         }
+
+        await fetch(`https://localhost:5001/api/curriculum/visibility/${sectionIndex + 1}`, requestOptions)
+        .then(handleResponse)
+        .then(async success => {
+            if(success || success === "") {
+                if(!success.retry) {
+                    let sectionsInTab = this.state.sectionsInTab;
+                    let patchIndex = sectionIndex;
+
+                    switch(sectionsInTab.length) {
+                        case 3: break;
+                        case 4: patchIndex = sectionIndex - (sectionsInTab.length - 1); break;
+                        case 1: patchIndex = 0; break;
+                        default: return;
+                    }
+
+                    sectionsInTab[patchIndex].isVisible = !sectionsInTab[patchIndex].isVisible;
+                    sectionsInTab.splice(patchIndex, 1, sectionsInTab[patchIndex]);
+
+                    this.setState({ sectionsInTab: sectionsInTab });
+                }
+                else {
+                    await abortSignal.updateAbortSignal();
+                    this.toggleSectionVisibility(sectionIndex);
+                }
+            }
+        })
+        .catch(errorMessage => alertNotifications.error(errorMessage));
     }
 
 	render() {
@@ -182,7 +218,7 @@ class SummaryBlocksWrapper extends React.Component {
                             <Row className="mb-4">
                                 <Col>
                                     <div className="custom-control custom-switch">
-                                        <input type="checkbox" id={`${sectionInTab.metadata.id}_is_visible`} name={`${sectionInTab.metadata.id}IsVisible`} className="custom-control-input toggle-section-visibility" onChange={() => alert("hooooooooooola!")} defaultChecked={sectionInTab.isVisible} />
+                                        <input type="checkbox" id={`${sectionInTab.metadata.id}_is_visible`} name={`${sectionInTab.metadata.id}IsVisible`} className="custom-control-input toggle-section-visibility" onChange={() => this.toggleSectionVisibility(sectionInTab.metadata.index)} defaultChecked={sectionInTab.isVisible} />
                                         <label className="custom-control-label" htmlFor={`${sectionInTab.metadata.id}_is_visible`}>Visible</label>
                                     </div>
                                 </Col>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Image } from 'react-bootstrap';
 
-import { handleResponse, authorizationHeader, alertNotifications } from '../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
 
 const templates = ["/assets/img/templates/classic.png","/assets/img/templates/elegant.png","/assets/img/templates/modern.png"];
 
@@ -48,12 +48,16 @@ class ChangeTemplateDialog extends React.Component {
 
 		await fetch("https://localhost:5001/api/curriculum/template", requestOptions)
 		.then(handleResponse)
-		.then(success => {
-			if(success.updatedToken)
-				this.changeTemplate(templatePathUrl);
-			else {
-				alertNotifications.success(success.message);
-				this.props.toggleDisplay(templatePathUrl);
+		.then(async success => {
+			if(success) {
+				if(!success.retry) {
+					alertNotifications.success(success.message);
+					this.props.toggleDisplay(templatePathUrl);
+				}
+				else {
+					await abortSignal.updateAbortSignal();
+					this.changeTemplate(templatePathUrl);
+				}
 			}
 		})
 		.catch(error => {

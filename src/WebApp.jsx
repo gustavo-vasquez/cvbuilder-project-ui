@@ -23,7 +23,7 @@ class WebApp extends React.Component {
 	}
 
 	render() {
-		if(authenticationHandler.currentUserValue === undefined)
+		if(this.state.currentUser === undefined)
 			return <SplashScreen></SplashScreen>
 		else
 			return (

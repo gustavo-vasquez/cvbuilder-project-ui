@@ -3,7 +3,7 @@ import { Switch, Route, NavLink, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
-import { handleResponse, authorizationHeader, alertNotifications } from '../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 import { NormalSpinner } from '../../Spinners';
@@ -53,23 +53,23 @@ class Build extends React.Component {
     getCurriculumData = async () => {
         const requestOptions = {
             method: "GET",
-            headers: authorizationHeader()
+            headers: authorizationHeader(),
+            signal: abortSignal.controller.signal
         }
 
-        await fetch("https://localhost:5001/api/curriculum", requestOptions)
+        return fetch("https://localhost:5001/api/curriculum", requestOptions)
         .then(handleResponse)
-        .then(data => {
-            if(data.updatedToken) {
-                this.getCurriculumData();
-            }
-            else {
-                this.setState({curriculumData: data});
+        .then(async data => {
+            if(data) {
+                if(!data.retry)
+                    this.setState({ curriculumData: data });
+                else {
+                    await abortSignal.updateAbortSignal();
+                    this.getCurriculumData();
+                }
             }
         })
-        .catch(error => {
-            if(error)
-                alertNotifications.error(error || error.message);
-        });
+        .catch(error => alertNotifications.error(error));
     }
 
     toggleChooseTemplateDialogButton(e) {

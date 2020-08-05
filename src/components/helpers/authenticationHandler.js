@@ -3,8 +3,9 @@ import { handleResponse } from './handleResponse';
 import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
-var currentUserSubject = new BehaviorSubject(undefined);
-setTimeout(async () => await currentUserSubject.next(getValidUserData()), 400);
+var currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY)));
+//var currentUserSubject = new BehaviorSubject(setTimeout(async () => await getValidUserData()), 500); //new BehaviorSubject(undefined);
+//setTimeout(async () => await getValidUserData(), 500);
 //console.log(currentUserSubject);
 
 export const authenticationHandler = {
@@ -15,7 +16,8 @@ export const authenticationHandler = {
     get currentUserValue() {
         return currentUserSubject.value
     },
-    exchangeToken
+    exchangeToken,
+    getValidUserData
 };
 
 function register(email, password, confirmPassword, termsAndConditions) {
@@ -73,10 +75,8 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
 
             if(updateUserSubject) {
                 currentUserSubject.next(storedUser);
-                return true;
+                return { retry: true };
             }
-            else
-                return JSON.stringify(storedUser);
         })
         .catch(errorMessage => {
             alertNotifications.error(errorMessage);
@@ -88,25 +88,25 @@ function getValidUserData() {
     let currentUserString = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
 
     if(!currentUserString)
-        return null;
+        return logout();
 
     let currentUserObject = JSON.parse(currentUserString);
 
     fetch(`https://localhost:5001/api/account/validToken?token=${currentUserObject.token}`)
     .then(handleResponse)
-    .then(tokenIsValid => {
+    .then(async tokenIsValid => {console.log("el token es valido: " + tokenIsValid);
         if(!tokenIsValid) {
-            let result = exchangeToken(currentUserObject.token, currentUserObject.refreshToken);
-            if(result && typeof result === "object")
-                return result;
+            let result = await exchangeToken(currentUserObject.token, currentUserObject.refreshToken);
+            if(result && result.token && result.refreshToken)
+                currentUserSubject.next(result);
         }
     })
     .catch(errorMessage => {
         alertNotifications.error(errorMessage);
-        return currentUserSubject.next(currentUserObject);
+        return logout();
     });
 
-    return currentUserObject;
+    return currentUserSubject.next(currentUserObject);
 }
 
 function logout() {
