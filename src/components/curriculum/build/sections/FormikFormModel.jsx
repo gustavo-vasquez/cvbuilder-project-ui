@@ -24,7 +24,7 @@ export const FormikFormModel = (props) => {
 			            </Col>
 			        </Row>
 
-			        {props.children}
+			        {props.useValues ? props.children(values) : props.children}
 			    </fieldset>
 
 			    <Row>

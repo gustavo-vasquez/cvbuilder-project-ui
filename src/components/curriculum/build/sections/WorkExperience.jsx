@@ -41,14 +41,22 @@ class WorkExperience extends React.Component {
 						   .oneOf(dateDropdownLists.startPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
 						   .required(validationMessages.REQUIRED),
 			startYear: Yup.number()
-						  .oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
-						  .required(validationMessages.REQUIRED),
+						  .when('startMonth', {
+						  	is: value => value !== "not_show",
+						  	then: Yup.number()
+						  	.oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+						  	.required(validationMessages.REQUIRED)
+						  }),
 			endMonth: Yup.string()
 						 .oneOf(dateDropdownLists.endPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
 						 .required(validationMessages.REQUIRED),
 			endYear: Yup.number()
-						.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), "Año no válido.")
-						.required(validationMessages.REQUIRED),
+						.when('endMonth', {
+							is: value => value !== "present" && value !== "not_show",
+							then: Yup.number()
+							.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+							.required(validationMessages.REQUIRED)
+						}),
 			description: Yup.string()
 						.max(300, validationMessages.MAX_LENGTH_300)
 		});
@@ -83,7 +91,9 @@ class WorkExperience extends React.Component {
 				sectionIndex={this.props.sectionMetadata.index}
 				editMode={this.props.editMode}
 				removeBlock={this.props.removeBlock}
-				closeForm={this.props.closeForm}>
+				closeForm={this.props.closeForm}
+				useValues={true}>{ (values) =>
+				<React.Fragment>
 				<Row>
 		            <Col>
 		                <div className="form-group">
@@ -124,6 +134,7 @@ class WorkExperience extends React.Component {
 		                        	</Field>
                         			<ErrorMessage name="startMonth" component="div" className="text-danger"></ErrorMessage>
 		                        </Col>
+		                        { values.startMonth !== "not_show" &&
 		                        <Col md="4">
 		                        	<Field as="select" id="startYear" name="startYear" className="custom-select">
 		                        	{dateDropdownLists.startPeriod.years.map(year =>
@@ -131,7 +142,7 @@ class WorkExperience extends React.Component {
 		                        	)}
 		                        	</Field>
                         			<ErrorMessage name="startYear" component="div" className="text-danger"></ErrorMessage>
-		                        </Col>
+		                        </Col> }
 		                    </Row>
 		                </div>
 		            </Col>
@@ -147,6 +158,7 @@ class WorkExperience extends React.Component {
 		                        	</Field>
 		                    		<ErrorMessage name="endMonth" component="div" className="text-danger"></ErrorMessage>
 		                        </Col>
+		                        { values.endMonth !== "present" && values.endMonth !== "not_show" &&
 		                        <Col md="4">
 		                        	<Field as="select" id="endYear" name="endYear" className="custom-select">
 		                        	{dateDropdownLists.endPeriod.years.map(year =>
@@ -154,7 +166,7 @@ class WorkExperience extends React.Component {
 		                        	)}
 		                        	</Field>
                         			<ErrorMessage name="endYear" component="div" className="text-danger"></ErrorMessage>
-		                        </Col>
+		                        </Col> }
 		                    </Row>
 		                </div>
 		            </Col>
@@ -169,6 +181,7 @@ class WorkExperience extends React.Component {
 		                </div>
 		            </Col>
 		        </Row>
+		        </React.Fragment> }
 			</FormikFormModel>
 		);
 	}

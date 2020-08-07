@@ -34,8 +34,12 @@ class Certificate extends React.Component {
 						  .max(100, validationMessages.MAX_LENGTH_100)
 						  .required(validationMessages.REQUIRED),
 			year: Yup.number()
-					 .oneOf(dateDropdownLists.endPeriod.years.map(year => year.value), "Año no válido.")
-					 .required(validationMessages.REQUIRED),
+					 .when('inProgress', {
+					 	is: value => !value,
+					 	then: Yup.number()
+					 	.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+					 	.required(validationMessages.REQUIRED)
+					 }),
 			description: Yup.string()
 							.max(300, validationMessages.MAX_LENGTH_300)
 		});
@@ -69,7 +73,9 @@ class Certificate extends React.Component {
 				sectionIndex={this.props.sectionMetadata.index}
 				editMode={this.props.editMode}
 				removeBlock={this.props.removeBlock}
-				closeForm={this.props.closeForm}>
+				closeForm={this.props.closeForm}
+				useValues={true}>{ (values) =>
+				<React.Fragment>
 				<Row>
 		            <Col md="6">
 		                <div className="form-group">
@@ -105,6 +111,7 @@ class Certificate extends React.Component {
 			                        	<label className="custom-control-label" htmlFor="in_progress">En la actualidad</label>
 		                            </div>
 		                        </Col>
+		                        { !values.inProgress &&
 		                        <Col md="5">
 		                        	<Field as="select" id="year" name="year" className="custom-select">
 		                        		{dateDropdownLists.endPeriod.years.map(year =>
@@ -112,7 +119,7 @@ class Certificate extends React.Component {
 		                        		)}
 		                        	</Field>
 		                            <ErrorMessage name="year" component="div" className="text-danger"></ErrorMessage>
-		                        </Col>
+		                        </Col> }
 		                    </Row>
 		                </div>
 		            </Col>
@@ -127,7 +134,8 @@ class Certificate extends React.Component {
 		                </div>
 		            </Col>
 		        </Row>
-			</FormikFormModel>
+		        </React.Fragment> }
+	        </FormikFormModel>
 		);
 	}
 }
