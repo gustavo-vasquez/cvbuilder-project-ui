@@ -19,7 +19,8 @@ class TabPages extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.curriculumData !== this.props.curriculumData)
-            this.setState({ sectionsData: [
+            this.setState({
+                personalDetail: this.props.curriculumData.personalDetail, sectionsData: [
                 {blocks: this.props.curriculumData.studies, isVisible: this.props.curriculumData.sectionVisibilities.studiesIsVisible, metadata: sectionMetadata.studies},
                 {blocks: this.props.curriculumData.workExperiences, isVisible: this.props.curriculumData.sectionVisibilities.workExperiencesIsVisible, metadata: sectionMetadata.workExperiences},
                 {blocks: this.props.curriculumData.certificates, isVisible: this.props.curriculumData.sectionVisibilities.certificatesIsVisible, metadata: sectionMetadata.certificates},
@@ -29,11 +30,10 @@ class TabPages extends React.Component {
                 {blocks: this.props.curriculumData.personalReferences, isVisible: this.props.curriculumData.sectionVisibilities.personalReferencesIsVisible, metadata: sectionMetadata.personalReferences},
                 {blocks: this.props.curriculumData.customSections, isVisible: this.props.curriculumData.sectionVisibilities.customSectionsIsVisible, metadata: sectionMetadata.customSections}
             ], currentTabName: this.props.tabname });
-           //this.setState({ curriculumData: this.props.curriculumData, currentTabName: this.props.tabname });
      }
 
     renderSection = tabId => {
-        if(this.state.sectionsData) {
+        if(this.state.sectionsData && this.state.personalDetail) {
             this.props.navigationButtonsDisplay();
         	
             switch(tabId) {
@@ -63,7 +63,12 @@ class TabPages extends React.Component {
         			return <div id={this.props.tabnames[0].id}>
                     			<Card border="success" className="overflow-hidden mb-3">
                         			<Card.Body>
-        								<PersonalDetail formData={this.props.curriculumData.personalDetail} metadata={sectionMetadata.personalDetail} curriculumId={this.props.curriculumData.curriculumId}></PersonalDetail>
+        								<PersonalDetail
+                                            formData={this.state.personalDetail}
+                                            metadata={sectionMetadata.personalDetail}
+                                            curriculumId={this.props.curriculumData.curriculumId}
+                                            updatePhotoPreview={this.updatePhotoPreview}>
+                                        </PersonalDetail>
         							</Card.Body>
         						</Card>
         					</div>
@@ -76,6 +81,12 @@ class TabPages extends React.Component {
                         </Card.Body>
                     </Card>
         }
+    }
+
+    updatePhotoPreview = (newPhoto) => {
+        let personalDetail = this.state.personalDetail;
+        personalDetail.photo = newPhoto;
+        this.setState({ personalDetail: personalDetail });
     }
 	
 	render() {

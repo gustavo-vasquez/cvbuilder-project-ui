@@ -3,13 +3,6 @@ import { authenticationHandler } from './authenticationHandler';
 export const handleResponse = (response) => {
     return response.text().then(async text => {
         const data = text && JSON.parse(text);
-        /*let data;
-        try {
-            data = response.json();
-        }
-        catch {
-            data = {};
-        }*/
 
         if (!response.ok) {
             if ([401, 403].indexOf(response.status) !== -1) {

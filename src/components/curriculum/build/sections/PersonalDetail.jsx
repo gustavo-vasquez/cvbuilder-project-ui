@@ -4,7 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import validationMessages from '../../../helpers/validationMessages';
-import { handleResponse, authorizationHeader, alertNotifications } from '../../../helpers';
+import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../../helpers';
 
 class PersonalDetail extends React.Component {
 	constructor(props) {
@@ -17,8 +17,8 @@ class PersonalDetail extends React.Component {
 				'lastName': this.props.formData.lastName || '',
 				'email': this.props.formData.email || '',
 				'profession': this.props.formData.profession || '',
-				'uploadedPhoto': undefined,
-				'photo': '',
+				'uploadedPhoto': '',
+				'photo': this.props.formData.photo || '',
 				'address': this.props.formData.address || '',
 				'city': this.props.formData.city || '',
 				'postalCode': this.props.formData.postalCode || '',
@@ -38,6 +38,8 @@ class PersonalDetail extends React.Component {
 			}
 		}
 
+		this.photoPreview = this.props.formData.photo;
+
 		this.formValidationSchema = Yup.object({
 			name: Yup.string()
 					 .max(100, validationMessages.MAX_LENGTH_100)
@@ -48,6 +50,19 @@ class PersonalDetail extends React.Component {
 			email: Yup.string()
 					  .max(100, validationMessages.MAX_LENGTH_100)
 					  .required(validationMessages.REQUIRED),
+			uploadedPhoto: Yup.mixed()
+							  .test("fileExtension", validationMessages.POSTED_FILE_EXTENSIONS, (value) => {
+							  	if (!value)
+							  		return true; // necesario si el archivo es opcional
+
+							  	return ["image/jpeg","image/png"].includes(value.type);
+							  })
+							  .test("fileSize", validationMessages.MAX_FILE_SIZE, (value) => {
+								if (!value)
+									return true; // necesario si el archivo es opcional
+
+    							return value.size <= 1048576;
+							  }),
 			address: Yup.string()
 						.max(100, validationMessages.MAX_LENGTH_100),
 			city: Yup.string()
@@ -97,10 +112,31 @@ class PersonalDetail extends React.Component {
 
 	componentDidMount() {
 		document.querySelector(".tabs-group").firstElementChild.classList.add('active');
+		document.querySelector(".profile-photo").addEventListener("click", () => document.getElementById("uploaded_photo").click(), false);
 	}
 
 	componentWillUnmount() {
 		document.querySelector(".tabs-group").firstElementChild.classList.remove('active');
+		document.querySelector(".profile-photo").removeEventListener("click", () => document.getElementById("uploaded_photo").click(), false);
+	}
+
+	profilePhotoUploaded = (event, setFieldValue) => {
+		setFieldValue("uploadedPhoto", event.currentTarget.files[0]);
+		
+		if (window.File && window.FileList && window.FileReader) {
+	        var inputFile = event.target;
+
+	        if (inputFile.files && inputFile.files[0]) {
+	            var reader = new FileReader();
+
+	            reader.onload = (e) => {
+	                document.querySelector('.profile-photo').style.backgroundImage = `url(${e.target.result})`;
+	                this.photoPreview = e.target.result;
+	            }
+
+	            reader.readAsDataURL(inputFile.files[0]);
+	    	}
+		}
 	}
 
 	formikSubmit = (values, { setSubmitting }) => {
@@ -111,34 +147,48 @@ class PersonalDetail extends React.Component {
 		values.mobilePhone = values.mobilePhone !== '' ? parseInt(values.mobilePhone) : null;
 		values.formMode = 1;
 
+		const formData = new FormData();
+
+		for(var key in values)
+			formData.append(key, values[key]);
+
 		setTimeout(async () => {
             const requestOptions = {
 	    		method: "PUT",
-	    		headers: { ...authorizationHeader(), "Content-Type": "application/json" },
-	    		body: JSON.stringify(values)
+	    		headers: { ...authorizationHeader() },
+	    		body: formData
 	    	}
 
 			await fetch(`https://localhost:5001/api/curriculum/${this.props.metadata.name}`, requestOptions)
 			.then(handleResponse)
-			.then(result => {
-				if(!values.postalCode) values.postalCode = '';
-				if(!values.areaCodeLP) values.areaCodeLP = '';
-				if(!values.linePhone) values.linePhone = '';
-				if(!values.areaCodeMP) values.areaCodeMP = '';
-				if(!values.mobilePhone) values.mobilePhone = '';
-				alertNotifications.success(result.message);
+			.then(async result => {
+				if(result) {
+					if(!result.retry) {
+						if(!values.postalCode) values.postalCode = '';
+						if(!values.areaCodeLP) values.areaCodeLP = '';
+						if(!values.linePhone) values.linePhone = '';
+						if(!values.areaCodeMP) values.areaCodeMP = '';
+						if(!values.mobilePhone) values.mobilePhone = '';
+						this.props.updatePhotoPreview(this.photoPreview);
+						alertNotifications.success(result.message);
+					}
+					else {
+						await abortSignal.updateAbortSignal();
+						this.formikSubmit(values, { setSubmitting });
+					}
+				}
 			})
 			.catch(errorMessage => alertNotifications.error(errorMessage));
 
-            setSubmitting(false);
+			setSubmitting(false);
         }, 400);
 	}
 
 	render() {
 		return (
 			<Formik initialValues={this.state.initialFormValues} validationSchema={this.formValidationSchema} onSubmit={this.formikSubmit} enableReinitialize>
-			{({ values, isSubmitting }) => (
-				<Form id={this.props.metadata.formId}>
+			{({ values, isSubmitting, setFieldValue }) => (
+				<Form id={this.props.metadata.formId} encType="multipart/form-data">
 					<legend className="mb-4">{this.props.metadata.title}</legend>
 					<fieldset>
 				        <Row>
@@ -161,12 +211,13 @@ class PersonalDetail extends React.Component {
 				            </Col>
 				            <Col md="5">
 				                <div className="form-group text-center">
-				                	<Field type="file" id="uploadedPhoto" name="uploadedPhoto" className="d-none"></Field>
-				                    <ErrorMessage name="uploadedPhoto" component="div" className="text-danger"></ErrorMessage>
-				                    {values.photo !== 0 ? <Button type="button" variant="outline-success" className="profile-photo" style={{backgroundImage: values.photo}}></Button>
+				                	<input id="uploaded_photo" name="uploadedPhoto" type="file" className="d-none" accept="image/*" onChange={(event) => this.profilePhotoUploaded(event, setFieldValue)}/>
+				                    {values.photo ? <Button type="button" variant="outline-success" className="profile-photo" style={{backgroundImage: `url(${values.photo})`}}></Button>
 				                    : <Button type="button" variant="outline-success" className="profile-photo"></Button>}
+				                    <span className="d-inline-block pt-2">Formatos: jpg, jpeg, png</span>
+				                    <span className="d-inline-block">Peso máximo: 1mb</span>
+				                	<ErrorMessage name="uploadedPhoto" component="div" className="text-danger"></ErrorMessage>
 				                </div>
-				                <ErrorMessage name="uploadedPhoto" component="div" className="text-danger"></ErrorMessage>
 				            </Col>
 				        </Row>
 

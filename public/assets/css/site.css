@@ -206,7 +206,7 @@ section a:hover {
 /* spinner svg */
 #spinner_loading_wrapper {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(32, 45, 31, 0.42);
     /*backdrop-filter: blur(2px);*/
     left: 0;
     top: 0;
@@ -229,7 +229,13 @@ section a:hover {
   font-size: 20px;
   text-transform: uppercase;
   text-shadow: 1px 1px 1px black;
-  top: 47%;
+  top: 40%;
+  background-color: rgba(35, 53, 33, 0.53);
+  padding: 1rem;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 4px;
+  border: 1px solid #495057;
 }
 
 #spinner > svg {
