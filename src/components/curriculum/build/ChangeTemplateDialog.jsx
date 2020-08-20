@@ -14,10 +14,14 @@ class ChangeTemplateDialog extends React.Component {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidMount() {
+		this.setState({ activeTemplate: templates.indexOf(this.props.templatePath) });
+	}
+
+	/*componentDidUpdate(prevProps, prevState) {
 		if(prevProps.templatePath !== this.props.templatePath)
 	 		this.setState({activeTemplate: templates.indexOf(this.props.templatePath)});
- 	}
+ 	}*/
 
 	slideTo = (direction) => {
 		let currentTemplate = this.state.activeTemplate;
@@ -52,7 +56,7 @@ class ChangeTemplateDialog extends React.Component {
 			if(success) {
 				if(!success.retry) {
 					alertNotifications.success(success.message);
-					this.props.toggleDisplay(templatePathUrl);
+					this.props.toggleDisplay(templatePathUrl, success.templateName);
 				}
 				else {
 					await abortSignal.updateAbortSignal();

@@ -6,6 +6,7 @@ import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-boo
 import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
+//import Finished from '../ready/Finished';
 import { NormalSpinner } from '../../Spinners';
 
 var timer = null;
@@ -24,10 +25,6 @@ class Build extends React.Component {
             showChangeTemplateDialog: false,
             curriculumData: {}
         }
-
-        this.toggleChooseTemplateDialogButton = this.toggleChooseTemplateDialogButton.bind(this);
-        this.navigationButtonsDisplay = this.navigationButtonsDisplay.bind(this);
-        this.isElementInView = this.isElementInView.bind(this);
     }
 
     componentDidMount() {
@@ -72,20 +69,20 @@ class Build extends React.Component {
         .catch(error => alertNotifications.error(error));
     }
 
-    toggleChooseTemplateDialogButton(e) {
-        let button = e.target.querySelector("#choose_template");
-        button.classList.contains("invisible") ? button.classList.remove("invisible") : button.classList.add("invisible");
+    toggleChooseTemplateDialogButton = event => {
+        let button = event.target.querySelector("#choose_template");
+        if(button)
+            button.classList.contains("invisible") ? button.classList.remove("invisible") : button.classList.add("invisible");
     }
 
-    handleChangeTemplateDialog = (newTemplatePathUrl) => {
-        if(newTemplatePathUrl) {
+    handleChangeTemplateDialog = newTemplatePathUrl => {
+        if(newTemplatePathUrl)
             this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog, curriculumData: { ...prevState.curriculumData, templatePath: newTemplatePathUrl } }));
-        }
         else
             this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog }));
     }
 
-    isElementInView(element) {
+    isElementInView = element => {
         let pageTop = document.documentElement.offsetTop;
         let pageBottom = pageTop + document.documentElement.clientHeight;
         let elementTop = element.getBoundingClientRect().y;
@@ -94,7 +91,7 @@ class Build extends React.Component {
         return elementTop <= pageBottom && elementBottom >= pageTop;
     }
 
-    navigationButtonsDisplay() {
+    navigationButtonsDisplay = () => {
         if(timer !== null) {
             clearTimeout(timer);
         }
@@ -117,7 +114,7 @@ class Build extends React.Component {
         return parameter === "build" ? this.state.tabnames[0].id : parameter;
     }
 
-    switchingTabs = (toBack) => {
+    switchingTabs = toBack => {
         let parameter = this.getCurrentLocation();
         let { tabnames } = this.state;
         let pathUrl = "";
@@ -180,6 +177,7 @@ class Build extends React.Component {
                                 <React.Fragment>
                                     <Image src={this.state.curriculumData.templatePath} alt="active_template" fluid />
                                     <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
+                                    <ChangeTemplateDialog templatePath={this.state.curriculumData.templatePath} toggleDisplay={this.handleChangeTemplateDialog} visible={this.state.showChangeTemplateDialog}></ChangeTemplateDialog>
                                 </React.Fragment>
                                 : <Card.Body>
                                     <NormalSpinner></NormalSpinner>
@@ -210,7 +208,6 @@ class Build extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-                <ChangeTemplateDialog templatePath={this.state.curriculumData.templatePath} toggleDisplay={this.handleChangeTemplateDialog} visible={this.state.showChangeTemplateDialog}></ChangeTemplateDialog>
             </section>
         );
     }

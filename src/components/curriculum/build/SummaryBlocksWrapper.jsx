@@ -83,6 +83,7 @@ class SummaryBlocksWrapper extends React.Component {
 
     closeForm = () => {
         let lastActiveForm = document.querySelector("form[id$=_section_form]");
+        
         if(lastActiveForm)
             lastActiveForm.remove();
     }
@@ -116,7 +117,6 @@ class SummaryBlocksWrapper extends React.Component {
             .then(async success => {
                 if(success) {
                     if(!success.retry) {
-                        // borrar
                         let sectionsInTab = this.state.sectionsInTab;
                         let patchIndex = sectionIndex;
 
@@ -134,7 +134,10 @@ class SummaryBlocksWrapper extends React.Component {
                             }
                         }
 
-                        this.setState({ sectionsInTab: sectionsInTab }, alertNotifications.info(success.message));
+                        this.setState({ sectionsInTab: sectionsInTab }, () => {
+                            this.closeForm();
+                            alertNotifications.info(success.message);
+                        });
                     }
                     else {
                         await abortSignal.updateAbortSignal();

@@ -234,7 +234,7 @@ class PersonalDetail extends React.Component {
 				                        <label>{!values.summaryCustomTitle ? 'Resumen profesional' : values.summaryCustomTitle}</label>
 				                        <Button id="rename_title" type="button" variant="outline-info" size="sm"><i className="fas fa-pencil-alt"></i> Editar</Button>
 				                    </div>
-				                    <Field as="textarea" id="summary" name="summary" className="form-control" rows="3" placeholder="Máximo 300 caracteres..."></Field>
+				                    <Field as="textarea" id="summary" name="summary" className="form-control" rows="4" placeholder="Máximo 300 caracteres..."></Field>
 				                    <ErrorMessage name="summary" component="div" className="text-danger"></ErrorMessage>
 				                    <Col md="5" className="custom-control custom-switch">
 				                    	<Field type="checkbox" id="summary_is_visible" name="summaryIsVisible" className="custom-control-input"></Field>

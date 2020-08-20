@@ -8,7 +8,7 @@ fieldset {
     background-repeat: repeat;
 }
 
-#building_cv:before {
+/*#building_cv:before {
     content: '';
     display: block;
     position: fixed;
@@ -18,7 +18,7 @@ fieldset {
     height: 100%;
     background-color: white;
     opacity: 0.6;
-}
+}*/
 
 .cv-sections .card-body {
   	animation-name: slideDown;
@@ -119,9 +119,20 @@ fieldset {
     overflow: hidden;
 }
 
+.contracted-block {
+  position: relative;
+  transition: all 0.5s;
+}
+
 .contracted-block span {
   font-size: 1rem;
 	position: relative;
+}
+
+.contracted-block:hover {
+  -webkit-box-shadow: 0 3px 3px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0 3px 3px rgba(0,0,0,0.25);
+  box-shadow: 0 3px 3px rgba(0,0,0,0.25);
 }
 
 #block_context_menu {

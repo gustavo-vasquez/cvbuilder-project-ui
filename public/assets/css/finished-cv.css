@@ -9,6 +9,10 @@
     }
 }
 
+#curriculum_finished {
+    margin-top: 1.5rem;
+}
+
 .finished-cv {
     background-image: url('../img/bg-finished-cv.jpg');
     background-size: contain;
@@ -16,7 +20,7 @@
 }
 
 .finished-cv:before {
-    content: '';
+    /*content: '';
     display: block;
     position: fixed;
     top: 0;
@@ -24,7 +28,7 @@
     width: 100%;
     height: 100%;
     background-color: white;
-    opacity: 0.6;
+    opacity: 0.6;*/
 }
 
 .template-actions-wrapper {
@@ -63,16 +67,15 @@
 }
 
 #loading_print_pdf {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     animation-name: slideDown;
   	animation-duration: 3.5s;
   	animation-iteration-count: 1;
   	-webkit-animation-name: slideDown;
   	-webkit-animation-duration: 3.5s;
   	-webkit-animation-iteration-count: 1;
-}
-
-.modal {
-    padding-right: 0px !important;
 }
 
 .cv-preview-img {

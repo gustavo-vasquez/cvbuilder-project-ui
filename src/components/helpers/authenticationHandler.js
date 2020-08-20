@@ -4,9 +4,6 @@ import { alertNotifications } from './alertNotifications';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY)));
-//var currentUserSubject = new BehaviorSubject(setTimeout(async () => await getValidUserData()), 500); //new BehaviorSubject(undefined);
-//setTimeout(async () => await getValidUserData(), 500);
-//console.log(currentUserSubject);
 
 export const authenticationHandler = {
     register,

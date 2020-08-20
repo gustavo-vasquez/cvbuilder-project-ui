@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { NavigationBar, Main, Footer } from './components/home';
 import { SignIn } from './components/authentication';
 import { Build } from './components/curriculum/build';
+import Finished from './components/curriculum/ready/Finished';
 import NotFound from './components/NotFound';
 import { authenticationHandler } from './components/helpers';
 import { SplashScreen } from './SplashScreen';
@@ -41,7 +42,7 @@ class WebApp extends React.Component {
 						}>
 						</PrivateRoute>
 						<PrivateRoute path="/curriculum/finished">
-							<NotFound></NotFound>
+							<Finished></Finished>
 						</PrivateRoute>
 						<Route exact path="/">
 							<Main></Main>

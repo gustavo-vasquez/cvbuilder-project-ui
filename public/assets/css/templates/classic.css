@@ -6,7 +6,13 @@
     padding: 0.8cm 1cm;
     background: white;
     outline: 1px #28a745 solid;
-    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+    animation-name: fadein;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    -webkit-animation-name: fadein;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: 1;
+    box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.1);
 }
 
 /*@page {
@@ -26,8 +32,8 @@
 }
 
 .cv-header img {
-    width: 100px;
-    border: 1px solid lightgray;
+    width: 6.25rem;
+    border: 1px solid darkgray;
 }
 
 .cv-header .title {
