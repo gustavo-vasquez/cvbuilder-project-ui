@@ -67,7 +67,8 @@ class TabPages extends React.Component {
                                             formData={this.state.personalDetail}
                                             metadata={sectionMetadata.personalDetail}
                                             curriculumId={this.props.curriculumData.curriculumId}
-                                            updatePhotoPreview={this.updatePhotoPreview}>
+                                            updatePhotoPreview={this.updatePhotoPreview}
+                                            updatePersonalDetailValues={this.updatePersonalDetailValues}>
                                         </PersonalDetail>
         							</Card.Body>
         						</Card>
@@ -75,7 +76,7 @@ class TabPages extends React.Component {
         	}
         }
         else {
-            return <Card border="success" className="overflow-hidden mb-3">
+            return <Card border="success" className="overflow-hidden no-animation mb-3">
                         <Card.Body>
                             <NormalSpinner></NormalSpinner>
                         </Card.Body>
@@ -83,10 +84,14 @@ class TabPages extends React.Component {
         }
     }
 
-    updatePhotoPreview = (newPhoto) => {
+    updatePhotoPreview = newPhoto => {
         let personalDetail = this.state.personalDetail;
         personalDetail.photo = newPhoto;
         this.setState({ personalDetail: personalDetail });
+    }
+
+    updatePersonalDetailValues = newValues => {
+        this.setState({ personalDetail: newValues });
     }
 	
 	render() {

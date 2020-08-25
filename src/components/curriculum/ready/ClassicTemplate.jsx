@@ -41,10 +41,10 @@ export const ClassicTemplate = props => {
 		    </Row>
 		    { props.cvready.personalDetail.summaryIsVisible &&
 		        <Row className="cv-block">
-		            <Col md="4">
+		            <Col xs="4">
 		                <h3 className="block-title text-uppercase">{ props.cvready.personalDetail.summaryCustomTitle || defaultProperties.DEFAULT_SUMMARY_TITLE }</h3>
 		            </Col>
-		            <Col md="8">
+		            <Col xs="8">
 		                <p>{ props.cvready.personalDetail.summary }</p>
 		            </Col>
 		        </Row>
@@ -60,11 +60,11 @@ export const ClassicTemplate = props => {
 		        </Row>
 		        { props.cvready.workExperiences.map((work, index) =>
 		            <Row className="cv-block" key={ index }>
-		                <Col md="4">
+		                <Col xs="4">
 		                    <h5 className="block-subtitle font-weight-bold">{ work.company }</h5>
 		                    <h5 className="block-subtitle">{ work.city }</h5>
 		                </Col>
-		                <Col md="8">
+		                <Col xs="8">
 		                    <h5 className="block-subtitle font-weight-bold">{ work.job }</h5>
 		                    { work.timePeriod && <h5 className="block-subtitle">{ work.timePeriod }</h5> }
 		                    { work.description && <p>{ work.description }</p> }
@@ -84,14 +84,14 @@ export const ClassicTemplate = props => {
 		        </Row>
 		        { props.cvready.certificates.map((certificate, index) =>
 		            <Row className="cv-block" key={ index }>
-		                <Col md="4">
+		                <Col xs="4">
 		                    <h5 className="block-subtitle font-weight-bold">{ certificate.institute }</h5>
 		                    { certificate.onlineMode ?
 	                    	  <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_ONLINE_TEXT }</h5>
 		                    : <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_CLASS_TEXT }</h5>
 		                	}
 		                </Col>
-		                <Col md="8">
+		                <Col xs="8">
 		                    <h5 className="block-subtitle font-weight-bold">{ certificate.name }</h5>
 		                    { certificate.inProgress ?
 		                      <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_INPROGRESS_TEXT }</h5>
@@ -115,11 +115,11 @@ export const ClassicTemplate = props => {
 		        </Row>
 		        { props.cvready.studies.map((study, index) =>
 	            <Row className="cv-block" key={ index }>
-	                <Col md="4">
+	                <Col xs="4">
 	                    <h5 className="block-subtitle font-weight-bold">{ study.institute }</h5>
 	                    <h5 className="block-subtitle">{ study.city }</h5>
 	                </Col>
-	                <Col md="8">
+	                <Col xs="8">
 	                    <h5 className="block-subtitle font-weight-bold">{ study.title }</h5>
 	                    { study.timePeriod && <h5 className="block-subtitle">{ study.timePeriod }</h5> }
 	                    { study.description && <p>{ study.description }</p> }
@@ -139,11 +139,11 @@ export const ClassicTemplate = props => {
 		        </Row>
 		        { props.cvready.personalReferences.map((reference, index) =>
 					<Row className="cv-block" key={ index }>
-			            <Col md="4">
+			            <Col xs="4">
 			                <h5 className="block-subtitle font-weight-bold">{ reference.company }</h5>
 			                { reference.phoneNumber && <h5 className="block-subtitle">reference.phoneNumber</h5> }
 			            </Col>
-			            <Col md="8">
+			            <Col xs="8">
 			                <h5 className="block-subtitle font-weight-bold">{ reference.contactPerson }</h5>
 			                <h5 className="block-subtitle">{ reference.email }</h5>
 			            </Col>
@@ -154,10 +154,10 @@ export const ClassicTemplate = props => {
 		    
 		    { props.cvready.sectionVisibility.languagesIsVisible && props.cvready.languages.length > 0 &&
 		        <Row className="cv-block">
-		            <Col md="4">
+		            <Col xs="4">
 		                <h3 className="block-title text-uppercase">Idiomas</h3>
 		            </Col>
-		            <Col md="8">
+		            <Col xs="8">
 		                <p>{ formattedLanguageOrSkillList(props.cvready.languages) }</p>
 		            </Col>
 	            </Row>
@@ -165,10 +165,10 @@ export const ClassicTemplate = props => {
 		        
 		    { props.cvready.sectionVisibility.skillsIsVisible && props.cvready.skills.length > 0 &&
 		        <Row className="cv-block">
-		            <Col md="4">
+		            <Col xs="4">
 		                <h3 className="block-title text-uppercase">Habilidades</h3>
 		            </Col>
-		            <Col md="8">
+		            <Col xs="8">
 		                <p>{ formattedLanguageOrSkillList(props.cvready.skills) }</p>
 		            </Col>
 		        </Row>
@@ -176,10 +176,10 @@ export const ClassicTemplate = props => {
 		        
 		    { props.cvready.sectionVisibility.interestsIsVisible && props.cvready.interests.length > 0 &&
 		        <Row className="cv-block">
-		            <Col md="4">
+		            <Col xs="4">
 		                <h3 className="block-title text-uppercase">Intereses</h3>
 		            </Col>
-		            <Col md="8">
+		            <Col xs="8">
 		                <p>{ formattedInterestList(props.cvready.interests) }</p>
 		            </Col>
 		        </Row>
@@ -189,10 +189,10 @@ export const ClassicTemplate = props => {
 	    	&& props.cvready.customSections.length > 0
 	    	&& props.cvready.customSections.map((customSection, index) =>
 	            <Row class="row cv-block" key={ index }>
-	                <Col md="4">
+	                <Col xs="4">
 	                    <h3 className="block-title text-uppercase">{ customSection.sectionName }</h3>
 	                </Col>
-	                <Col md="8">
+	                <Col xs="8">
 	                    <p className="white-space-pre-wrap">{ customSection.description }</p>
 	                </Col>
 	            </Row>

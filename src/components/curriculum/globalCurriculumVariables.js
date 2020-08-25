@@ -1,6 +1,7 @@
 export const defaultProperties = {
 	DEFAULT_AVATAR_PATH: "/img/profile_coat.png",
     DEFAULT_SUMMARY_TITLE: "Resumen profesional",
+    SOCIALPLACEHOLDER: "URL o nombre de usuario",
     FACEBOOK_DOMAIN_START: "https://www.facebook.com/",
     LINKEDIN_DOMAIN_START: "https://www.linkedin.com/in/",
     GITHUB_DOMAIN_START: "https://github.com/",

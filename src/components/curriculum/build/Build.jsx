@@ -6,10 +6,21 @@ import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-boo
 import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
-//import Finished from '../ready/Finished';
 import { NormalSpinner } from '../../Spinners';
 
 var timer = null;
+const navigationButtonsText = {
+    desktop: {
+        previous: "Anterior",
+        visualize: "Visualizar CV",
+        next: "Siguiente"
+    },
+    mobile: {
+        previous: "Ant",
+        visualize: "Ver CV",
+        next: "Sig"
+    }
+}
 
 class Build extends React.Component {
     constructor(props) {
@@ -23,7 +34,8 @@ class Build extends React.Component {
                 { id: "own_sections", text: "Secciones personalizadas" }
             ],
             showChangeTemplateDialog: false,
-            curriculumData: {}
+            curriculumData: {},
+            currentNavigationButtonsText: navigationButtonsText.desktop
         }
     }
 
@@ -33,8 +45,10 @@ class Build extends React.Component {
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
         window.addEventListener("scroll", this.navigationButtonsDisplay, false);
+        window.addEventListener("resize", this.tabsGroupResponsiveness, false);
         document.querySelector(".previous-page").addEventListener("click", () => this.switchingTabs(true), false);
         document.querySelector(".next-page").addEventListener("click", () => this.switchingTabs(), false);
+        this.tabsGroupResponsiveness();
         this.navigationButtonsDisplay();
     }
 
@@ -43,6 +57,7 @@ class Build extends React.Component {
         cvPreviewElement.removeEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.removeEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
         window.removeEventListener("scroll", this.navigationButtonsDisplay, false);
+        window.removeEventListener("resize", this.tabsGroupResponsiveness, false);
         document.querySelector(".previous-page").removeEventListener("click", () => this.switchingTabs(true), false);
         document.querySelector(".next-page").removeEventListener("click", () => this.switchingTabs(), false);
     }
@@ -68,6 +83,24 @@ class Build extends React.Component {
         })
         .catch(error => alertNotifications.error(error));
     }
+
+    tabsGroupResponsiveness = () => {
+        // 576 -> pantalla móvil | 768 -> pantalla tablet
+        const width = window.innerWidth;
+        let buttonModeTab = document.querySelector(".btn-group-row .btn-group");
+        let listModeTab = document.querySelector(".btn-group-row .list-group");
+
+        if (width <= 768 && buttonModeTab) {
+            // pantalla tablet o menor
+            buttonModeTab.classList.replace("btn-group", "list-group");
+            this.setState({ currentNavigationButtonsText: navigationButtonsText.mobile });
+        }
+        else if (width > 768 && listModeTab) {
+            // pantalla escritorio
+            listModeTab.classList.replace("list-group", "btn-group");
+            this.setState({ currentNavigationButtonsText: navigationButtonsText.desktop });
+        }
+    };
 
     toggleChooseTemplateDialogButton = event => {
         let button = event.target.querySelector("#choose_template");
@@ -170,7 +203,7 @@ class Build extends React.Component {
                         )}
                         </ButtonGroup>
                     </Row>
-                    <Row className="flex-column-reverse flex-lg-row">
+                    <Row className="flex-column-reverse flex-md-row">
                         <Col md="3">
                             <Card border="success" className="cv-preview mb-3">
                             {this.state.curriculumData.templatePath ?
@@ -196,12 +229,12 @@ class Build extends React.Component {
                                 <Route path={`${this.props.path}/:tabname`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                                 <Route path={`${this.props.path}`} render={({match}) => <TabPages tabnames={this.state.tabnames} tabname={match.params.tabname} curriculumData={this.state.curriculumData} navigationButtonsDisplay={this.navigationButtonsDisplay}></TabPages>}></Route>
                             </Switch>
-                            <div id="navigation_buttons_wrapper">
+                            <div id="navigation_buttons_wrapper" className="mb-3 mb-md-0">
                                 <div id="navigation_buttons" className="text-center">
                                     <ButtonGroup>
-                                        <Button variant="default" className="previous-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[0].id}><i className="fas fa-arrow-alt-circle-left"></i> Anterior</Button>
-                                        <Link to="/curriculum/finished" className="btn btn-default"><i className="fas fa-save"></i> Visualizar CV</Link>
-                                        <Button variant="default" className="next-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[3].id}>Siguiente <i className="fas fa-arrow-alt-circle-right"></i></Button>
+                                        <Button variant="default" className="previous-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[0].id}><i className="fas fa-arrow-alt-circle-left"></i> { this.state.currentNavigationButtonsText.previous }</Button>
+                                        <Link to="/curriculum/finished" className="btn btn-default"><i className="fas fa-save"></i> { this.state.currentNavigationButtonsText.visualize }</Link>
+                                        <Button variant="default" className="next-page" type="button" disabled={this.getCurrentLocation() === this.state.tabnames[3].id}>{ this.state.currentNavigationButtonsText.next } <i className="fas fa-arrow-alt-circle-right"></i></Button>
                                     </ButtonGroup>
                                 </div>
                             </div>

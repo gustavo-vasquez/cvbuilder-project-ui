@@ -106,7 +106,7 @@ class PersonalReference extends React.Component {
 		                <div className="form-group">
 		                    <label>Teléfono fijo/móvil</label>
 		                    <Row>
-		                        <InputGroup className="col-md-5">
+		                        <InputGroup className="col-md-5 pb-2 pb-md-0">
 		                            <InputGroup.Prepend>
 		                                <InputGroup.Text><b>+</b></InputGroup.Text>
 		                            </InputGroup.Prepend>

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 
 import validationMessages from '../../../helpers/validationMessages';
 import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../../helpers';
+import { defaultProperties } from '../../globalCurriculumVariables';
 
 class PersonalDetail extends React.Component {
 	constructor(props) {
@@ -28,14 +29,15 @@ class PersonalDetail extends React.Component {
 				'mobilePhone': this.props.formData.mobilePhone || '',
 				'summary': this.props.formData.summary || '',
 				'summaryCustomTitle': this.props.formData.summaryCustomTitle || '',
-				'summaryIsVisible': this.props.formData.summaryIsVisible || true,
+				'summaryIsVisible': this.props.formData.summaryIsVisible,
 				'webPageUrl': this.props.formData.webPageUrl || '',
 				'linkedInUrl': this.props.formData.linkedInUrl || '',
 				'githubUrl': this.props.formData.githubUrl || '',
 				'facebookUrl': this.props.formData.facebookUrl || '',
 				'twitterUrl': this.props.formData.twitterUrl || '',
 				'id_Curriculum': this.props.curriculumId
-			}
+			},
+			renameSummaryTitle: false
 		}
 
 		this.photoPreview = this.props.formData.photo;
@@ -95,8 +97,6 @@ class PersonalDetail extends React.Component {
 			summary: Yup.string()
 						.max(300, validationMessages.MAX_LENGTH_300)
 						.required(validationMessages.REQUIRED),
-			summaryCustomTitle: Yup.string()
-								   .max(50, validationMessages.MAX_LENGTH_50),
 			webPageUrl: Yup.string()
 						   .max(300, validationMessages.MAX_LENGTH_300),
 			linkedInUrl: Yup.string()
@@ -170,6 +170,7 @@ class PersonalDetail extends React.Component {
 						if(!values.areaCodeMP) values.areaCodeMP = '';
 						if(!values.mobilePhone) values.mobilePhone = '';
 						this.props.updatePhotoPreview(this.photoPreview);
+						this.props.updatePersonalDetailValues(values);
 						alertNotifications.success(result.message);
 					}
 					else {
@@ -182,6 +183,32 @@ class PersonalDetail extends React.Component {
 
 			setSubmitting(false);
         }, 400);
+	}
+
+	toggleCustomSummaryTitle = customTitle => {
+		if(!customTitle)
+			this.setState(prevState => ({ renameSummaryTitle: !prevState.renameSummaryTitle }));
+		else if(customTitle || customTitle === '')
+			this.setState(prevState => ({
+				renameSummaryTitle: !prevState.renameSummaryTitle,
+				initialFormValues: {
+					...prevState.initialFormValues,
+					summaryCustomTitle: customTitle
+				}
+			}));
+	}
+
+	setCustomSummaryTitle = (values, { setSubmitting }, setFieldValue) => {
+		setFieldValue("summaryCustomTitle", values.customTitle);
+		setSubmitting(false);
+		this.toggleCustomSummaryTitle(values.customTitle);
+	}
+
+	cancelCustomSummaryTitle = subformik => {
+		if(subformik)
+			subformik.resetForm();
+
+		this.toggleCustomSummaryTitle();
 	}
 
 	render() {
@@ -215,7 +242,7 @@ class PersonalDetail extends React.Component {
 				                    {values.photo ? <Button type="button" variant="outline-success" className="profile-photo" style={{backgroundImage: `url(${values.photo})`}}></Button>
 				                    : <Button type="button" variant="outline-success" className="profile-photo"></Button>}
 				                    <span className="d-inline-block pt-2">Formatos: jpg, jpeg, png</span>
-				                    <span className="d-inline-block">Peso máximo: 1mb</span>
+				                    <span className="d-block">Peso máximo: 1mb</span>
 				                	<ErrorMessage name="uploadedPhoto" component="div" className="text-danger"></ErrorMessage>
 				                </div>
 				            </Col>
@@ -224,21 +251,42 @@ class PersonalDetail extends React.Component {
 				        <Row>
 				            <Col>
 				                <div id="summary_wrapper" className="form-group">
-				                    <InputGroup id="custom_summary_title" className="col-md-7 mb-2 d-none">
-				                    	<Field name="summaryCustomTitle" className="form-control form-control-sm" placeholder = "Nombre personalizado..."></Field>
-				                        <InputGroup.Append><Button id="change_summary_title" type="button" variant="success" size="sm" title="Cambiar"><i className="fas fa-check"></i></Button></InputGroup.Append>
-				                        <InputGroup.Append><Button id="cancel_summary_title" type="button" variant="danger" size="sm" title="Cancelar"><i className="fas fa-times"></i></Button></InputGroup.Append>
-				                    </InputGroup>
-				                    <ErrorMessage name="summaryCustomTitle" component="div" className="text-danger"></ErrorMessage>
-				                    <div id="summary_title">
-				                        <label>{!values.summaryCustomTitle ? 'Resumen profesional' : values.summaryCustomTitle}</label>
-				                        <Button id="rename_title" type="button" variant="outline-info" size="sm"><i className="fas fa-pencil-alt"></i> Editar</Button>
+				                { this.state.renameSummaryTitle ?
+				                	<Formik
+				                		initialValues={{'customTitle': values.summaryCustomTitle || ''}}
+				                		validationSchema={Yup.object({
+				                			customTitle: Yup.string()
+							   								.max(50, validationMessages.MAX_LENGTH_50)
+				                		})}
+				                		onSubmit={(values, { setSubmitting }) => this.setCustomSummaryTitle(values, { setSubmitting }, setFieldValue)}>
+				                		{(subformik) => (
+				                		<React.Fragment>
+				                	<InputGroup id="custom_summary_title" className="col col-sm-8 mb-2 border border-info rounded">
+						            	<Field name="customTitle" className="form-control border-0" placeholder="Nombre personalizado..." autoFocus></Field>
+						                <InputGroup.Append>
+						                	<Button id="change_summary_title" onClick={() => subformik.submitForm()} type="submit" variant="outline-success" className="border-0" title="Cambiar">
+						                		<i className="fas fa-check"></i>
+					                		</Button>
+					                	</InputGroup.Append>
+						                <InputGroup.Append>
+						                	<Button id="cancel_summary_title" onClick={() => this.cancelCustomSummaryTitle(subformik)} type="reset" variant="outline-danger" className="border-0 rounded-right" title="Cancelar">
+						                		<i className="fas fa-times"></i>
+					                		</Button>
+					                	</InputGroup.Append>
+						            </InputGroup>
+						            <ErrorMessage name="customTitle" component="div" className="text-danger pb-3"></ErrorMessage>
+						            </React.Fragment>)}
+						            </Formik>
+				                    : <div id="summary_title">
+				                        <label>{!values.summaryCustomTitle ? defaultProperties.DEFAULT_SUMMARY_TITLE : values.summaryCustomTitle}</label>
+				                        <Button id="rename_title" type="button" variant="outline-info" size="sm" onClick={() => this.toggleCustomSummaryTitle()}><i className="fas fa-pencil-alt"></i> Editar</Button>
 				                    </div>
+				                }
 				                    <Field as="textarea" id="summary" name="summary" className="form-control" rows="4" placeholder="Máximo 300 caracteres..."></Field>
 				                    <ErrorMessage name="summary" component="div" className="text-danger"></ErrorMessage>
-				                    <Col md="5" className="custom-control custom-switch">
+				                    <Col md="7" className="custom-control custom-switch">
 				                    	<Field type="checkbox" id="summary_is_visible" name="summaryIsVisible" className="custom-control-input"></Field>
-				                        <label className="custom-control-label" htmlFor="summary_is_visible">Visible</label>
+				                        <label className="custom-control-label" htmlFor="summary_is_visible">Visible <span className="d-inline-block"><small>(debe escribir algo igualmente)</small></span></label>
 				                    </Col>
 				                </div>
 				            </Col>
@@ -256,7 +304,7 @@ class PersonalDetail extends React.Component {
 				                <div className="form-group">
 				                    <label>Teléfono fijo</label>
 				                    <Row>
-				                        <InputGroup className="col-md-5">
+				                        <InputGroup className="col-md-5 pb-2 pb-md-0">
 				                            <InputGroup.Prepend>
 				                                <InputGroup.Text><b>+</b></InputGroup.Text>
 				                            </InputGroup.Prepend>
@@ -277,7 +325,7 @@ class PersonalDetail extends React.Component {
 				                <div className="form-group">
 				                    <label>Teléfono celular</label>
 				                    <Row>
-				                        <InputGroup className="col-md-5">
+				                        <InputGroup className="col-md-5 pb-2 pb-md-0">
 				                            <InputGroup.Prepend>
 				                                <InputGroup.Text><b>+</b></InputGroup.Text>
 				                            </InputGroup.Prepend>
@@ -332,7 +380,7 @@ class PersonalDetail extends React.Component {
 				            <Col md="6">
 				                <div className="form-group">
 				                    <label>LinkedIn</label>
-				                    <Field id="linkedIn_url" name="linkedInUrl" className="form-control"></Field>
+				                    <Field id="linkedIn_url" name="linkedInUrl" className="form-control" placeholder={defaultProperties.SOCIALPLACEHOLDER}></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
 				                    <ErrorMessage name="linkedInUrl" component="div" className="text-danger"></ErrorMessage>
 				                </div>
@@ -340,7 +388,7 @@ class PersonalDetail extends React.Component {
 				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Github</label>
-				                    <Field id="github_url" name="githubUrl" className="form-control"></Field>
+				                    <Field id="github_url" name="githubUrl" className="form-control" placeholder={defaultProperties.SOCIALPLACEHOLDER}></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
 				                    <ErrorMessage name="githubUrl" component="div" className="text-danger"></ErrorMessage>
 				                </div>
@@ -351,7 +399,7 @@ class PersonalDetail extends React.Component {
 				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Facebook</label>
-				                    <Field id="facebook_url" name="facebookUrl" className="form-control"></Field>
+				                    <Field id="facebook_url" name="facebookUrl" className="form-control" placeholder={defaultProperties.SOCIALPLACEHOLDER}></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
 				                    <ErrorMessage name="facebookUrl" component="div" className="text-danger"></ErrorMessage>
 				                </div>
@@ -359,7 +407,7 @@ class PersonalDetail extends React.Component {
 				            <Col md="6">
 				                <div className="form-group">
 				                    <label>Twitter</label>
-				                    <Field id="twitter_url" name="twitterUrl" className="form-control"></Field>
+				                    <Field id="twitter_url" name="twitterUrl" className="form-control" placeholder={defaultProperties.SOCIALPLACEHOLDER}></Field>
 				                    <small className="form-text text-muted">Si hay más de uno, separar con coma.</small>
 				                    <ErrorMessage name="twitterUrl" component="div" className="text-danger"></ErrorMessage>
 				                </div>

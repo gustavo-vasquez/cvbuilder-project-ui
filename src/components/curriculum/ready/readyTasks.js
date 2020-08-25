@@ -47,7 +47,7 @@ export function analyzePagedCurriculum(templateName) {
                     if (sum > heightBase) {
                         pageBase = document.createElement("div");
                         pageBase.className = "col-auto page";
-                        pageBase.innerHTML = '<div class="row"><div class="col-md-4 left-panel"></div><div class="col-md-8 right-panel"></div></div>';
+                        pageBase.innerHTML = '<div class="row"><div class="col-4 left-panel"></div><div class="col-8 right-panel"></div></div>';
                         container.appendChild(pageBase);
                         pageBase = pageBase.getElementsByClassName("left-panel")[0];
                         pageBase.appendChild(divElement);
@@ -124,7 +124,7 @@ export function analyzePagedCurriculum(templateName) {
                         if (pageBase === undefined) {
                             pageBase = document.createElement("div");
                             pageBase.className = "col-auto page";
-                            pageBase.innerHTML = '<div class="row"><div class="col-md-4 left-panel"></div><div class="col-md-8 right-panel"></div></div>';
+                            pageBase.innerHTML = '<div class="row"><div class="col-4 left-panel"></div><div class="col-8 right-panel"></div></div>';
                             container.appendChild(pageBase);
                         }
                         

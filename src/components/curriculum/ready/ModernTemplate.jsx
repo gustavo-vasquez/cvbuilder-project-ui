@@ -18,13 +18,13 @@ export const ModernTemplate = props => {
 				<link rel="stylesheet" type="text/css" href="/assets/css/templates/modern.css" />
 			</Helmet>
 		    <Row className="cv-header">
-		        <Col md="5" className="text-right justify-content-center align-self-center">
+		        <Col xs="5" className="text-right justify-content-center align-self-center">
 		            <h1>{ props.cvready.personalDetail.name }</h1>
 		        </Col>
-		        <Col md="2" className="my-3 text-center">
+		        <Col xs="2" className="my-3 text-center">
 		            <Image src={ props.cvready.personalDetail.photo } fluid roundedCircle />
 		        </Col>
-		        <Col md="5" className="justify-content-center align-self-center">
+		        <Col xs="5" className="justify-content-center align-self-center">
 		            <h1>{ props.cvready.personalDetail.lastName }</h1>
 		        </Col>
 		        { props.cvready.personalDetail.profession &&
@@ -34,18 +34,22 @@ export const ModernTemplate = props => {
 		        }
 		    </Row>
 		    <Row>
-		        <Col md="4" className="left-panel">
-		            <Row>
-		                <Col>
-		                    <h5><i className="far fa-calendar-check highlight"></i> { props.cvready.personalDetail.summaryCustomTitle || defaultProperties.DEFAULT_SUMMARY_TITLE }</h5>
-		                    <hr />
-		                </Col>
-		            </Row>
-		            <Row className="no-gutters justify-content-end">
-		                <div md="11">
-		                    <p>{ props.cvready.personalDetail.summary }</p>
-		                </div>
-		            </Row>
+		        <Col xs="4" className="left-panel">
+		        	{ props.cvready.personalDetail.summaryIsVisible &&
+		        		<React.Fragment>
+			            <Row>
+			                <Col>
+			                    <h5><i className="far fa-calendar-check highlight"></i> { props.cvready.personalDetail.summaryCustomTitle || defaultProperties.DEFAULT_SUMMARY_TITLE }</h5>
+			                    <hr />
+			                </Col>
+			            </Row>
+			            <Row className="no-gutters justify-content-end">
+			                <div xs="11">
+			                    <p>{ props.cvready.personalDetail.summary }</p>
+			                </div>
+			            </Row>
+			            </React.Fragment>
+		        	}
 
 		            { props.cvready.skills.length > 0 &&
 		            	<React.Fragment>
@@ -57,7 +61,7 @@ export const ModernTemplate = props => {
 		                </Row>
 		                { props.cvready.skills.map((skill, index) =>
 		                    <Row className="no-gutters justify-content-end" key={ index }>
-		                        <Col md="11">
+		                        <Col xs="11">
 		                            <span>{ skill.name }</span>
 		                            <div className="progress">
 		                                <div className={`progress-bar progress-bar-${skill.level}`} role="progressbar"></div>
@@ -75,10 +79,10 @@ export const ModernTemplate = props => {
 		                </Col>
 		            </Row>
 		            <Row>
-		                <Col md="3" className="text-right">
+		                <Col xs="3" className="text-right">
 		                    <i className="fas fa-globe-americas highlight"></i>
 		                </Col>
-		                <Col md="9" className="pl-0">
+		                <Col xs="9" className="pl-0">
 		                    <span>{ props.cvready.personalDetail.email }</span>
 		                    { props.cvready.personalDetail.webPageUrl && <span>{ props.cvready.personalDetail.webPageUrl }</span> }
 		                </Col>
@@ -86,10 +90,10 @@ export const ModernTemplate = props => {
 
 		            { (props.cvready.personalDetail.mobilePhone || props.cvready.personalDetail.linePhone) &&
 		                <Row>
-		                    <Col md="3" className="text-right">
+		                    <Col xs="3" className="text-right">
 		                        <i className="fas fa-phone-volume highlight"></i>
 		                    </Col>
-		                    <Col md="9">
+		                    <Col xs="9">
 		                        { props.cvready.personalDetail.mobilePhone && <span>{ props.cvready.personalDetail.mobilePhone }</span> }
 		                        { props.cvready.personalDetail.linePhone && <span>{ props.cvready.personalDetail.linePhone }</span> }
 		                    </Col>
@@ -98,10 +102,10 @@ export const ModernTemplate = props => {
 		            
 		            { props.cvready.personalDetail.facebookUrl &&
 		                <Row>
-		                    <Col md="3" className="text-right">
+		                    <Col xs="3" className="text-right">
 		                        <i className="fab fa-facebook-square highlight"></i>
 		                    </Col>
-		                    <Col md="9">
+		                    <Col xs="9">
 		                        <span>{ props.cvready.personalDetail.facebookUrl }</span>
 		                    </Col>
 		                </Row>
@@ -109,10 +113,10 @@ export const ModernTemplate = props => {
 
 		            { props.cvready.personalDetail.twitterUrl &&
 		                <Row>
-		                    <Col md="3" className="text-right">
+		                    <Col xs="3" className="text-right">
 		                        <i className="fab fa-twitter highlight"></i>
 		                    </Col>
-		                    <Col md="9">
+		                    <Col xs="9">
 		                        <span>{ props.cvready.personalDetail.twitterUrl }</span>
 		                    </Col>
 		                </Row>
@@ -120,10 +124,10 @@ export const ModernTemplate = props => {
 
 		            { props.cvready.personalDetail.linkedInUrl &&
 		                <Row>
-		                    <Col md="3" className="text-right">
+		                    <Col xs="3" className="text-right">
 		                        <i className="fab fa-linkedin highlight"></i>
 		                    </Col>
-		                    <Col md="9">
+		                    <Col xs="9">
 		                        <span>{ props.cvready.personalDetail.linkedInUrl }</span>
 		                    </Col>
 		                </Row>
@@ -131,16 +135,16 @@ export const ModernTemplate = props => {
 
 		            { props.cvready.personalDetail.githubUrl &&
 		                <Row>
-		                    <Col md="3" className="text-right">
+		                    <Col xs="3" className="text-right">
 		                        <i className="fab fa-github highlight"></i>
 		                    </Col>
-		                    <Col md="9">
+		                    <Col xs="9">
 		                        <span>{ props.cvready.personalDetail.githubUrl }</span>
 		                    </Col>
 		                </Row>
 		            }
 		        </Col>
-		        <Col md="8" className="right-panel">
+		        <Col xs="8" className="right-panel">
 		            { props.cvready.workExperiences.length > 0 &&
 		            	<React.Fragment>
 		                <Row className="no-gutters">
@@ -151,7 +155,7 @@ export const ModernTemplate = props => {
 		                </Row>
 		                { props.cvready.workExperiences.map((work, index) =>
 		                    <Row className="no-gutters justify-content-start" key={ index }>
-		                        <Col md="11">
+		                        <Col xs="11">
 		                            <h5 className="d-inline highlight">{ work.job }</h5>
 		                            { work.timePeriod && <h5 className="d-inline legend">{` | ${work.timePeriod}`}</h5> }
 		                            <p className="subtitle">{`${work.company} | ${work.city}`}</p>
@@ -172,7 +176,7 @@ export const ModernTemplate = props => {
 		                </Row>
 		                { props.cvready.studies.map((study, index) =>
 		                    <Row className="no-gutters justify-content-start" key={ index }>
-		                        <Col md="11">
+		                        <Col xs="11">
 		                            <h5 className="d-inline highlight">{ study.title }</h5>
 		                            { study.timePeriod && <h5 className="d-inline legend">{` | ${study.timePeriod}`}</h5> }
 		                            <p className="subtitle">{ `${study.institute} | ${study.city}` }</p>
@@ -193,7 +197,7 @@ export const ModernTemplate = props => {
 		                </Row>
 		                { props.cvready.personalReferences.map((reference, index) =>
 		                    <Row className="no-gutters justify-content-start" key={ index }>
-		                        <Col md="11">
+		                        <Col xs="11">
 		                            <h5 className="d-inline highlight">{ reference.contactPerson }</h5>
 		                            <h5 className="d-inline legend">{` | ${reference.email}`}</h5>
 		                            <p className="subtitle">{ reference.company } { reference.phoneNumber && <label>{` | ${reference.phoneNumber}`}</label> }</p>
@@ -213,12 +217,12 @@ export const ModernTemplate = props => {
 		                </Row>
                         <Row className="no-gutters">
                             { props.cvready.languages.map((language, index) =>
-                                <Col md="6" key={ index }>
+                                <Col xs="6" key={ index }>
                                     <Row>
-                                        <Col md="auto">
+                                        <Col xs="auto">
                                             <span>{ language.name }</span>
                                         </Col>
-                                        <Col md="6" className="align-self-center">
+                                        <Col xs="6" className="align-self-center">
                                             <div className="progress">
                                                 <div className={`progress-bar progress-bar-${language.level}`} role="progressbar"></div>
                                             </div>

@@ -77,13 +77,13 @@
   margin-left: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  border: 2px solid;
+  /*border: 2px solid;*/
 }
 
-.btn-myaccount:hover {
+/*.btn-myaccount:hover {
   color: white;
   box-shadow: 0 0 0 0.2rem rgba(97,187,148,.3);
-}
+}*/
 
 .btn-group > .btn-myaccount:not(:last-child):not(.dropdown-toggle) {
     border-right: none;

@@ -45,6 +45,7 @@ class WorkExperience extends React.Component {
 						  	is: value => value !== "not_show",
 						  	then: Yup.number()
 						  	.oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+						  	.lessThan(Yup.ref("endYear"), validationMessages.START_YEAR_LESS_THAN)
 						  	.required(validationMessages.REQUIRED)
 						  }),
 			endMonth: Yup.string()
@@ -55,6 +56,7 @@ class WorkExperience extends React.Component {
 							is: value => value !== "present" && value !== "not_show",
 							then: Yup.number()
 							.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+							.moreThan(Yup.ref("startYear"), validationMessages.END_YEAR_GREATER_THAN)
 							.required(validationMessages.REQUIRED)
 						}),
 			description: Yup.string()
@@ -126,7 +128,7 @@ class WorkExperience extends React.Component {
 		                <div className="form-group">
 		                    <label>Fecha de ingreso</label>
 		                    <Row>
-		                        <Col md="8">
+		                        <Col md="8" className="pb-2 pb-md-0">
 		                        	<Field as="select" id="startMonth" name="startMonth" className="custom-select">
 	                        		{dateDropdownLists.startPeriod.months.map(month => 
 		                        		<option key={month.value} value={month.value}>{month.text}</option>
@@ -150,7 +152,7 @@ class WorkExperience extends React.Component {
 		                <div className="form-group">
 		                    <label>Fecha de finalización</label>
 		                    <Row>
-		                        <Col md="8">
+		                        <Col md="8" className="pb-2 pb-md-0">
 		                        	<Field as="select" id="endMonth" name="endMonth" className="custom-select">
 		                        	{dateDropdownLists.endPeriod.months.map(month =>
 										<option key={month.value} value={month.value}>{month.text}</option>

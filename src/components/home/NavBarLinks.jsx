@@ -3,46 +3,39 @@ import { Nav } from 'react-bootstrap';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 
 export default function NavBarLinks(props) {
-	if(props.pathUrl === '/') {
-		return (
-			<Nav as="ul" className="navbar-nav ml-auto text-center">
-                <Nav.Item as="li">
-                    <Nav.Link as={AnchorLink} href="#landing_page" className="nav-link">Comenzar</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link as={AnchorLink} href="#features" className="nav-link">Características</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link as={AnchorLink} href="#templates" className="nav-link">Plantillas</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link as={AnchorLink} href="#testimonials" className="nav-link">Testimonios</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link as={AnchorLink} href="#download" className="nav-link">Descargas</Nav.Link>
-                </Nav.Item>
-            </Nav>
-		);
-	}
-	else {
-		return (
-			<Nav as="ul" className="navbar-nav ml-auto text-center">
-                <Nav.Item as="li">
-                    <Nav.Link href="/#landing_page" className="nav-link">Comenzar</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link href="/#features" className="nav-link">Características</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link href="/#templates" className="nav-link">Plantillas</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link href="/#testimonials" className="nav-link">Testimonios</Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                    <Nav.Link href="/#download" className="nav-link">Descargas</Nav.Link>
-                </Nav.Item>
-            </Nav>
-		);
-	}
+    let asProp, navLinks = {
+        landingPage: "#landing_page",
+        features: "#features",
+        templates: "#templates",
+        testimonials: "#testimonials",
+        download: "#download"
+    }
+
+    if(props.pathUrl === '/')
+        asProp = AnchorLink;
+    else {
+        asProp = undefined;
+        for(let key in navLinks)
+            navLinks[key] = "/" + navLinks[key];
+    }
+
+    return (
+        <Nav as="ul" className="navbar-nav mx-auto text-center">
+            <Nav.Item as="li">
+                <Nav.Link as={asProp} href={navLinks.landingPage} className="nav-link">Comenzar</Nav.Link>
+            </Nav.Item>
+            <Nav.Item as="li">
+                <Nav.Link as={asProp} href={navLinks.features} className="nav-link">Características</Nav.Link>
+            </Nav.Item>
+            <Nav.Item as="li">
+                <Nav.Link as={asProp} href={navLinks.templates} className="nav-link">Plantillas</Nav.Link>
+            </Nav.Item>
+            <Nav.Item as="li">
+                <Nav.Link as={asProp} href={navLinks.testimonials} className="nav-link">Testimonios</Nav.Link>
+            </Nav.Item>
+            <Nav.Item as="li">
+                <Nav.Link as={asProp} href={navLinks.download} className="nav-link">Descargas</Nav.Link>
+            </Nav.Item>
+        </Nav>
+    );
 }

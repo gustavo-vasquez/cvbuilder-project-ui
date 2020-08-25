@@ -38,23 +38,25 @@ class Study extends React.Component {
 					 .max(100, validationMessages.MAX_LENGTH_100)
 					 .required(validationMessages.REQUIRED),
 			startMonth: Yup.string()
-						   .oneOf(dateDropdownLists.startPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
+						   .oneOf(dateDropdownLists.startPeriod.months.slice(1).map(month => month.value), validationMessages.MONTH_NOT_VALID)
 						   .required(validationMessages.REQUIRED),
 			startYear: Yup.number()
-						  .when('startMonth', {
+						  .when(['startMonth'], {
 						  	is: value => value !== "not_show",
 						  	then: Yup.number()
-						  	.oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+						  	.oneOf(dateDropdownLists.startPeriod.years.slice(1).map(year => year.value), validationMessages.YEAR_NOT_VALID)
+						  	.lessThan(Yup.ref("endYear"), validationMessages.START_YEAR_LESS_THAN)
 						  	.required(validationMessages.REQUIRED)
 						  }),
 			endMonth: Yup.string()
-						 .oneOf(dateDropdownLists.endPeriod.months.slice(1).map(month => month.value), "Mes no válido.")
+						 .oneOf(dateDropdownLists.endPeriod.months.slice(1).map(month => month.value), validationMessages.MONTH_NOT_VALID)
 						 .required(validationMessages.REQUIRED),
 			endYear: Yup.number()
 						.when('endMonth', {
 							is: value => value !== "present" && value !== "not_show",
 							then: Yup.number()
-							.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), "Año no válido.")
+							.oneOf(dateDropdownLists.endPeriod.years.slice(1).map(year => year.value), validationMessages.YEAR_NOT_VALID)
+							.moreThan(Yup.ref("startYear"), validationMessages.END_YEAR_GREATER_THAN)
 							.required(validationMessages.REQUIRED)
 						}),
 			description: Yup.string()
@@ -126,7 +128,7 @@ class Study extends React.Component {
 		                <div className="form-group">
 		                    <label>Fecha de ingreso</label>
 		                    <Row>
-		                        <Col md="8">
+		                        <Col md="8" className="pb-2 pb-md-0">
 		                        	<Field as="select" id="startMonth" name="startMonth" className="custom-select">
 		                        	{dateDropdownLists.startPeriod.months.map(month => 
 		                        		<option key={month.value} value={month.value}>{month.text}</option>
@@ -150,7 +152,7 @@ class Study extends React.Component {
 		                <div className="form-group">
 		                    <label>Fecha de finalización</label>
 		                    <Row>
-		                        <Col md="8">
+		                        <Col md="8" className="pb-2 pb-md-0">
 		                        	<Field as="select" id="endMonth" name="endMonth" className="custom-select">
 		                        	{dateDropdownLists.endPeriod.months.map(month =>
 										<option key={month.value} value={month.value}>{month.text}</option>

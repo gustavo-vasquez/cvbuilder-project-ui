@@ -105,7 +105,7 @@ class Certificate extends React.Component {
 		            <Col md="6">
 		                <div className="form-group">
 			                <Row>
-		                        <Col md="7">
+		                        <Col md="7" className="pb-2 pb-md-0">
 		                            <div className="custom-control custom-checkbox">
 			                            <Field type="checkbox" id="in_progress" name="inProgress" className="custom-control-input"></Field>
 			                        	<label className="custom-control-label" htmlFor="in_progress">En la actualidad</label>

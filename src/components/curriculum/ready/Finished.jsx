@@ -100,10 +100,10 @@ class Finished extends React.Component {
 			                    <h3>¡Tu CV está completado!</h3>
 			                    <p className="template-legend">Plantilla: {this.state.curriculumReadyData.template.name}</p>
 			                    <Row className="no-gutters">
-			                        <Col md="4">
+			                        <Col md="4" className="pb-2">
 			                            <Button id="print_cv" variant="default" onClick={() => printCV(this, document.title)}><i className="fas fa-print"></i> Imprimir CV</Button>
 			                        </Col>
-			                        <Col md="4">
+			                        <Col md="4" className="pb-2">
 			                            <Button id="choose_template" variant="default" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard"><i className="fas fa-palette"></i> Cambiar plantilla</Button>
 			                        </Col>
 			                        <Col md="4">
@@ -120,7 +120,7 @@ class Finished extends React.Component {
 			        <Row id="curriculum_finished">
 			        { this.state.curriculumReadyData ?
 			        	this.displayCurriculum(this.state.curriculumReadyData)
-			        	: <NormalSpinner></NormalSpinner>
+			        	: <div className="col-auto page-loading"><NormalSpinner></NormalSpinner></div>
 			        }
 			        </Row>
 			    </Container>

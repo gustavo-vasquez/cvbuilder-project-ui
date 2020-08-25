@@ -20,6 +20,15 @@ fieldset {
     opacity: 0.6;
 }*/
 
+.tabs-group.list-group > a.btn {
+  margin-bottom: 0.25rem;
+}
+
+.no-animation {
+  animation-name: none !important;
+  -webkit-animation-name: none !important;
+}
+
 .cv-sections .card-body {
   	animation-name: slideDown;
   	animation-duration: 3.5s;
@@ -95,6 +104,15 @@ fieldset {
 #summary_wrapper > .input-group {
     padding-left: 0;
     padding-right: 0;
+}
+
+#custom_summary_title {
+  animation-name: slideRight;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  -webkit-animation-name: slideRight;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
 }
 
 #rename_title {
