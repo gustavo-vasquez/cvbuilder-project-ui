@@ -20,17 +20,52 @@ class TabPages extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.curriculumData !== this.props.curriculumData)
             this.setState({
-                personalDetail: this.props.curriculumData.personalDetail, sectionsData: [
-                {blocks: this.props.curriculumData.studies, isVisible: this.props.curriculumData.sectionVisibilities.studiesIsVisible, metadata: sectionMetadata.studies},
-                {blocks: this.props.curriculumData.workExperiences, isVisible: this.props.curriculumData.sectionVisibilities.workExperiencesIsVisible, metadata: sectionMetadata.workExperiences},
-                {blocks: this.props.curriculumData.certificates, isVisible: this.props.curriculumData.sectionVisibilities.certificatesIsVisible, metadata: sectionMetadata.certificates},
-                {blocks: this.props.curriculumData.languages, isVisible: this.props.curriculumData.sectionVisibilities.languagesIsVisible, metadata: sectionMetadata.languages},
-                {blocks: this.props.curriculumData.skills, isVisible: this.props.curriculumData.sectionVisibilities.skillsIsVisible, metadata: sectionMetadata.skills},
-                {blocks: this.props.curriculumData.interests, isVisible: this.props.curriculumData.sectionVisibilities.interestsIsVisible, metadata: sectionMetadata.interests},
-                {blocks: this.props.curriculumData.personalReferences, isVisible: this.props.curriculumData.sectionVisibilities.personalReferencesIsVisible, metadata: sectionMetadata.personalReferences},
-                {blocks: this.props.curriculumData.customSections, isVisible: this.props.curriculumData.sectionVisibilities.customSectionsIsVisible, metadata: sectionMetadata.customSections}
-            ], currentTabName: this.props.tabname });
-     }
+                personalDetail: this.props.curriculumData.personalDetail,
+                sectionsData: [
+                    {
+                        blocks: this.props.curriculumData.studies,
+                        isVisible: this.props.curriculumData.sectionVisibilities.studiesIsVisible,
+                        metadata: sectionMetadata.studies
+                    },
+                    {
+                        blocks: this.props.curriculumData.workExperiences,
+                        isVisible: this.props.curriculumData.sectionVisibilities.workExperiencesIsVisible,
+                        metadata: sectionMetadata.workExperiences
+                    },
+                    {
+                        blocks: this.props.curriculumData.certificates,
+                        isVisible: this.props.curriculumData.sectionVisibilities.certificatesIsVisible,
+                        metadata: sectionMetadata.certificates
+                    },
+                    {
+                        blocks: this.props.curriculumData.languages,
+                        isVisible: this.props.curriculumData.sectionVisibilities.languagesIsVisible,
+                        metadata: sectionMetadata.languages
+                    },
+                    {
+                        blocks: this.props.curriculumData.skills,
+                        isVisible: this.props.curriculumData.sectionVisibilities.skillsIsVisible,
+                        metadata: sectionMetadata.skills
+                    },
+                    {
+                        blocks: this.props.curriculumData.interests,
+                        isVisible: this.props.curriculumData.sectionVisibilities.interestsIsVisible,
+                        metadata: sectionMetadata.interests
+                    },
+                    {
+                        blocks: this.props.curriculumData.personalReferences,
+                        isVisible: this.props.curriculumData.sectionVisibilities.personalReferencesIsVisible,
+                        metadata: sectionMetadata.personalReferences
+                    },
+                    {
+                        blocks: this.props.curriculumData.customSections,
+                        isVisible: this.props.curriculumData.sectionVisibilities.customSectionsIsVisible,
+                        metadata: sectionMetadata.customSections
+                    }
+                ],
+                currentTabName: this.props.tabname
+            });
+    }
 
     renderSection = tabId => {
         if(this.state.sectionsData && this.state.personalDetail) {

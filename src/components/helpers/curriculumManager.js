@@ -31,6 +31,7 @@ export const printCV = (thisContext, originalTitle) => {
         iframepreview.contentWindow.print();
         thisContext.setState({ shouldPrint: false });
         document.title = originalTitle;
+        iframepreview.remove();
     }, 3000 * pageNodes.length);
 }
 
@@ -38,7 +39,7 @@ async function generatePrintPreview(pageNodes, iframepreview) {
     for (var i = 0; i < pageNodes.length; i++) {
         const dataUrl = await convertToImage(pageNodes[i], "svg");
         let img = new Image();
-        img.src = dataUrl;//console.log(dataUrl);
+        img.src = dataUrl;
         iframepreview.contentDocument.body.appendChild(img);
     }
 };

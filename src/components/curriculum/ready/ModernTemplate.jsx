@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { Row, Col, Image } from 'react-bootstrap';
 
 // componentes
 import { defaultProperties, formattedInterestList } from '../globalCurriculumVariables';
-import { analyzePagedCurriculum } from './readyTasks';
+import { initialTask, endTask } from './readyTasks';
 
 export const ModernTemplate = props => {
-	useEffect(() =>
-		analyzePagedCurriculum(props.cvready.template.name, props.el),
-		[props.cvready.template.name, props.el] // solo se va a volver a ejecutar si cambia este valor
-	);
+	useEffect(() => {
+		initialTask(props.cvready.template.name);
+		return () => endTask();
+	}, [props.cvready.template.name]); // solo se va a volver a ejecutar si cambia este valor
 
 	return (
 		<div className="col-auto page">
-			<Helmet>
-				<link rel="stylesheet" type="text/css" href="/assets/css/templates/modern.css" />
-			</Helmet>
 		    <Row className="cv-header">
 		        <Col xs="5" className="text-right justify-content-center align-self-center">
 		            <h1>{ props.cvready.personalDetail.name }</h1>

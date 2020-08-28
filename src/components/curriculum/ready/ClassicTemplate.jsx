@@ -1,23 +1,19 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { Row, Col, Image } from 'react-bootstrap';
 
 // componentes
 import { levelOptions } from '../build/sections/sectionTasks';
 import { defaultProperties, formattedInterestList } from '../globalCurriculumVariables';
-import { analyzePagedCurriculum } from './readyTasks';
+import { initialTask, endTask } from './readyTasks';
 
 export const ClassicTemplate = props => {
-	useEffect(() =>
-		analyzePagedCurriculum(props.cvready.template.name, props.el),
-		[props.cvready.template.name, props.el] // solo se va a volver a ejecutar si cambia este valor
-	);
+	useEffect(() => {
+		initialTask(props.cvready.template.name);
+		return () => endTask();
+	}, [props.cvready.template.name]); // solo se va a volver a ejecutar si cambia este valor
 
 	return (
 		<div className="col-auto page">
-			<Helmet>
-				<link rel="stylesheet" type="text/css" href="/assets/css/templates/classic.css" />
-			</Helmet>
 		    <Row className="cv-header">
 		        <label className="profession-label">{ props.cvready.personalDetail.profession }</label>
 		        <Col>
@@ -206,9 +202,3 @@ const formattedLanguageOrSkillList = items => {
 	items.map(item => result.push(item.name.concat(" (", (levelOptions.find(element => element.value === item.level)).text, ")")));
 	return result.join(", ");
 }
-
-/*const formattedInterestList = interests => {
-	let result = [];
-	interests.map(interest => result.push(interest.name));
-	return result.join(", ");
-}*/

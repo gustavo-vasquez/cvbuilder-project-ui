@@ -4,3 +4,4 @@ export * from './handleResponse';
 export * from './alertNotifications';
 export * from './abortSignal';
 export * from './curriculumManager';
+export * from './globalUtilities';

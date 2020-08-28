@@ -560,7 +560,7 @@ footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li 
     text-shadow: 0 0 2px black;
 }
 
-.btn-default:hover:not(:disabled), .btn-default:focus:not(:disabled) {
+.btn-default:hover:not(:disabled) {
     color: #137113 !important;
     /*background-color: #61bb94;
     background-image: linear-gradient(180deg, #78c3a2 0%, #58a080 50%, #169461 80%);*/

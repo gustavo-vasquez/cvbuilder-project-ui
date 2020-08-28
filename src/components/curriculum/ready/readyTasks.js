@@ -1,3 +1,33 @@
+import { templates } from '../globalCurriculumVariables';
+import { loadCssFile } from '../../helpers';
+
+export const initialTask = templateName => {
+    let href;
+
+    switch(templateName) {
+        case templates.classic.name:
+            href = templates.classic.cssPath;
+            break;
+        case templates.elegant.name:
+            href = templates.elegant.cssPath;
+            break;
+        case templates.modern.name:
+            href = templates.modern.cssPath;
+            break;
+        default: return;
+    }
+    
+    loadCssFile("template_styles", href);
+    analyzePagedCurriculum(templateName);
+}
+
+export const endTask = () => {
+    document.querySelectorAll(".page").forEach((page, index) => {
+        if(index !== 0)
+            page.parentNode.removeChild(page);
+    });
+}
+
 function outerHeight(element) {
     var height = element.offsetHeight;
     var style = getComputedStyle(element);
@@ -7,17 +37,17 @@ function outerHeight(element) {
     return height;
 }
 
-export function analyzePagedCurriculum(templateName) {
+export const analyzePagedCurriculum = templateName => {
     setTimeout(() => {
         let pageElement, pageBaseStyles, sumBase, sum, pageBase, heightBase;
         let container = document.getElementById("curriculum_finished");
 
         switch (templateName) {
-            case "Classic":
+            case templates.classic.name:
                 pageElement = document.querySelector('.page');
                 pageBaseStyles = getComputedStyle(pageElement);
                 sumBase = parseFloat(pageBaseStyles.paddingTop) + parseFloat(pageBaseStyles.paddingBottom);
-                sum = sumBase; console.log(pageElement.getBoundingClientRect());
+                sum = sumBase;
                 heightBase = pageElement.getBoundingClientRect().height;
 
                 document.querySelectorAll('.page > div').forEach((divElement, index) => {
@@ -34,7 +64,7 @@ export function analyzePagedCurriculum(templateName) {
                         pageBase.appendChild(divElement);
                 });
                 break;
-            case "Elegant":
+            case templates.elegant.name:
                 let leftPanel = document.querySelector(".page .left-panel");
                 heightBase = leftPanel.getBoundingClientRect().height;
                 pageBaseStyles = getComputedStyle(leftPanel);
@@ -85,7 +115,7 @@ export function analyzePagedCurriculum(templateName) {
                         pageBase.appendChild(divElement);
                 });
                 break;
-            case "Modern":
+            case templates.modern.name:
                 let modernLeftPanel = document.querySelector(".page .left-panel");
                 heightBase = modernLeftPanel.getBoundingClientRect().height;
                 pageBaseStyles = getComputedStyle(modernLeftPanel);
@@ -140,5 +170,6 @@ export function analyzePagedCurriculum(templateName) {
                 break;
             default:
                 alert("Error, no se pudo analizar el paginado del curriculum.");
-    }}, 1000);
+        }
+    }, 1000);
 }

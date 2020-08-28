@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 
-export const Main = () => {
-	/*useEffect(() => {
-	  document.title = "Inicio - CVBuilder";
-	}, []);*/
+import { loadCssFile } from '../helpers';
 
-  return (
-  	<div className="body-content">
-  		<Helmet>
-  		<title>Inicio - CVBuilder</title>
-  			<link rel="stylesheet" type="text/css" href="/assets/device-mockups/device-mockups.css"/>
-  		</Helmet>
-  		<header id="landing_page" className="masthead">
+export const Main = () => {
+	useEffect(() => {
+	  document.title = "Inicio - CVBuilder";
+	  loadCssFile("device_mockups_styles", "/assets/device-mockups/device-mockups.css");
+
+	  return () => document.getElementById("device_mockups_styles").remove();
+	}, []);
+
+	return (
+		<div className="body-content">
+			<header id="landing_page" className="masthead">
 		    <Container className="container-content h-100">
 		        <Row className="h-100">
 		            <Col md="7" className="my-auto">
@@ -194,6 +194,6 @@ export const Main = () => {
 		        </Row>
 		    </Container>
 		</section>
-    </div>
-  );
+	</div>
+	);
 };

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 // componentes
-import { handleResponse, authorizationHeader, alertNotifications, abortSignal, printCV, downloadAsPdf } from '../../helpers';
+import { handleResponse, authorizationHeader, loadCssFile, alertNotifications, abortSignal, printCV, downloadAsPdf } from '../../helpers';
 import ChangeTemplateDialog from '../build/ChangeTemplateDialog';
 import { ClassicTemplate } from './ClassicTemplate';
 import { ElegantTemplate } from './ElegantTemplate';
@@ -23,6 +22,12 @@ class Finished extends React.Component {
 
 	componentDidMount() {
 		this.getCurriculumReady();
+		document.title = "CV finalizado - CVBuilder";
+		loadCssFile("finished_cv_styles", "/assets/css/finished-cv.css");
+	}
+
+	componentWillUnmount() {
+		document.getElementById("finished_cv_styles").remove();
 	}
 
 	getCurriculumReady = async () => {
@@ -60,7 +65,6 @@ class Finished extends React.Component {
             		}
             	}
             }));
-            //window.location.reload();
         }
         else
             this.setState(prevState => ({ showChangeTemplateDialog: !prevState.showChangeTemplateDialog }));
@@ -86,10 +90,6 @@ class Finished extends React.Component {
 	render() {
 		return (
 			<section className="finished-cv">
-				<Helmet>
-					<title>CV finalizado - CVBuilder</title>
-					<link rel="stylesheet" type="text/css" href="/assets/css/finished-cv.css" />
-				</Helmet>
 			    <Container>
 			        <Row>
 			            <Col>
@@ -120,7 +120,9 @@ class Finished extends React.Component {
 			        <Row id="curriculum_finished">
 			        { this.state.curriculumReadyData ?
 			        	this.displayCurriculum(this.state.curriculumReadyData)
-			        	: <div className="col-auto page-loading"><NormalSpinner></NormalSpinner></div>
+			        	: <div className="col-auto page-loading">
+			        		<NormalSpinner></NormalSpinner>
+			        	  </div>
 			        }
 			        </Row>
 			    </Container>

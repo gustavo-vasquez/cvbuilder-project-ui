@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route, NavLink, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { Container, Row, Col, ButtonGroup, Button, Card, Image } from 'react-bootstrap';
 
-import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
+// componentes
+import { handleResponse, authorizationHeader, loadCssFile, alertNotifications, abortSignal } from '../../helpers';
 import TabPages from './TabPages';
 import ChangeTemplateDialog from './ChangeTemplateDialog';
 import { NormalSpinner } from '../../Spinners';
@@ -41,6 +41,8 @@ class Build extends React.Component {
 
     componentDidMount() {
         this.getCurriculumData();
+        document.title = "Crea tu curriculum - CVBuilder";
+        loadCssFile("build_cv_styles", "/assets/css/build-cv.css");
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.addEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.addEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
@@ -53,6 +55,7 @@ class Build extends React.Component {
     }
 
     componentWillUnmount() {
+        document.getElementById("build_cv_styles").remove();
         const cvPreviewElement = document.querySelector(".cv-preview");
         cvPreviewElement.removeEventListener("mouseenter", this.toggleChooseTemplateDialogButton, false);
         cvPreviewElement.removeEventListener("mouseleave", this.toggleChooseTemplateDialogButton, false);
@@ -191,10 +194,6 @@ class Build extends React.Component {
     render() {
         return (
             <section id="building_cv">
-                <Helmet>
-                    <title>Crea tu curriculum - CVBuilder</title>
-                    <link rel="stylesheet" type="text/css" href="/assets/css/build-cv.css"/>
-                </Helmet>
                 <Container>
                     <Row className="btn-group-row">
                         <ButtonGroup className="col tabs-group mb-3">

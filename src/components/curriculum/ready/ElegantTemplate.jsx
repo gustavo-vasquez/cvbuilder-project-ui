@@ -1,29 +1,18 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { Row, Col, Image } from 'react-bootstrap';
 
 // componentes
 import { defaultProperties, formattedInterestList } from '../globalCurriculumVariables';
-import { analyzePagedCurriculum } from './readyTasks';
+import { initialTask, endTask } from './readyTasks';
 
 export const ElegantTemplate = props => {
 	useEffect(() => {
-			//let initialHtml = document.getElementById("curriculum_finished").innerHTML;
-			analyzePagedCurriculum(props.cvready.template.name, props.el);
-
-			/*return () => {
-				var asd = document.getElementById("curriculum_finished");
-				asd.innerHTML = initialHtml;
-			}*/
-		},
-		[props.cvready.template.name, props.el] // solo se va a volver a ejecutar si cambia este valor
-	);
+		initialTask(props.cvready.template.name);
+		return () => endTask();
+	}, [props.cvready.template.name]); // solo se va a volver a ejecutar si cambia este valor
 
 	return (
 		<div className="col-auto page">
-			<Helmet>
-				<link rel="stylesheet" type="text/css" href="/assets/css/templates/elegant.css" />
-			</Helmet>
 		    <Row>
 		        <Col xs="4" className="left-panel">
 		            <Row>

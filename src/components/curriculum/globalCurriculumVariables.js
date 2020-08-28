@@ -1,3 +1,21 @@
+export const templates = {
+    classic: {
+        name: "Classic",
+        previewPath: "/assets/img/templates/classic.png",
+        cssPath: "/assets/css/templates/classic.css"
+    },
+    elegant: {
+        name: "Elegant",
+        previewPath: "/assets/img/templates/elegant.png",
+        cssPath: "/assets/css/templates/elegant.css"
+    },
+    modern: {
+        name: "Modern",
+        previewPath: "/assets/img/templates/modern.png",
+        cssPath: "/assets/css/templates/modern.css"
+    }
+}
+
 export const defaultProperties = {
 	DEFAULT_AVATAR_PATH: "/img/profile_coat.png",
     DEFAULT_SUMMARY_TITLE: "Resumen profesional",

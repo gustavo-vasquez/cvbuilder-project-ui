@@ -1,9 +1,14 @@
 import React from 'react';
 import { Modal, Button, Image } from 'react-bootstrap';
 
+import { templates as templatesCollection } from '../globalCurriculumVariables';
 import { handleResponse, authorizationHeader, alertNotifications, abortSignal } from '../../helpers';
 
-const templates = ["/assets/img/templates/classic.png","/assets/img/templates/elegant.png","/assets/img/templates/modern.png"];
+const templates = [
+	templatesCollection.classic.previewPath,
+	templatesCollection.elegant.previewPath,
+	templatesCollection.modern.previewPath
+];
 
 class ChangeTemplateDialog extends React.Component {
 	constructor(props) {
@@ -23,7 +28,7 @@ class ChangeTemplateDialog extends React.Component {
 	 		this.setState({activeTemplate: templates.indexOf(this.props.templatePath)});
  	}*/
 
-	slideTo = (direction) => {
+	slideTo = direction => {
 		let currentTemplate = this.state.activeTemplate;
 
 		switch(direction) {
