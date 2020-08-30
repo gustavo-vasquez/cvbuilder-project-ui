@@ -17,6 +17,8 @@ class SummaryBlocksWrapper extends React.Component {
             showContextMenu: false,
             activeFormId: '',
             eventElement: '',
+            sectionIndexElement: '',
+            summaryIdElement: '',
             sectionsInTab: this.props.sectionsInTab
         }
     }
@@ -93,8 +95,14 @@ class SummaryBlocksWrapper extends React.Component {
         return element;
     }
 
-    showBlockContextMenu = (eventElement, formId) => {
-        this.setState({ showContextMenu: true, activeFormId: formId, eventElement: eventElement });
+    showBlockContextMenu = (eventElement, formId, sectionIndex, summaryId) => {
+        this.setState({
+            showContextMenu: true,
+            activeFormId: formId,
+            eventElement: eventElement,
+            sectionIndexElement: sectionIndex,
+            summaryIdElement: summaryId
+        });
     }
 
     hideBlockContextMenu = (event) => {
@@ -109,7 +117,8 @@ class SummaryBlocksWrapper extends React.Component {
         if(answer) {
             const requestOptions = {
                 method: "DELETE",
-                headers: authorizationHeader()
+                headers: authorizationHeader(),
+                signal: abortSignal.controller.signal
             }
     
             await fetch(`https://localhost:5001/api/curriculum/block/${sectionIndex + 1}/${summaryId}`, requestOptions)
@@ -179,7 +188,8 @@ class SummaryBlocksWrapper extends React.Component {
     toggleSectionVisibility = async (sectionIndex) => {
         const requestOptions = {
             method: "PUT",
-            headers: authorizationHeader()
+            headers: authorizationHeader(),
+            signal: abortSignal.controller.signal
         }
 
         await fetch(`https://localhost:5001/api/curriculum/visibility/${sectionIndex + 1}`, requestOptions)
@@ -248,8 +258,8 @@ class SummaryBlocksWrapper extends React.Component {
                 )}
                 <div id="block_context_menu" className={this.state.showContextMenu ? "dropdown-menu visible": "dropdown-menu"}>
                     <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.getForm(this.state.eventElement, 0, this.state.activeFormId)}}>Agregar nuevo bloque</button>
-                    <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.getForm(this.state.eventElement, 1, this.state.activeFormId, "looool")}}>Editar bloque</button>
-                    <button className="dropdown-item">Eliminar bloque</button>
+                    <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.getForm(this.state.eventElement, 1, this.state.activeFormId, this.state.sectionIndexElement, this.state.summaryIdElement)}}>Editar bloque</button>
+                    <button className="dropdown-item" onClick={() => {this.setState({ showContextMenu: false }); this.removeBlock(this.state.sectionIndexElement, this.state.summaryIdElement)}}>Eliminar bloque</button>
                 </div>
             </div>
 		);

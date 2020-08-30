@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 
 class SummaryBlock extends React.Component {
-	openContextMenu = (event, summaryId) => {
+	openContextMenu = (event, sectionIndex, summaryId) => {
 		event.preventDefault();
 		event.persist();
 		
@@ -12,12 +12,13 @@ class SummaryBlock extends React.Component {
 		let bounds = blockContextMenu.getBoundingClientRect();
 		blockContextMenu.style.left = (event.clientX - bounds.left) + "px";
 		blockContextMenu.style.top = (event.clientY - bounds.top) + "px";
-		this.props.showBlockContextMenu(event, this.props.formId);
+		
+		this.props.showBlockContextMenu(event, this.props.formId, sectionIndex, summaryId);
 	}
 
 	render() {
 		return (
-			<Card bg="light" border={this.props.blockData.isVisible && "secondary"} className="contracted-block mb-3" onContextMenu={(event) => this.openContextMenu(event, this.props.blockData.summaryId)}>
+			<Card bg="light" border={this.props.blockData.isVisible && "secondary"} className="contracted-block mb-3" onContextMenu={(event) => this.openContextMenu(event, this.props.sectionIndex, this.props.blockData.summaryId)}>
 			    <Card.Body className="py-2">
 			        <Row className="justify-content-center align-items-center">
 			            <Col xs="8" sm>

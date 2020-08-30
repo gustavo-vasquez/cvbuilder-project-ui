@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Formik, Field, Form } from 'formik';
 
-export const FormikFormModel = (props) => {
+export const FormikFormModel = props => {
 	return (
 		<Formik initialValues={props.initialFormValues} validationSchema={props.formValidationSchema} onSubmit={props.formikSubmit} enableReinitialize>
 		{({ values, isSubmitting }) => (

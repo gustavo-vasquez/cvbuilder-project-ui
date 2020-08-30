@@ -6,6 +6,7 @@ export const addOrUpdateBlock = (values, { setSubmitting }, metadata, editMode, 
     	const requestOptions = {
     		method: editMode ? "PUT" : "POST",
     		headers: { ...authorizationHeader(), "Content-Type": "application/json" },
+    		signal: abortSignal.controller.signal,
     		body: JSON.stringify(values)
     	}
 
@@ -53,7 +54,8 @@ export const loadSectionFormData = (editMode, sectionIndex, summaryId, thisConte
 	if(editMode) {
         const requestOptions = {
             method: "GET",
-            headers: authorizationHeader()
+            headers: authorizationHeader(),
+            signal: abortSignal.controller.signal
         }
 
         fetch(`https://localhost:5001/api/curriculum/section/${sectionIndex + 1}/${summaryId}`, requestOptions)

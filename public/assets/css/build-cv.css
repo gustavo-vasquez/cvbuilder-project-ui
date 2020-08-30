@@ -8,18 +8,6 @@ fieldset {
     background-repeat: repeat;
 }
 
-/*#building_cv:before {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    opacity: 0.6;
-}*/
-
 .tabs-group.list-group > a.btn {
   margin-bottom: 0.25rem;
 }
@@ -55,18 +43,9 @@ fieldset {
   left: 50%;
   transform: translate(-50%,-50%);
   top: 50%;
-  color: white;
-  border-color: white;
-  background-color: rgba(48, 132, 42, 0.7);
   border-radius: 4px;
   padding: 0.7rem;
 	z-index: 1;
-}
-
-.cv-preview button:hover {
-    color: black;
-    background-color: white;
-    border-color: black;
 }
 
 .cv-sections h4 {

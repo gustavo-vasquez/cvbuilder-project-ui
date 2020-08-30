@@ -1,6 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
 import { handleResponse } from './handleResponse';
 import { alertNotifications } from './alertNotifications';
+//import { authorizationHeader } from './authorizationHeader';
+//import { abortSignal } from './abortSignal';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY)));
@@ -57,15 +59,16 @@ function login(email, password) {
 
 function exchangeToken(token, refreshToken, updateUserSubject) {
     const requestOptions = {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, refreshToken })
     };
 
-    return fetch("https://localhost:5001/api/account/exchangeToken", requestOptions)
+    return fetch("https://localhost:5001/api/account/token", requestOptions)
         .then(handleResponse)
         .then(newTokens => {console.log("actualicé el token");
             let storedUser = JSON.parse(localStorage[CURRENT_USER_STORAGE_KEY]);
+            storedUser.accessDate = newTokens.newAccessDate;
             storedUser.token = newTokens.token;
             storedUser.refreshToken = newTokens.refreshToken;
             localStorage[CURRENT_USER_STORAGE_KEY] = JSON.stringify(storedUser);
@@ -106,8 +109,23 @@ function getValidUserData() {
     return currentUserSubject.next(currentUserObject);
 }
 
-function logout() {
+async function logout() {
+    await clearRefreshToken();
+
     // remove user from local storage to log user out
     localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     currentUserSubject.next(null);
+}
+
+function clearRefreshToken() {
+    let userData = JSON.parse(localStorage.getItem([CURRENT_USER_STORAGE_KEY]));
+    
+    const requestOptions = {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+    };
+
+    return fetch("https://localhost:5001/api/account/token", requestOptions)
+    .catch(errorMessage => alertNotifications.error(errorMessage));
 }

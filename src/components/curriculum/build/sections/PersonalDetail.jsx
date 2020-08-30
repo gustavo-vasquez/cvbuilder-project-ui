@@ -156,6 +156,7 @@ class PersonalDetail extends React.Component {
             const requestOptions = {
 	    		method: "PUT",
 	    		headers: { ...authorizationHeader() },
+	    		signal: abortSignal.controller.signal,
 	    		body: formData
 	    	}
 

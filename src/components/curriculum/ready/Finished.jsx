@@ -33,7 +33,8 @@ class Finished extends React.Component {
 	getCurriculumReady = async () => {
 		const requestOptions = {
 			method: "GET",
-			headers: { ...authorizationHeader() }
+			headers: { ...authorizationHeader() },
+			signal: abortSignal.controller.signal
 		}
 
 		return fetch("https://localhost:5001/api/curriculum/ready", requestOptions)

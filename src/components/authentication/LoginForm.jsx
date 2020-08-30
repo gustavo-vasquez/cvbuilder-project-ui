@@ -43,12 +43,6 @@ const LoginForm = (props) => {
                         <Field type="password" id="login_password" name="loginPassword" className="form-control" placeholder="Contraseña..."/>
                         <ErrorMessage name="loginPassword" component="div" className="text-danger"></ErrorMessage>
                     </div>
-                    <div className="form-group">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" id="login_remember_me" className="custom-control-input"/>
-                            <label className="custom-control-label" htmlFor="login_remember_me">Mantener conectado</label>
-                        </div>
-                    </div>
                 </fieldset>
                 <Row className="form-group">
                     <Col md="5">

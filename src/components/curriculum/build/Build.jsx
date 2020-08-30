@@ -208,7 +208,7 @@ class Build extends React.Component {
                             {this.state.curriculumData.templatePath ?
                                 <React.Fragment>
                                     <Image src={this.state.curriculumData.templatePath} alt="active_template" fluid />
-                                    <Button variant="outline-success" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
+                                    <Button variant="default" size="sm" id="choose_template" className="invisible" onClick={() => this.handleChangeTemplateDialog()} data-target="#template_wizard">Cambiar plantilla</Button>
                                     <ChangeTemplateDialog templatePath={this.state.curriculumData.templatePath} toggleDisplay={this.handleChangeTemplateDialog} visible={this.state.showChangeTemplateDialog}></ChangeTemplateDialog>
                                 </React.Fragment>
                                 : <Card.Body>

@@ -52,6 +52,7 @@ class ChangeTemplateDialog extends React.Component {
 		const requestOptions = {
 			method: "PUT",
 			headers: {...authorizationHeader(), "Content-type": "application/json"},
+			signal: abortSignal.controller.signal,
         	body: JSON.stringify(templatePathUrl)
 		}
 
