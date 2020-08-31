@@ -3,17 +3,19 @@ import { Row, Col, Button, Card } from 'react-bootstrap';
 
 class SummaryBlock extends React.Component {
 	openContextMenu = (event, sectionIndex, summaryId) => {
-		event.preventDefault();
-		event.persist();
-		
-		let blockContextMenu = document.getElementById("block_context_menu");
-		blockContextMenu.style.left = 0;
-		blockContextMenu.style.top = 0;
-		let bounds = blockContextMenu.getBoundingClientRect();
-		blockContextMenu.style.left = (event.clientX - bounds.left) + "px";
-		blockContextMenu.style.top = (event.clientY - bounds.top) + "px";
-		
-		this.props.showBlockContextMenu(event, this.props.formId, sectionIndex, summaryId);
+		if(!document.querySelector("form[id$=_section_form]")) {
+			event.preventDefault();
+			event.persist();
+			
+			let blockContextMenu = document.getElementById("block_context_menu");
+			blockContextMenu.style.left = 0;
+			blockContextMenu.style.top = 0;
+			let bounds = blockContextMenu.getBoundingClientRect();
+			blockContextMenu.style.left = (event.clientX - bounds.left) + "px";
+			blockContextMenu.style.top = (event.clientY - bounds.top) + "px";
+			
+			this.props.showBlockContextMenu(event, this.props.formId, sectionIndex, summaryId);
+		}
 	}
 
 	render() {

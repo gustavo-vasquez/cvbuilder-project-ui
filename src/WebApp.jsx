@@ -7,7 +7,7 @@ import { SignIn } from './components/authentication';
 import { Build } from './components/curriculum/build';
 import Finished from './components/curriculum/ready/Finished';
 import NotFound from './components/NotFound';
-import { authenticationHandler } from './components/helpers';
+import { authenticationHandler, authorizationHeader, handleResponse, alertNotifications, abortSignal } from './components/helpers';
 import { SplashScreen } from './SplashScreen';
 
 class WebApp extends React.Component {
@@ -15,17 +15,45 @@ class WebApp extends React.Component {
 		super(props);
 
 		this.state = {
-			currentUser: null
+			currentUser: null,
+			showSplashScreen: true
 		}
 	}
 
-	componentDidMount() {
-		authenticationHandler.currentUser.subscribe(x => this.setState({ currentUser: x }));
+	async componentDidMount() {
+		await authenticationHandler.currentUser.subscribe(x => this.setState({ currentUser: x }));
+		this.checkUserData();
+	}
+
+	checkUserData = () => {
+        if(this.state.currentUser && this.state.showSplashScreen) {
+            const requestOptions = {
+                method: "GET",
+                headers: authorizationHeader(),
+                signal: abortSignal.controller.signal
+            };
+
+            fetch("https://localhost:5001/api/account/checkToken", requestOptions)
+            .then(handleResponse)
+            .then(async result => {
+                if(result) {
+                    if(result.retry) {
+                        await abortSignal.updateAbortSignal();
+                        this.checkUserData();
+                    }
+                }
+                else
+                	this.setState({ showSplashScreen: false });
+            })
+            .catch(errorMessage => alertNotifications.error(errorMessage));
+        }
+        else
+    		this.setState({ showSplashScreen: false });
 	}
 
 	render() {
-		if(this.state.currentUser === undefined)
-			return <SplashScreen></SplashScreen>
+		if(this.state.showSplashScreen)
+			return <SplashScreen/>
 		else
 			return (
 				<React.Fragment>
@@ -59,8 +87,7 @@ class WebApp extends React.Component {
 
 export default WebApp;
 
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.
+// Te redirige a la pantalla de login si no estás autenticado.
 function PrivateRoute({ children, ...rest }) {
 	return (
 		<Route {...rest} render={({ match, history, location }) =>

@@ -1,8 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { handleResponse } from './handleResponse';
-import { alertNotifications } from './alertNotifications';
-//import { authorizationHeader } from './authorizationHeader';
-//import { abortSignal } from './abortSignal';
+import { handleResponse, alertNotifications } from '../helpers';
 
 const CURRENT_USER_STORAGE_KEY = "currentUser";
 var currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY)));
@@ -15,8 +12,7 @@ export const authenticationHandler = {
     get currentUserValue() {
         return currentUserSubject.value
     },
-    exchangeToken,
-    getValidUserData
+    exchangeToken
 };
 
 function register(email, password, confirmPassword, termsAndConditions) {
@@ -84,33 +80,8 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
         });
 }
 
-function getValidUserData() {
-    let currentUserString = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
-
-    if(!currentUserString)
-        return logout();
-
-    let currentUserObject = JSON.parse(currentUserString);
-
-    fetch(`https://localhost:5001/api/account/validToken?token=${currentUserObject.token}`)
-    .then(handleResponse)
-    .then(async tokenIsValid => {console.log("el token es valido: " + tokenIsValid);
-        if(!tokenIsValid) {
-            let result = await exchangeToken(currentUserObject.token, currentUserObject.refreshToken);
-            if(result && result.token && result.refreshToken)
-                currentUserSubject.next(result);
-        }
-    })
-    .catch(errorMessage => {
-        alertNotifications.error(errorMessage);
-        return logout();
-    });
-
-    return currentUserSubject.next(currentUserObject);
-}
-
-async function logout() {
-    await clearRefreshToken();
+function logout() {
+    clearRefreshToken();
 
     // remove user from local storage to log user out
     localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
@@ -118,12 +89,17 @@ async function logout() {
 }
 
 function clearRefreshToken() {
-    let userData = JSON.parse(localStorage.getItem([CURRENT_USER_STORAGE_KEY]));
+    let currentUserString = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+
+    if(!currentUserString)
+        return;
+
+    let currentUserObject = JSON.parse(currentUserString);
     
     const requestOptions = {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(currentUserObject)
     };
 
     return fetch("https://localhost:5001/api/account/token", requestOptions)
