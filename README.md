@@ -1,7 +1,7 @@
 # CVBuilder UI
 Asistente detallado para la creación de curriculum en línea de forma rápida y eficaz.
 
-Interfaz de usuario basado en ReactJs.
+Interfaz de usuario basada en ReactJs.
 
 ## Funcionalidades
 
@@ -31,8 +31,8 @@ Interfaz de usuario basado en ReactJs.
 Para el backend -> https://github.com/gustavo-vasquez/cvbuilder-project-api
 
 * ASP.NET Core Web API
-* Entity framework / Migrations
-* JwtBearer
+* Entity Framework Core / Migrations
+* JwtBearer Authentication
 * SQL Server
 * Automapper
 
