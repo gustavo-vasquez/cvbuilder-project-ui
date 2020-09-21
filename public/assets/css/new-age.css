@@ -18,7 +18,7 @@ body {
 
 a {
   -webkit-transition: all .35s;
-  -moz-transition: none;
+  -moz-transition: all .35s;
   transition: all .35s;
 }
 
@@ -162,8 +162,8 @@ section h2 {
   border-color: rgba(34, 34, 34, 0.05);
   background-color: white;
   -webkit-transition: all .35s;
+  -moz-transition: all .35s;
   transition: all .35s;
-  /*font-family: 'Oxygen', 'Helvetica', 'Arial', 'sans-serif';*/
   font-weight: 200;
   letter-spacing: 1px;
 }
@@ -180,8 +180,6 @@ section h2 {
 }
 
 #mainNav .navbar-toggler {
-  /*font-size: 12px;
-  padding: 8px 10px;*/
   color: #222222;
 }
 
@@ -246,7 +244,6 @@ section h2 {
   }
   #mainNav.navbar-shrink {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-    /*border-color: rgba(34, 34, 34, 0.1);*/
     background-color: rgba(255,255,255,0.85);
     backdrop-filter: blur(4px); /* solo en chrome funciona */
   }

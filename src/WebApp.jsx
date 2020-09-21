@@ -45,7 +45,10 @@ class WebApp extends React.Component {
                 else
                 	this.setState({ showSplashScreen: false });
             })
-            .catch(errorMessage => alertNotifications.error(errorMessage));
+            .catch(errorMessage => {
+            	alertNotifications.error(errorMessage);
+            	this.setState({ showSplashScreen: false });
+            });
         }
         else
     		this.setState({ showSplashScreen: false });
