@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
 // componentes
@@ -25,7 +25,7 @@ const SignIn = (props) => {
                                 <LoginForm returnUrl={from}></LoginForm>
                             </Card.Body>
                         </Card>
-                        <Card border="success" className="mb-3">
+                        {/*<Card border="success" className="mb-3">
                             <Card.Body>
                                 <form action="Account/ExternalLogin?returnUrl=hola">
                                     <Row className="connect-with">
@@ -41,7 +41,7 @@ const SignIn = (props) => {
                                     </Row>
                                 </form>
                             </Card.Body>
-                        </Card>
+                        </Card>*/}
                     </Col>
                     <Col md={6}>
                         <Card border="success" className="mb-3">
