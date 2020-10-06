@@ -25,7 +25,6 @@ function register(email, password, confirmPassword, termsAndConditions) {
     return fetch("https://localhost:5001/api/account/register", requestOptions)
            .then(handleResponse)
            .then(userData => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(userData));
                 currentUserSubject.next(userData);
 
@@ -44,7 +43,6 @@ function login(email, password) {
     return fetch("https://localhost:5001/api/account/login", requestOptions)
            .then(handleResponse)
            .then(userData => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(userData));
                 currentUserSubject.next(userData);
 
@@ -62,7 +60,7 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
 
     return fetch("https://localhost:5001/api/account/token", requestOptions)
         .then(handleResponse)
-        .then(newTokens => {console.log("actualicé el token");
+        .then(newTokens => {
             let storedUser = JSON.parse(localStorage[CURRENT_USER_STORAGE_KEY]);
             storedUser.accessDate = newTokens.newAccessDate;
             storedUser.token = newTokens.token;
@@ -83,7 +81,6 @@ function exchangeToken(token, refreshToken, updateUserSubject) {
 function logout() {
     clearRefreshToken();
 
-    // remove user from local storage to log user out
     localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
     currentUserSubject.next(null);
 }

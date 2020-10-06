@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import validationMessages from '../../../helpers/validationMessages';
 import { addOrUpdateBlock, loadSectionFormData, levelOptions } from './sectionTasks';
 import { FormikFormModel } from './FormikFormModel';
+import { NormalSpinner } from '../../../Spinners';
 
 class Language extends React.Component {
 	constructor(props) {
@@ -19,7 +20,8 @@ class Language extends React.Component {
 				'level': '',
 				'isVisible': true,
 				'id_curriculum': this.props.curriculumId
-			}
+			},
+			showSpinner: true
 		}
 
 		this.formValidationSchema = Yup.object({
@@ -49,39 +51,42 @@ class Language extends React.Component {
 	}
 	
 	render() {
-		return (
-			<FormikFormModel
-				initialFormValues={this.state.initialFormValues}
-				formValidationSchema={this.formValidationSchema}
-				formikSubmit={this.formikSubmit}
-				formTitle="Idioma"
-				formId={this.props.sectionMetadata.formId}
-				sectionIndex={this.props.sectionMetadata.index}
-				editMode={this.props.editMode}
-				removeBlock={this.props.removeBlock}
-				closeForm={this.props.closeForm}>
-				<Row>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Idioma</label>
-		                    <Field id="name" name="name" className="form-control" placeholder="Ej: Inglés"></Field>
-		                    <ErrorMessage name="name" component="div" className="text-danger"></ErrorMessage>
-		                </div>
-		            </Col>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Nivel</label>
-		                    <Field as="select" id="level" name="level" className="custom-select">
-		                    	{levelOptions.map(option =>
-									<option key={option.value} value={option.value}>{option.text}</option>
-		                    	)}
-                        	</Field>
-                            <ErrorMessage name="level" component="div" className="text-danger"></ErrorMessage>
-		                </div>
-		            </Col>
-		        </Row>
-			</FormikFormModel>
-		);
+		if(this.state.showSpinner)
+			return <NormalSpinner></NormalSpinner>
+		else
+			return (
+				<FormikFormModel
+					initialFormValues={this.state.initialFormValues}
+					formValidationSchema={this.formValidationSchema}
+					formikSubmit={this.formikSubmit}
+					formTitle="Idioma"
+					formId={this.props.sectionMetadata.formId}
+					sectionIndex={this.props.sectionMetadata.index}
+					editMode={this.props.editMode}
+					removeBlock={this.props.removeBlock}
+					closeForm={this.props.closeForm}>
+					<Row>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Idioma</label>
+			                    <Field id="name" name="name" className="form-control" placeholder="Ej: Inglés"></Field>
+			                    <ErrorMessage name="name" component="div" className="text-danger"></ErrorMessage>
+			                </div>
+			            </Col>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Nivel</label>
+			                    <Field as="select" id="level" name="level" className="custom-select">
+			                    	{levelOptions.map(option =>
+										<option key={option.value} value={option.value}>{option.text}</option>
+			                    	)}
+	                        	</Field>
+	                            <ErrorMessage name="level" component="div" className="text-danger"></ErrorMessage>
+			                </div>
+			            </Col>
+			        </Row>
+				</FormikFormModel>
+			);
 	}
 }
 

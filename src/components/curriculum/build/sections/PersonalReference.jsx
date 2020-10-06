@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import validationMessages from '../../../helpers/validationMessages';
 import { addOrUpdateBlock, loadSectionFormData } from './sectionTasks';
 import { FormikFormModel } from './FormikFormModel';
+import { NormalSpinner } from '../../../Spinners';
 
 class PersonalReference extends React.Component {
 	constructor(props) {
@@ -22,7 +23,8 @@ class PersonalReference extends React.Component {
 				'email': '',
 				'isVisible': true,
 				'id_curriculum': this.props.curriculumId
-			}
+			},
+			showSpinner: true
 		}
 
 		this.formValidationSchema = Yup.object({
@@ -66,63 +68,66 @@ class PersonalReference extends React.Component {
 	}
 
 	render() {
-		return (
-			<FormikFormModel
-				initialFormValues={this.state.initialFormValues}
-				formValidationSchema={this.formValidationSchema}
-				formikSubmit={this.formikSubmit}
-				formTitle="Referencia personal"
-				formId={this.props.sectionMetadata.formId}
-				sectionIndex={this.props.sectionMetadata.index}
-				editMode={this.props.editMode}
-				removeBlock={this.props.removeBlock}
-				closeForm={this.props.closeForm}>
-				<Row>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Nombre y apellido del contacto</label>
-		                    <Field id="contact_person" name="contactPerson" className="form-control"></Field>
-		                    <ErrorMessage name="contactPerson" component="div" className="text-danger"></ErrorMessage>
-		                </div>
-		            </Col>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Empresa</label>
-		                    <Field id="company" name="company" className="form-control"></Field>
-		                    <ErrorMessage name="company" component="div" className="text-danger"></ErrorMessage>
-		                </div>
-		            </Col>
-		        </Row>
+		if(this.state.showSpinner)
+			return <NormalSpinner></NormalSpinner>
+		else
+			return (
+				<FormikFormModel
+					initialFormValues={this.state.initialFormValues}
+					formValidationSchema={this.formValidationSchema}
+					formikSubmit={this.formikSubmit}
+					formTitle="Referencia personal"
+					formId={this.props.sectionMetadata.formId}
+					sectionIndex={this.props.sectionMetadata.index}
+					editMode={this.props.editMode}
+					removeBlock={this.props.removeBlock}
+					closeForm={this.props.closeForm}>
+					<Row>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Nombre y apellido del contacto</label>
+			                    <Field id="contact_person" name="contactPerson" className="form-control"></Field>
+			                    <ErrorMessage name="contactPerson" component="div" className="text-danger"></ErrorMessage>
+			                </div>
+			            </Col>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Empresa</label>
+			                    <Field id="company" name="company" className="form-control"></Field>
+			                    <ErrorMessage name="company" component="div" className="text-danger"></ErrorMessage>
+			                </div>
+			            </Col>
+			        </Row>
 
-		        <Row>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Correo electrónico</label>
-		                    <Field id="email" name="email" className="form-control"></Field>
-		                    <ErrorMessage name="email" component="div" className="text-danger"></ErrorMessage>
-		                </div>
-		            </Col>
-		            <Col md="6">
-		                <div className="form-group">
-		                    <label>Teléfono fijo/móvil</label>
-		                    <Row>
-		                        <InputGroup className="col-md-5 pb-2 pb-md-0">
-		                            <InputGroup.Prepend>
-		                                <InputGroup.Text><b>+</b></InputGroup.Text>
-		                            </InputGroup.Prepend>
-		                            <Field id="areaCode" name="areaCode" className="form-control" placeholder="Cod. área"></Field>
-		                    		<ErrorMessage name="areaCode" component="div" className="text-danger"></ErrorMessage>
-		                        </InputGroup>
-		                        <Col md="7">
-			                        <Field id="telephone" name="telephone" className="form-control"></Field>
-			                    	<ErrorMessage name="telephone" component="div" className="text-danger"></ErrorMessage>
-		                        </Col>
-		                    </Row>
-		                </div>
-		            </Col>
-		        </Row>
-			</FormikFormModel>
-		);
+			        <Row>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Correo electrónico</label>
+			                    <Field id="email" name="email" className="form-control"></Field>
+			                    <ErrorMessage name="email" component="div" className="text-danger"></ErrorMessage>
+			                </div>
+			            </Col>
+			            <Col md="6">
+			                <div className="form-group">
+			                    <label>Teléfono fijo/móvil</label>
+			                    <Row>
+			                        <InputGroup className="col-md-5 pb-2 pb-md-0">
+			                            <InputGroup.Prepend>
+			                                <InputGroup.Text><b>+</b></InputGroup.Text>
+			                            </InputGroup.Prepend>
+			                            <Field id="areaCode" name="areaCode" className="form-control" placeholder="Cod. área"></Field>
+			                    		<ErrorMessage name="areaCode" component="div" className="text-danger"></ErrorMessage>
+			                        </InputGroup>
+			                        <Col md="7">
+				                        <Field id="telephone" name="telephone" className="form-control"></Field>
+				                    	<ErrorMessage name="telephone" component="div" className="text-danger"></ErrorMessage>
+			                        </Col>
+			                    </Row>
+			                </div>
+			            </Col>
+			        </Row>
+				</FormikFormModel>
+			);
 	}
 }
 

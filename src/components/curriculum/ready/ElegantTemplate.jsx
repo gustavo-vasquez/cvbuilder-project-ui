@@ -17,7 +17,7 @@ export const ElegantTemplate = props => {
 		        <Col xs="4" className="left-panel">
 		            <Row>
 		                <Col className="text-center">
-		                    <Image src={ props.cvready.personalDetail.photo } fluid roundedCircle />
+		                    <Image src={ props.cvready.personalDetail.photo } alt="curriculum_photo" roundedCircle />
 		                </Col>
 		            </Row>
 		            <Row>
@@ -57,7 +57,7 @@ export const ElegantTemplate = props => {
 		                </Col>
 		            </Row>
 
-		            { props.cvready.skills.length > 0 &&
+		            { props.cvready.sectionVisibility.skillsIsVisible && props.cvready.skills.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
@@ -78,7 +78,7 @@ export const ElegantTemplate = props => {
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.languages.length > 0 &&
+		            { props.cvready.sectionVisibility.languagesIsVisible && props.cvready.languages.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
@@ -177,7 +177,7 @@ export const ElegantTemplate = props => {
 			            </React.Fragment>
 		        	}
 
-		            { props.cvready.workExperiences.length > 0 &&
+		            { props.cvready.sectionVisibility.workExperiencesIsVisible && props.cvready.workExperiences.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
@@ -194,18 +194,42 @@ export const ElegantTemplate = props => {
 		                        <Col xs="7" className="offset-1">
 		                            <span className="block-title text-uppercase">{ work.job }</span>
 		                            <span className="block-subtitle">{ work.city }</span>
-		                            { work.description && <p>{ work.description }</p> }
+		                            { work.description && <p className="space-word-break">{ work.description }</p> }
 		                        </Col>
 		                    </Row>
 		                )}
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.certificates.length > 0 &&
+		            { props.cvready.sectionVisibility.studiesIsVisible && props.cvready.studies.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
-		                        <h1 className="title"><i className="fas fa-graduation-cap"></i> Certificados</h1>
+		                        <h1 className="title"><i className="fas fa-graduation-cap"></i> Estudios</h1>
+		                        <hr className="mw-100" />
+		                    </Col>
+		                </Row>
+		                { props.cvready.studies.map((study, index) =>
+		                    <Row key={ index }>
+		                        <Col xs="4">
+		                            <span className="block-title">{ study.institute }</span>
+		                            { study.timePeriod && <span className="block-subtitle">{ study.timePeriod }</span> }
+		                        </Col>
+		                        <Col xs="7" className="offset-1">
+		                            <span className="block-title text-uppercase">{ study.title }</span>
+		                            <span className="block-subtitle">{ study.city }</span>
+		                            { study.description && <p className="space-word-break">{ study.description }</p> }
+		                        </Col>
+		                    </Row>
+		                )}
+		                </React.Fragment>
+		            }
+
+		            { props.cvready.sectionVisibility.certificatesIsVisible && props.cvready.certificates.length > 0 &&
+		            	<React.Fragment>
+		                <Row>
+		                    <Col>
+		                        <h1 className="title"><i className="fas fa-certificate"></i> Certificados</h1>
 		                        <hr className="mw-100" />
 		                    </Col>
 		                </Row>
@@ -225,38 +249,14 @@ export const ElegantTemplate = props => {
 		                                : <span className="block-subtitle">{ defaultProperties.CERTIFICATE_CLASS_TEXT }</span>
 		                            }
 
-		                            { certificate.description && <p>{ certificate.description }</p> }
+		                            { certificate.description && <p className="space-word-break">{ certificate.description }</p> }
 		                        </Col>
 		                    </Row>
 		                )}
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.studies.length > 0 &&
-		            	<React.Fragment>
-		                <Row>
-		                    <Col>
-		                        <h1 className="title"><i className="fas fa-graduation-cap"></i> Estudios</h1>
-		                        <hr className="mw-100" />
-		                    </Col>
-		                </Row>
-		                { props.cvready.studies.map((study, index) =>
-		                    <Row key={ index }>
-		                        <Col xs="4">
-		                            <span className="block-title">{ study.institute }</span>
-		                            { study.timePeriod && <span className="block-subtitle">{ study.timePeriod }</span> }
-		                        </Col>
-		                        <Col xs="7" className="offset-1">
-		                            <span className="block-title text-uppercase">{ study.title }</span>
-		                            <span className="block-subtitle">{ study.city }</span>
-		                            { study.description && <p>{ study.description }</p> }
-		                        </Col>
-		                    </Row>
-		                )}
-		                </React.Fragment>
-		            }
-
-		            { props.cvready.personalReferences.length > 0 &&
+		            { props.cvready.sectionVisibility.personalReferencesIsVisible && props.cvready.personalReferences.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
@@ -268,7 +268,7 @@ export const ElegantTemplate = props => {
 		                    <Row key={ index }>
 		                        <Col xs="4">
 		                            <span className="block-title">{ reference.company }</span>
-		                            { reference.phoneNumber && <span class="block-subtitle">{ reference.phoneNumber }</span> }
+		                            { reference.phoneNumber && <span className="block-subtitle">{ reference.phoneNumber }</span> }
 		                        </Col>
 		                        <Col xs="7" className="offset-1">
 		                            <span className="block-title text-uppercase">{ reference.contactPerson }</span>
@@ -279,7 +279,7 @@ export const ElegantTemplate = props => {
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.interests.length > 0 &&
+		            { props.cvready.sectionVisibility.interestsIsVisible && props.cvready.interests.length > 0 &&
 		                <Row>
 		                    <Col xs="5">
 		                        <span className="block-title text-uppercase">Intereses</span>
@@ -290,7 +290,7 @@ export const ElegantTemplate = props => {
 		                </Row>
 		            }
 
-		            { props.cvready.customSections.length > 0 &&
+		            { props.cvready.sectionVisibility.customSectionsIsVisible && props.cvready.customSections.length > 0 &&
 		                props.cvready.customSections.map((custom, index) =>
 	                	<React.Fragment key={ index }>
 		                    <Row>
@@ -301,7 +301,7 @@ export const ElegantTemplate = props => {
 		                    </Row>
 		                    <Row>
 		                        <Col>
-		                            <p className="white-space-pre-wrap">{ custom.description }</p>
+		                            <p className="space-word-break">{ custom.description }</p>
 		                        </Col>
 		                    </Row>
 		                </React.Fragment>

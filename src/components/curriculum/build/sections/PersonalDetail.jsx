@@ -68,7 +68,8 @@ class PersonalDetail extends React.Component {
 			address: Yup.string()
 						.max(100, validationMessages.MAX_LENGTH_100),
 			city: Yup.string()
-					 .max(100, validationMessages.MAX_LENGTH_100),
+					 .max(100, validationMessages.MAX_LENGTH_100)
+					 .required(validationMessages.REQUIRED),
 			postalCode: Yup.number()
 						   .max(99999, validationMessages.MAX_RANGE_5)
 						   .typeError(validationMessages.NUMBER_NOT_VALID)
@@ -140,12 +141,12 @@ class PersonalDetail extends React.Component {
 	}
 
 	formikSubmit = (values, { setSubmitting }) => {
-		values.postalCode = values.postalCode !== '' ? parseInt(values.postalCode) : null;
-		values.areaCodeLP = values.areaCodeLP !== '' ? parseInt(values.areaCodeLP) : null;
-		values.linePhone = values.linePhone !== '' ? parseInt(values.linePhone) : null;
-		values.areaCodeMP = values.areaCodeMP !== '' ? parseInt(values.areaCodeMP) : null;
-		values.mobilePhone = values.mobilePhone !== '' ? parseInt(values.mobilePhone) : null;
-		values.formMode = 1;
+		if(values.postalCode !== '') values.postalCode = parseInt(values.postalCode);
+		if(values.areaCodeLP !== '') values.areaCodeLP = parseInt(values.areaCodeLP);
+		if(values.linePhone !== '') values.linePhone = parseInt(values.linePhone);
+		if(values.areaCodeMP !== '') values.areaCodeMP = parseInt(values.areaCodeMP);
+		if(values.mobilePhone !== '') values.mobilePhone = parseInt(values.mobilePhone);
+		values.formMode = 1;console.log(values.postalCode);
 
 		const formData = new FormData();
 

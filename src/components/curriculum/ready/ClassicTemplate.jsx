@@ -17,7 +17,7 @@ export const ClassicTemplate = props => {
 		    <Row className="cv-header">
 		        <label className="profession-label">{ props.cvready.personalDetail.profession }</label>
 		        <Col>
-		            <Image src={ props.cvready.personalDetail.photo } alt="curriculum_photo" fluid roundedCircle />
+		            <Image src={ props.cvready.personalDetail.photo } alt="curriculum_photo" roundedCircle />
 		            <p className="title">{ `${props.cvready.personalDetail.name} ${props.cvready.personalDetail.lastName}` }</p>
 		            <p className="subtitle font-weight-bold">
 		            	{ props.cvready.personalDetail.email }
@@ -63,38 +63,7 @@ export const ClassicTemplate = props => {
 		                <Col xs="8">
 		                    <h5 className="block-subtitle font-weight-bold">{ work.job }</h5>
 		                    { work.timePeriod && <h5 className="block-subtitle">{ work.timePeriod }</h5> }
-		                    { work.description && <p>{ work.description }</p> }
-		                </Col>
-		            </Row>
-		        )}
-		        </React.Fragment>
-		    }
-
-		    { props.cvready.sectionVisibility.certificatesIsVisible && props.cvready.certificates.length > 0 &&
-		    	<React.Fragment>
-		        <Row>
-		            <Col>
-		                <h3 className="block-title text-uppercase">Certificados - Cursos</h3>
-		                <hr className="mw-100 mt-0 mb-0" />
-		            </Col>
-		        </Row>
-		        { props.cvready.certificates.map((certificate, index) =>
-		            <Row className="cv-block" key={ index }>
-		                <Col xs="4">
-		                    <h5 className="block-subtitle font-weight-bold">{ certificate.institute }</h5>
-		                    { certificate.onlineMode ?
-	                    	  <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_ONLINE_TEXT }</h5>
-		                    : <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_CLASS_TEXT }</h5>
-		                	}
-		                </Col>
-		                <Col xs="8">
-		                    <h5 className="block-subtitle font-weight-bold">{ certificate.name }</h5>
-		                    { certificate.inProgress ?
-		                      <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_INPROGRESS_TEXT }</h5>
-		                    : <h5 className="block-subtitle">{ certificate.year }</h5>
-		                    }
-
-		                    { certificate.description && <p>{ certificate.description }</p> }
+		                    { work.description && <p className="space-word-break">{ work.description }</p> }
 		                </Col>
 		            </Row>
 		        )}
@@ -118,10 +87,41 @@ export const ClassicTemplate = props => {
 	                <Col xs="8">
 	                    <h5 className="block-subtitle font-weight-bold">{ study.title }</h5>
 	                    { study.timePeriod && <h5 className="block-subtitle">{ study.timePeriod }</h5> }
-	                    { study.description && <p>{ study.description }</p> }
+	                    { study.description && <p className="space-word-break">{ study.description }</p> }
 	                </Col>
 	            </Row>
 	            )}
+		        </React.Fragment>
+		    }
+
+		    { props.cvready.sectionVisibility.certificatesIsVisible && props.cvready.certificates.length > 0 &&
+		    	<React.Fragment>
+		        <Row>
+		            <Col>
+		                <h3 className="block-title text-uppercase">Certificados/Cursos</h3>
+		                <hr className="mw-100 mt-0 mb-0" />
+		            </Col>
+		        </Row>
+		        { props.cvready.certificates.map((certificate, index) =>
+		            <Row className="cv-block" key={ index }>
+		                <Col xs="4">
+		                    <h5 className="block-subtitle font-weight-bold">{ certificate.institute }</h5>
+		                    { certificate.onlineMode ?
+	                    	  <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_ONLINE_TEXT }</h5>
+		                    : <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_CLASS_TEXT }</h5>
+		                	}
+		                </Col>
+		                <Col xs="8">
+		                    <h5 className="block-subtitle font-weight-bold">{ certificate.name }</h5>
+		                    { certificate.inProgress ?
+		                      <h5 className="block-subtitle">{ defaultProperties.CERTIFICATE_INPROGRESS_TEXT }</h5>
+		                    : <h5 className="block-subtitle">{ certificate.year }</h5>
+		                    }
+
+		                    { certificate.description && <p className="space-word-break">{ certificate.description }</p> }
+		                </Col>
+		            </Row>
+		        )}
 		        </React.Fragment>
 		    }
 		    
@@ -137,7 +137,7 @@ export const ClassicTemplate = props => {
 					<Row className="cv-block" key={ index }>
 			            <Col xs="4">
 			                <h5 className="block-subtitle font-weight-bold">{ reference.company }</h5>
-			                { reference.phoneNumber && <h5 className="block-subtitle">reference.phoneNumber</h5> }
+			                { reference.phoneNumber && <h5 className="block-subtitle">{ reference.phoneNumber }</h5> }
 			            </Col>
 			            <Col xs="8">
 			                <h5 className="block-subtitle font-weight-bold">{ reference.contactPerson }</h5>
@@ -181,15 +181,15 @@ export const ClassicTemplate = props => {
 		        </Row>
 	    	}
 
-		    { props.cvready.sectionVisibility.CustomSectionsIsVisible
+		    { props.cvready.sectionVisibility.customSectionsIsVisible
 	    	&& props.cvready.customSections.length > 0
 	    	&& props.cvready.customSections.map((customSection, index) =>
-	            <Row class="row cv-block" key={ index }>
+	            <Row className="row cv-block" key={ index }>
 	                <Col xs="4">
 	                    <h3 className="block-title text-uppercase">{ customSection.sectionName }</h3>
 	                </Col>
 	                <Col xs="8">
-	                    <p className="white-space-pre-wrap">{ customSection.description }</p>
+	                    <p className="space-word-break">{ customSection.description }</p>
 	                </Col>
 	            </Row>
             )}

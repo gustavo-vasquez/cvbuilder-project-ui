@@ -9,7 +9,7 @@ export const handleResponse = (response) => {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
                 let currentUser = authenticationHandler.currentUserValue;
 
-                if(currentUser) {console.log("preparando para actualizar token!");
+                if(currentUser) {
                     return await authenticationHandler.exchangeToken(currentUser.token, currentUser.refreshToken, true);
                 }
             }

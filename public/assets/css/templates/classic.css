@@ -14,24 +14,13 @@
     -webkit-animation-iteration-count: 1;
 }
 
-/*@page {
-    size: A4 !important;
-    margin: 0;
-}
-
-@media print {
-    html, body
-    {   
-        zoom: 146%;
-    }
-}*/
-
 .cv-header {
     text-align: center;
 }
 
 .cv-header img {
-    width: 6.25rem;
+    width: 100px;
+    height: 100px;
     border: 1px solid darkgray;
 }
 

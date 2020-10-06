@@ -45,7 +45,6 @@ export const addOrUpdateBlock = (values, { setSubmitting }, metadata, editMode, 
 		})
     	.catch(errorMessage => alertNotifications.error(errorMessage));
 
-        //alert(JSON.stringify(values, null, 2));
         setSubmitting(false);
     }, 400);
 }
@@ -72,7 +71,7 @@ export const loadSectionFormData = (editMode, sectionIndex, summaryId, thisConte
 							break;
 					}
 
-					thisContext.setState({ initialFormValues: result });
+					thisContext.setState({ initialFormValues: result, showSpinner: false });
 				}
 				else {
 					await abortSignal.updateAbortSignal();
@@ -82,6 +81,8 @@ export const loadSectionFormData = (editMode, sectionIndex, summaryId, thisConte
 		})
 		.catch(errorMessage => alertNotifications.error(errorMessage || errorMessage.message));
 	}
+	else
+		thisContext.setState({ showSpinner: false });
 }
 
 export const dateDropdownLists = {

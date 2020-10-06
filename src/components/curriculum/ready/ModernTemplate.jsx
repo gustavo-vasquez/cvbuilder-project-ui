@@ -18,7 +18,7 @@ export const ModernTemplate = props => {
 		            <h1>{ props.cvready.personalDetail.name }</h1>
 		        </Col>
 		        <Col xs="2" className="my-3 text-center">
-		            <Image src={ props.cvready.personalDetail.photo } fluid roundedCircle />
+		            <Image src={ props.cvready.personalDetail.photo } alt="curriculum_photo" roundedCircle />
 		        </Col>
 		        <Col xs="5" className="justify-content-center align-self-center">
 		            <h1>{ props.cvready.personalDetail.lastName }</h1>
@@ -47,7 +47,7 @@ export const ModernTemplate = props => {
 			            </React.Fragment>
 		        	}
 
-		            { props.cvready.skills.length > 0 &&
+		            { props.cvready.sectionVisibility.skillsIsVisible && props.cvready.skills.length > 0 &&
 		            	<React.Fragment>
 		                <Row>
 		                    <Col>
@@ -141,7 +141,7 @@ export const ModernTemplate = props => {
 		            }
 		        </Col>
 		        <Col xs="8" className="right-panel">
-		            { props.cvready.workExperiences.length > 0 &&
+		            { props.cvready.sectionVisibility.workExperiencesIsVisible && props.cvready.workExperiences.length > 0 &&
 		            	<React.Fragment>
 		                <Row className="no-gutters">
 		                    <Col>
@@ -155,14 +155,14 @@ export const ModernTemplate = props => {
 		                            <h5 className="d-inline highlight">{ work.job }</h5>
 		                            { work.timePeriod && <h5 className="d-inline legend">{` | ${work.timePeriod}`}</h5> }
 		                            <p className="subtitle">{`${work.company} | ${work.city}`}</p>
-		                            { work.description && <p>{ work.description }</p> }
+		                            { work.description && <p className="space-word-break">{ work.description }</p> }
 		                        </Col>
 		                    </Row>
 		                )}
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.studies.length > 0 &&
+		            { props.cvready.sectionVisibility.studiesIsVisible && props.cvready.studies.length > 0 &&
 		            	<React.Fragment>
 		                <Row className="no-gutters">
 		                    <Col>
@@ -176,14 +176,35 @@ export const ModernTemplate = props => {
 		                            <h5 className="d-inline highlight">{ study.title }</h5>
 		                            { study.timePeriod && <h5 className="d-inline legend">{` | ${study.timePeriod}`}</h5> }
 		                            <p className="subtitle">{ `${study.institute} | ${study.city}` }</p>
-		                            { study.description && <p>{ study.description }</p> }
+		                            { study.description && <p className="space-word-break">{ study.description }</p> }
 		                        </Col>
 		                    </Row>
 		                )}
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.personalReferences.length > 0 &&
+		            { props.cvready.sectionVisibility.certificatesIsVisible && props.cvready.certificates.length > 0 &&
+		            	<React.Fragment>
+		                <Row className="no-gutters">
+		                    <Col>
+		                        <h5><i className="fas fa-certificate highlight"></i> Certificados/Cursos</h5>
+		                        <hr />
+		                    </Col>
+		                </Row>
+		                { props.cvready.certificates.map((certificate, index) =>
+		                    <Row className="no-gutters justify-content-start" key={ index }>
+		                        <Col xs="11">
+		                            <h5 className="d-inline highlight">{ certificate.name }</h5>
+		                            <h5 className="d-inline legend"> | { certificate.inProgress ? defaultProperties.CERTIFICATE_INPROGRESS_TEXT : certificate.year }</h5>
+		                            <p className="subtitle">{ `${certificate.institute} | ${certificate.onlineMode ? defaultProperties.CERTIFICATE_ONLINE_TEXT : defaultProperties.CERTIFICATE_CLASS_TEXT}` }</p>
+		                            { certificate.description && <p className="space-word-break">{ certificate.description }</p> }
+		                        </Col>
+		                    </Row>
+		                )}
+		                </React.Fragment>
+		            }
+
+		            { props.cvready.sectionVisibility.personalReferencesIsVisible && props.cvready.personalReferences.length > 0 &&
 		            	<React.Fragment>
 		                <Row className="no-gutters">
 		                    <Col>
@@ -203,7 +224,7 @@ export const ModernTemplate = props => {
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.languages.length > 0 &&
+		            { props.cvready.sectionVisibility.languagesIsVisible && props.cvready.languages.length > 0 &&
 		            	<React.Fragment>
 		                <Row className="no-gutters">
 		                    <Col>
@@ -230,7 +251,7 @@ export const ModernTemplate = props => {
                         </React.Fragment>
 		            }
 
-		            { props.cvready.interests.length > 0 &&
+		            { props.cvready.sectionVisibility.interestsIsVisible && props.cvready.interests.length > 0 &&
 		            	<React.Fragment>
 		            	<Row className="no-gutters">
 		            		<Col>
@@ -246,7 +267,7 @@ export const ModernTemplate = props => {
 		                </React.Fragment>
 		            }
 
-		            { props.cvready.customSections.length > 0 &&
+		            { props.cvready.sectionVisibility.customSectionsIsVisible && props.cvready.customSections.length > 0 &&
 		                props.cvready.customSections.map((custom, index) =>
 		                	<React.Fragment key={ index }>
 		                    <Row className="no-gutters">
@@ -257,7 +278,7 @@ export const ModernTemplate = props => {
 		                    </Row>
 		                    <Row className="no-gutters justify-content-start">
 		                        <Col>
-		                            <p className="subtitle white-space-pre-wrap">{ custom.description }</p>
+		                            <p className="subtitle space-word-break">{ custom.description }</p>
 		                        </Col>
 		                    </Row>
 		                    </React.Fragment>
